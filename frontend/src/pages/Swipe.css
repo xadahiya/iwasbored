@@ -1,0 +1,99 @@
+.swipe {
+  background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  display: none;
+}
+
+.swipe-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.swipe-actions {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2rem;
+  z-index: 100;
+}
+
+.swipe-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.swipe-button.dislike {
+  background: #ef4444;
+  color: white;
+}
+
+.swipe-button.like {
+  background: #10b981;
+  color: white;
+}
+
+.swipe-button:hover {
+  transform: scale(1.1);
+}
+
+.swipe-button:active {
+  transform: scale(0.95);
+}
+
+.swipe-complete {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.swipe-complete h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.swipe-complete p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.card-stack {
+  position: relative;
+  width: min(90vw, 400px);
+  height: min(90vw, 570px);
+  max-width: 400px;
+  max-height: 570px;
+}
+
+@media (max-width: 768px) {
+  .swipe-content {
+    padding: 1rem;
+  }
+}
+

@@ -1,0 +1,90 @@
+.onboarding {
+  background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.onboarding::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-30px, -30px) rotate(180deg); }
+}
+
+.onboarding h1 {
+  display: none;
+}
+
+.onboarding p {
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  margin-top: 2rem;
+  cursor: pointer;
+  border: none;
+  font-size: 1.1rem;
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 100;
+  outline: 3px solid transparent;
+  outline-offset: 3px;
+}
+
+.cta-button:focus {
+  outline: 3px solid #6366f1;
+  outline-offset: 3px;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.error {
+  color: #ef4444;
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+}

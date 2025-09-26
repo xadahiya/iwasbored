@@ -1,0 +1,28 @@
+.stats-panel {
+  background-color: #2d3748;
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: white;
+  width: 250px;
+}
+
+.stats-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.stats-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.stats-label {
+  color: #a0aec0;
+}
+
+.stats-value {
+  font-weight: bold;
+}

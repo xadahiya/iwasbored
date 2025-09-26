@@ -1,0 +1,160 @@
+.prediction-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.15), 0 8px 24px -4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 350px;
+  height: 500px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  cursor: grab;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.prediction-card:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.prediction-card:active {
+  cursor: grabbing;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+  color: white;
+  border-bottom: 3px solid var(--card-color);
+}
+
+.crypto-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  background: white;
+  color: var(--card-color);
+}
+
+.icon-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.crypto-info h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.crypto-info p {
+  margin: 0.5rem 0 0 0;
+  opacity: 0.95;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.chart-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.price-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.current-price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.price-change {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.prediction-section {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.prediction-question {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.stake-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stake-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.stake-slider {
+  -webkit-appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  outline: none;
+}
+
+.stake-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--card-color);
+  cursor: pointer;
+}
+
+.countdown-timer {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.timer-ring {
+  width: 70px;
+  height: 70px;
+  border: 3px solid var(--card-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.timer-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--card-color);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}

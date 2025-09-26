@@ -1,0 +1,44 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+.logo-icon {
+  font-size: 4rem;
+  color: white;
+}
+
+.logo-icon.eth {
+  color: #627eea;
+}
+
+.logo-icon.btc {
+  color: #f7931a;
+}
+
+.logo-arrows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+
+.logo-arrow {
+  font-size: 2rem;
+  color: white;
+}
+
+.logo-arrow.left {
+  color: #ef4444;
+  transform: translateX(-30px);
+}
+
+.logo-arrow.right {
+  color: #22c55e;
+  transform: translateX(30px);
+}
