@@ -4,7 +4,7 @@ import { useWallet } from '../contexts/WalletContext';
 import Header from '../components/Header';
 import PredictionCard from '../components/PredictionCard';
 import { useSprings, animated } from 'react-spring';
-import { useDrag, useGesture } from 'react-use-gesture';
+import { useDrag } from 'react-use-gesture';
 import './Swipe.css';
 
 const predictions = [
@@ -130,9 +130,29 @@ const predictions = [
   },
 ];
 
-const to = (i) => ({ x: 0, y: 0, scale: 1, rot: 0, delay: i * 100 });
-const from = (i) => ({ x: 0, rot: 0, scale: 1, y: 0 });
-const trans = (r, s) => `perspective(1500px) rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
+const to = (i) => ({ 
+  x: 0, 
+  y: 0, 
+  rot: 0, 
+  rotZ: 0,
+  scale: 1, 
+  opacity: 1,
+  delay: i * 50,
+  config: { tension: 120, friction: 14 }
+});
+
+const from = (i) => ({ 
+  x: 0, 
+  y: 0, 
+  rot: 0, 
+  rotZ: 0,
+  scale: 1, 
+  opacity: 0
+});
+
+// Clean Tinder-style transform function
+const trans = (x, y, rot, rotZ, scale) => 
+  `translate3d(${x}px, ${y}px, 0) rotateZ(${rot}deg) scale(${scale})`;
 
 const Swipe = () => {
   const { address } = useWallet();
@@ -140,6 +160,7 @@ const Swipe = () => {
   const [gone] = useState(() => new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [stakeAmount, setStakeAmount] = useState(0.10);
   const [props, set] = useSprings(predictions.length, (i) => ({ ...to(i), from: from(i) }));
   const cardRef = useRef(null);
 
@@ -151,7 +172,12 @@ const Swipe = () => {
 
   const handleSwipe = (direction) => {
     const currentCardIndex = currentIndex;
-    if (currentCardIndex >= predictions.length) return;
+    if (currentCardIndex >= predictions.length || isAnimating) return;
+
+    // Log the bet placement (in a real app, this would be sent to backend)
+    const prediction = predictions[currentCardIndex];
+    const betType = direction === 'right' ? 'YES' : 'NO';
+    console.log(`Placing bet: ${betType} on "${prediction.question}" with stake: ${stakeAmount} ETH`);
 
     setIsAnimating(true);
     const dir = direction === 'right' ? 1 : -1;
@@ -161,7 +187,9 @@ const Swipe = () => {
       if (currentCardIndex !== i) return;
       return {
         x: (200 + window.innerWidth) * dir,
-        rot: dir * 30,
+        y: 0,
+        rot: dir * 30, // Classic Tinder rotation
+        rotZ: 0,
         scale: 1,
         opacity: 0,
         config: { friction: 50, tension: 200 }
@@ -174,94 +202,81 @@ const Swipe = () => {
     }, 300);
   };
 
-  const bind = useDrag(({ args: [index], down, movement: [mx], direction: [xDir], velocity, distance, cancel }) => {
-    if (isAnimating) return;
+  const bind = useDrag(({ 
+    args: [index], 
+    down, 
+    movement: [mx, my], 
+    direction: [xDir], 
+    cancel, 
+    velocity
+  }) => {
+    if (isAnimating || index !== currentIndex) return;
     
-    const trigger = velocity > 0.2 || distance > threshold;
-    const dir = trigger ? (xDir > 0 ? 1 : -1) : 0;
+    const trigger = Math.abs(mx) > window.innerWidth / 3;
+    const vx = velocity?.[0] || 0;
+    const velocityThreshold = Math.abs(vx) > 0.5;
     
-    if (down && Math.abs(mx) > 200) {
-      setIsAnimating(true);
-      gone.add(index);
-      cancel();
-      setTimeout(() => {
-        setCurrentIndex(prev => prev + 1);
-        setIsAnimating(false);
-      }, 300);
+    // Determine swipe direction and handle completion
+    if (!down && (trigger || velocityThreshold)) {
+      const dir = mx > 0 ? 'right' : 'left';
+      handleSwipe(dir);
+      return;
     }
     
-    if (!down && trigger) {
-      setIsAnimating(true);
-      gone.add(index);
-      setTimeout(() => {
-        setCurrentIndex(prev => prev + 1);
-        setIsAnimating(false);
-      }, 300);
+    // If drag is released but not triggered, snap back to original position
+    if (!down && !trigger && !velocityThreshold) {
+      set((i) => {
+        if (index !== i) return { ...to(i) };
+        return {
+          x: 0,
+          y: 0,
+          rot: 0,
+          rotZ: 0,
+          scale: 1,
+          opacity: 1,
+          config: { 
+            tension: 300,
+            friction: 30
+          }
+        };
+      });
+      return;
     }
     
     set((i) => {
-      if (index !== i) return;
-      const isGone = gone.has(index);
-      const x = down ? mx : isGone ? (200 + window.innerWidth) * dir : 0;
-      const rot = down ? mx / 10 : isGone ? dir * 30 : 0;
-      const scale = down ? 1 - Math.abs(mx) / 1000 : 1;
-      const opacity = down ? 1 - Math.abs(mx) / 300 : isGone ? 0 : 1;
+      if (index !== i) {
+        // Simple background card animation - just scale up slightly
+        if (i === currentIndex + 1) {
+          return {
+            ...to(i),
+            scale: 0.95 + Math.abs(mx) * 0.00008
+          };
+        }
+        return { ...to(i) };
+      }
+      
+      // Classic Tinder tilt physics - simple and clean
+      const rotation = mx * 0.15; // Clean rotation based on horizontal movement (increased for more visible tilt)
+      const scale = down ? 0.95 : 1; // Slight scale down when dragging
       
       return {
-        x,
-        rot,
-        scale,
-        opacity,
-        delay: down ? 0 : 300,
-        config: { friction: 50, tension: down ? 800 : 200 }
+        x: mx,
+        y: my * 0.5, // Reduced vertical movement
+        rot: rotation, // Main rotation for tilt effect
+        rotZ: rotation, // Also set rotZ for consistency
+        scale: scale,
+        opacity: 1, // Keep full opacity
+        delay: 0,
+        config: { 
+          tension: down ? 200 : 170,
+          friction: down ? 30 : 26
+        }
       };
     });
+    
+    if ((trigger || velocityThreshold) && !down) cancel();
   });
 
-  const bindCursor = useGesture({
-    onDrag: ({ active, movement: [mx], direction: [xDir], event }) => {
-      if (isAnimating || !cardRef.current) return;
-      
-      event.preventDefault();
-      const cardElement = cardRef.current.querySelector('.prediction-card');
-      if (!cardElement) return;
-      
-      if (active) {
-        const dir = xDir > 0 ? 1 : -1;
-        const opacity = 1 - Math.abs(mx) / 300;
-        const rot = mx / 10;
-        const scale = 1 - Math.abs(mx) / 1000;
-        
-        cardElement.style.transform = `translate3d(${mx}px, 0, 0) rotate(${rot}deg) scale(${scale})`;
-        cardElement.style.opacity = opacity;
-      } else {
-        const dragDistance = Math.abs(mx);
-        const trigger = dragDistance > 200;
-        
-        if (trigger) {
-          const direction = xDir > 0 ? 'right' : 'left';
-          handleSwipe(direction);
-        } else {
-          cardElement.style.transform = 'translate3d(0, 0, 0) rotate(0deg) scale(1)';
-          cardElement.style.opacity = 1;
-        }
-      }
-    },
-    onDragEnd: ({ movement: [mx], direction: [xDir] }) => {
-      if (isAnimating || !cardRef.current) return;
-      
-      const dragDistance = Math.abs(mx);
-      if (dragDistance > 200) {
-        const direction = xDir > 0 ? 'right' : 'left';
-        handleSwipe(direction);
-      }
-    }
-  }, { 
-    transform: ([x, y]) => [x, y, 0],
-    rubberband: true
-  });
-
-  const threshold = 50;
   const like = () => handleSwipe('right');
   const dislike = () => handleSwipe('left');
 
@@ -273,21 +288,44 @@ const Swipe = () => {
       <Header />
       <div className="swipe-content">
         <div ref={cardRef} className="card-stack">
-          {visibleProps.map(({ x, y, rot, scale, opacity }, i) => {
+          {visibleProps.map(({ x, y, rot, rotZ, scale, opacity }, i) => {
             const actualIndex = currentIndex + i;
-            if (gone.has(actualIndex)) return null;
+            if (gone.has(actualIndex) || actualIndex >= predictions.length) return null;
+            
+            // Simple stacking - only show top 3 cards max
+            if (i > 2) return null;
+            
+            // Clean stacking with minimal offset
+            const stackOffset = i * 4; // Subtle vertical offset
+            const stackScale = 1 - (i * 0.02); // Minimal scale reduction
             
             return (
               <animated.div 
                 key={predictions[actualIndex].id} 
                 style={{ 
-                  transform: `translate3d(${x}px,${y}px,0)`,
                   position: 'absolute',
                   zIndex: predictions.length - actualIndex,
-                  opacity: opacity
+                  transform: i === 0 ? 'none' : `translateY(${stackOffset}px) scale(${stackScale})`,
+                  opacity: i === 0 ? opacity : 0.8 - (i * 0.2),
+                  width: '100%',
+                  height: '100%'
                 }}
               >
-                <animated.div {...bind(actualIndex)} style={{ transform: trans(rot, scale) }}>
+                <animated.div 
+                  {...(i === 0 ? bind(actualIndex) : {})}
+                  style={{ 
+                    x: i === 0 ? x : 0,
+                    y: i === 0 ? y : 0,
+                    rotate: i === 0 ? rot : 0,
+                    scale: i === 0 ? scale : 1,
+                    cursor: i === 0 ? 'grab' : 'default',
+                    touchAction: 'none',
+                    userSelect: 'none',
+                    willChange: 'transform',
+                    boxShadow: i === 0 ? '0 4px 20px rgba(0,0,0,0.15)' : '0 2px 10px rgba(0,0,0,0.1)'
+                  }}
+                  onMouseDown={(e) => i === 0 && e.preventDefault()}
+                >
                   <PredictionCard prediction={predictions[actualIndex]} />
                 </animated.div>
               </animated.div>
@@ -296,44 +334,60 @@ const Swipe = () => {
         </div>
         
         {currentIndex < predictions.length && (
-          <div className="swipe-actions">
-            <button 
-              className="swipe-button dislike" 
-              onClick={dislike}
-              onMouseDown={(e) => {
-                const cardElement = cardRef.current?.querySelector('.prediction-card');
-                if (cardElement) {
-                  cardElement.style.cursor = 'grabbing';
-                }
-              }}
-              onMouseUp={(e) => {
-                const cardElement = cardRef.current?.querySelector('.prediction-card');
-                if (cardElement) {
-                  cardElement.style.cursor = 'grab';
-                }
-              }}
-            >
-              <span>❌</span>
-            </button>
-            <button 
-              className="swipe-button like" 
-              onClick={like}
-              onMouseDown={(e) => {
-                const cardElement = cardRef.current?.querySelector('.prediction-card');
-                if (cardElement) {
-                  cardElement.style.cursor = 'grabbing';
-                }
-              }}
-              onMouseUp={(e) => {
-                const cardElement = cardRef.current?.querySelector('.prediction-card');
-                if (cardElement) {
-                  cardElement.style.cursor = 'grab';
-                }
-              }}
-            >
-              <span>✅</span>
-            </button>
-          </div>
+          <>
+            <div className="stake-controls">
+              <div className="stake-display">
+                <span className="stake-label">Stake Amount</span>
+                <span className="stake-value">{stakeAmount.toFixed(2)} ETH</span>
+              </div>
+              <div className="stake-slider-container">
+                <input
+                  type="range"
+                  min="0.01"
+                  max="1.00"
+                  step="0.01"
+                  value={stakeAmount}
+                  onChange={(e) => setStakeAmount(parseFloat(e.target.value))}
+                  className="stake-slider"
+                  disabled={isAnimating}
+                />
+                <div className="stake-range-labels">
+                  <span>0.01 ETH</span>
+                  <span>1.00 ETH</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="swipe-actions">
+              <button 
+                className="swipe-button dislike" 
+                onClick={dislike}
+                disabled={isAnimating}
+                title="Bet NO on this prediction"
+              >
+                <div className="button-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="button-label">No</span>
+              </button>
+              
+              <button 
+                className="swipe-button like" 
+                onClick={like}
+                disabled={isAnimating}
+                title="Bet YES on this prediction"
+              >
+                <div className="button-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <span className="button-label">Yes</span>
+              </button>
+            </div>
+          </>
         )}
         
         {currentIndex >= predictions.length && (
@@ -348,3 +402,4 @@ const Swipe = () => {
 };
 
 export default Swipe;
+

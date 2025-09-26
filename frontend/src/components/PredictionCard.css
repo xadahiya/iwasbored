@@ -1,7 +1,7 @@
 .prediction-card {
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.15), 0 8px 24px -4px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   width: 350px;
   height: 500px;
@@ -9,12 +9,14 @@
   display: flex;
   flex-direction: column;
   cursor: grab;
-  border: 2px solid transparent;
-  transition: border-color 0.3s ease;
-}
-
-.prediction-card:hover {
-  border-color: rgba(102, 126, 234, 0.3);
+  border: none;
+  transition: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transform-origin: center center;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .prediction-card:active {
@@ -24,10 +26,11 @@
 .card-header {
   display: flex;
   align-items: center;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.95) 100%);
   color: white;
   border-bottom: 3px solid var(--card-color);
+  min-height: 80px;
 }
 
 .crypto-icon {
