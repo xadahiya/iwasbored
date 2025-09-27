@@ -71,7 +71,9 @@ const MarketDetailsFetcher = ({ questionId }) => {
     color: '#627eea',
     type: 'crypto',
     isMarketActive: isMarketActive,
-    priceFeedId: questionData.priceFeedId
+    priceFeedId: questionData.priceFeedId,
+    marketStartTimestamp: Number(questionData.beginTimestamp), // Pass actual timestamps
+    marketEndTimestamp: Number(questionData.endTimestamp),     // Pass actual timestamps
   }
   return (
     <PredictionCard prediction={data} />
@@ -87,8 +89,8 @@ const Swipe = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [stakeAmount, setStakeAmount] = useState(0.10); // Managed in Swipe.js
 
-  // Use the Oracle contract hook to get read configs
-  const { getOwnerConfig, getActiveMarketIdsConfig } = useOracleContract();
+  // Use the Oracle contract hook to get read configs and write functions
+  const { getOwnerConfig, getActiveMarketIdsConfig, buyPosition, isWriteLoading, writeError, writeData } = useOracleContract();
 
   // Fetch the contract owner
   const { data: owner, isLoading: isOwnerLoading, error: ownerError } = useReadContract(getOwnerConfig());
@@ -97,7 +99,10 @@ const Swipe = () => {
   const { data: activeMarketIds, isLoading: isActiveMarketIdsLoading, error: activeMarketIdsError } = useReadContract(getActiveMarketIdsConfig());
 
   // Conditionally initialize useSprings only when activeMarketIds is available
-  const [props, set] = useSprings(activeMarketIds ? activeMarketIds.length : 0, (i) => ({ ...to(i), from: from(i) }));
+  const [props, set] = useSprings(activeMarketIds ? activeMarketIds.length : 0, (i) => ({
+    ...to(i),
+    from: from(i)
+  }));
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -124,14 +129,41 @@ const Swipe = () => {
     }
   }, [owner, ownerError]);
 
-  const handleSwipe = (direction) => {
+  // Log transaction status and show alerts
+  useEffect(() => {
+    if (isWriteLoading) {
+      console.log('Buy position transaction is loading...');
+    }
+    if (writeError) {
+      console.error('Error buying position:', writeError);
+      alert(`Transaction failed: ${writeError.message}`); // Show alert for error
+    }
+    if (writeData) {
+      console.log('Buy position transaction successful:', writeData);
+      alert(`Transaction successful! Hash: ${writeData.hash}`); // Show alert for success
+    }
+  }, [isWriteLoading, writeError, writeData]);
+
+
+  const handleSwipe = async (direction) => { // Made async
     const currentCardIndex = currentIndex;
     if (currentCardIndex >= (activeMarketIds ? activeMarketIds.length : 0) || isAnimating) return;
 
-    // Log the bet placement (in a real app, this would be sent to backend)
-    const prediction = activeMarketIds[currentCardIndex]; // This will also need to be handled carefully
-    const betType = direction === 'right' ? 'YES' : 'NO';
-    console.log(`Placing bet: ${betType} on "${prediction.question}" with stake: ${stakeAmount} PYUSD`); // Updated currency
+    const questionId = activeMarketIds[currentCardIndex]; // Get the questionId for the current card
+    const outcomeIndex = direction === 'right' ? 1 : 0; // 1 for Yes, 0 for No (assuming binary outcomes)
+    const amount = Number(Math.floor(stakeAmount * 1e18)); // Convert stakeAmount to BigInt with 18 decimals
+    const minOutcomeTokensToBuy = Number(0); // Assuming 0 for now, can be made dynamic
+    const conditionTokensReceiver = address; // The connected wallet address
+
+    console.log(`Attempting to buy position: questionId=${questionId}, outcomeIndex=${outcomeIndex}, amount=${amount.toString()}, receiver=${conditionTokensReceiver}`);
+
+    try {
+      await buyPosition(questionId, outcomeIndex, amount, minOutcomeTokensToBuy, conditionTokensReceiver);
+      console.log('buyPosition transaction initiated.');
+    } catch (error) {
+      console.error('Failed to initiate buyPosition transaction:', error);
+      // The alert for error is now handled in the useEffect above
+    }
 
     setIsAnimating(true);
     const dir = direction === 'right' ? 1 : -1;
@@ -240,7 +272,6 @@ const Swipe = () => {
     <div className="swipe">
       <Header />
       <div className="swipe-content">
-        
         <div ref={cardRef} className="card-stack">
           {visibleProps.map(({ x, y, rot, rotZ, scale, opacity }, i) => {
             const actualIndex = currentIndex + i;
@@ -306,7 +337,7 @@ const Swipe = () => {
                   value={stakeAmount}
                   onChange={(e) => setStakeAmount(parseFloat(e.target.value))}
                   className="stake-slider"
-                  disabled={isAnimating}
+                  disabled={isAnimating || isWriteLoading} // Disable slider during transaction
                 />
                 <div className="stake-range-labels">
                   <span>0.10 PYUSD</span>
@@ -319,7 +350,7 @@ const Swipe = () => {
               <button
                 className="swipe-button dislike"
                 onClick={dislike}
-                disabled={isAnimating}
+                disabled={isAnimating || isWriteLoading} // Disable button during transaction
                 title="Bet NO on this prediction"
               >
                 <div className="button-icon">
@@ -333,7 +364,7 @@ const Swipe = () => {
               <button
                 className="swipe-button like"
                 onClick={like}
-                disabled={isAnimating}
+                disabled={isAnimating || isWriteLoading} // Disable button during transaction
                 title="Bet YES on this prediction"
               >
                 <div className="button-icon">
@@ -344,6 +375,9 @@ const Swipe = () => {
                 <span className="button-label">Yes</span>
               </button>
             </div>
+            {isWriteLoading && <p>Confirming transaction in wallet...</p>}
+            {writeError && <p style={{ color: 'red' }}>Transaction failed: {writeError.message}</p>}
+            {writeData && <p>Transaction successful! Hash: {writeData.hash}</p>}
           </>
         )}
 
