@@ -32,7 +32,7 @@ class MarketInfo(BaseModel):
     question_id: str
     random_index: int
     market_end_timestamp: int
-    price_update_data: list[bytes]
+    price_update_data: list[str]
     value: int
     auth_token: str
 

@@ -28,10 +28,9 @@ async def write_transaction(
     # Build the transaction dictionary
     transaction = await func(*args).build_transaction({
         'from': address,
-        'gas': 5000000,  # Set gas limit
+        'gas': 10000000,  # Set gas limit
         'maxFeePerGas': w3.to_wei('0.02', 'gwei'),  # Set max fee per gas
         'nonce': nonce,
-        'chainId': CHAIN_ID,
     })
 
     # Sign the transaction with the private key
@@ -75,7 +74,7 @@ async def write_payable_transaction(
     transaction = await func(*args).build_transaction({
         'from': address,
         'value': value,
-        'gas': 5000000,  # Set gas limit
+        'gas': 10000000,  # Set gas limit
         'maxFeePerGas': w3.to_wei('0.02', 'gwei'),  # Set max fee per gas
         'nonce': nonce,
     })
