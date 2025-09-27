@@ -1,0 +1,958 @@
+[{
+    "inputs": [{
+        "internalType": "address",
+        "name": "_conditionalTokens",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "_FPMMFactory",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "_collateralToken",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "_pythOracle",
+        "type": "address"
+    }],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+    }],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+    }],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+}, {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+    }, {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fpmmAddress",
+        "type": "address"
+    }, {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "investmentAmount",
+        "type": "uint256"
+    }, {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "feeAmount",
+        "type": "uint256"
+    }, {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "outcomeIndex",
+        "type": "uint256"
+    }, {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "outcomeTokensBought",
+        "type": "uint256"
+    }],
+    "name": "BuyPosition",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "priceId",
+        "type": "bytes32"
+    }, {
+        "indexed": false,
+        "internalType": "int64",
+        "name": "initialPrice",
+        "type": "int64"
+    }, {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "endTimestamp",
+        "type": "uint256"
+    }, {
+        "indexed": false,
+        "internalType": "address",
+        "name": "fpmmAddress",
+        "type": "address"
+    }],
+    "name": "MarketCreated",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "indexed": false,
+        "internalType": "int64",
+        "name": "finalPrice",
+        "type": "int64"
+    }, {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "payouts",
+        "type": "uint256[]"
+    }],
+    "name": "MarketResolved",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+    }, {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+    }],
+    "name": "OwnershipTransferred",
+    "type": "event"
+}, {
+    "anonymous": false,
+    "inputs": [{
+        "indexed": true,
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+    }, {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fpmmAddress",
+        "type": "address"
+    }, {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "indexSets",
+        "type": "uint256[]"
+    }, {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalPayout",
+        "type": "uint256"
+    }],
+    "name": "RedeemPosition",
+    "type": "event"
+}, {
+    "inputs": [],
+    "name": "FPMMFactory",
+    "outputs": [{
+        "internalType": "contract IFactory",
+        "name": "",
+        "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "name": "activeMarketIds",
+    "outputs": [{
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+    }],
+    "name": "answers",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "answerTimestamp",
+        "type": "uint256"
+    }, {
+        "internalType": "string",
+        "name": "answerCid",
+        "type": "string"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "uint256",
+        "name": "outcomeIndex",
+        "type": "uint256"
+    }, {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+    }, {
+        "internalType": "uint256",
+        "name": "minOutcomeTokensToBuy",
+        "type": "uint256"
+    }, {
+        "internalType": "address",
+        "name": "conditionTokensReceiver",
+        "type": "address"
+    }],
+    "name": "buyPosition",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "collateralToken",
+    "outputs": [{
+        "internalType": "contract Token",
+        "name": "",
+        "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "conditionalTokens",
+    "outputs": [{
+        "internalType": "contract ConditionalTokens",
+        "name": "",
+        "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32[]",
+        "name": "_priceIds",
+        "type": "bytes32[]"
+    }, {
+        "internalType": "uint256",
+        "name": "_initialFunding",
+        "type": "uint256"
+    }],
+    "name": "configureMarkets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "uint256",
+        "name": "randomIndex",
+        "type": "uint256"
+    }, {
+        "internalType": "uint256",
+        "name": "marketEndTimestamp",
+        "type": "uint256"
+    }, {
+        "internalType": "bytes[]",
+        "name": "priceUpdateData",
+        "type": "bytes[]"
+    }],
+    "name": "createMarket",
+    "outputs": [{
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+    }],
+    "stateMutability": "payable",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "emergencyWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "emergencyWithdrawETH",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "priceId",
+        "type": "bytes32"
+    }],
+    "name": "getCurrentPrice",
+    "outputs": [{
+        "components": [{
+            "internalType": "int64",
+            "name": "price",
+            "type": "int64"
+        }, {
+            "internalType": "uint64",
+            "name": "conf",
+            "type": "uint64"
+        }, {
+            "internalType": "int32",
+            "name": "expo",
+            "type": "int32"
+        }, {
+            "internalType": "uint256",
+            "name": "publishTime",
+            "type": "uint256"
+        }],
+        "internalType": "struct PythStructs.Price",
+        "name": "",
+        "type": "tuple"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }],
+    "name": "getDetailedMarketData",
+    "outputs": [{
+        "components": [{
+            "internalType": "uint256",
+            "name": "beginTimestamp",
+            "type": "uint256"
+        }, {
+            "internalType": "uint256",
+            "name": "endTimestamp",
+            "type": "uint256"
+        }, {
+            "internalType": "address",
+            "name": "fpmm",
+            "type": "address"
+        }, {
+            "internalType": "bytes32",
+            "name": "priceFeedId",
+            "type": "bytes32"
+        }, {
+            "internalType": "bytes32",
+            "name": "conditionId",
+            "type": "bytes32"
+        }, {
+            "internalType": "int64",
+            "name": "initialPrice",
+            "type": "int64"
+        }, {
+            "internalType": "int64",
+            "name": "finalPrice",
+            "type": "int64"
+        }, {
+            "internalType": "uint256",
+            "name": "finalPriceTimestamp",
+            "type": "uint256"
+        }],
+        "internalType": "struct SimplePredictionsOracle.QuestionData",
+        "name": "questionData",
+        "type": "tuple"
+    }, {
+        "components": [{
+            "internalType": "uint256[]",
+            "name": "payouts",
+            "type": "uint256[]"
+        }, {
+            "internalType": "uint256",
+            "name": "answerTimestamp",
+            "type": "uint256"
+        }, {
+            "internalType": "string",
+            "name": "answerCid",
+            "type": "string"
+        }],
+        "internalType": "struct SimplePredictionsOracle.AnswerData",
+        "name": "answerData",
+        "type": "tuple"
+    }, {
+        "internalType": "uint256",
+        "name": "uniqueBuys",
+        "type": "uint256"
+    }, {
+        "internalType": "uint256[]",
+        "name": "probabilities",
+        "type": "uint256[]"
+    }, {
+        "internalType": "uint256[]",
+        "name": "buyAmounts",
+        "type": "uint256[]"
+    }, {
+        "internalType": "bool",
+        "name": "isResolved",
+        "type": "bool"
+    }, {
+        "internalType": "bool",
+        "name": "hasExpired",
+        "type": "bool"
+    }, {
+        "internalType": "int64",
+        "name": "currentPrice",
+        "type": "int64"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "getMarketConfig",
+    "outputs": [{
+        "components": [{
+            "internalType": "bytes32[]",
+            "name": "priceIds",
+            "type": "bytes32[]"
+        }, {
+            "internalType": "uint256",
+            "name": "initialFunding",
+            "type": "uint256"
+        }],
+        "internalType": "struct SimplePredictionsOracle.MarketConfig",
+        "name": "",
+        "type": "tuple"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }],
+    "name": "getMarketData",
+    "outputs": [{
+        "components": [{
+            "components": [{
+                "internalType": "uint256",
+                "name": "beginTimestamp",
+                "type": "uint256"
+            }, {
+                "internalType": "uint256",
+                "name": "endTimestamp",
+                "type": "uint256"
+            }, {
+                "internalType": "address",
+                "name": "fpmm",
+                "type": "address"
+            }, {
+                "internalType": "bytes32",
+                "name": "priceFeedId",
+                "type": "bytes32"
+            }, {
+                "internalType": "bytes32",
+                "name": "conditionId",
+                "type": "bytes32"
+            }, {
+                "internalType": "int64",
+                "name": "initialPrice",
+                "type": "int64"
+            }, {
+                "internalType": "int64",
+                "name": "finalPrice",
+                "type": "int64"
+            }, {
+                "internalType": "uint256",
+                "name": "finalPriceTimestamp",
+                "type": "uint256"
+            }],
+            "internalType": "struct SimplePredictionsOracle.QuestionData",
+            "name": "questionData",
+            "type": "tuple"
+        }, {
+            "components": [{
+                "internalType": "uint256[]",
+                "name": "payouts",
+                "type": "uint256[]"
+            }, {
+                "internalType": "uint256",
+                "name": "answerTimestamp",
+                "type": "uint256"
+            }, {
+                "internalType": "string",
+                "name": "answerCid",
+                "type": "string"
+            }],
+            "internalType": "struct SimplePredictionsOracle.AnswerData",
+            "name": "answerData",
+            "type": "tuple"
+        }, {
+            "internalType": "uint256",
+            "name": "uniqueBuys",
+            "type": "uint256"
+        }, {
+            "internalType": "uint256[]",
+            "name": "probabilities",
+            "type": "uint256[]"
+        }, {
+            "internalType": "uint256[]",
+            "name": "buyAmounts",
+            "type": "uint256[]"
+        }],
+        "internalType": "struct SimplePredictionsOracle.MarketData",
+        "name": "",
+        "type": "tuple"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "uint256[]",
+        "name": "indexSets",
+        "type": "uint256[]"
+    }, {
+        "internalType": "address",
+        "name": "holder",
+        "type": "address"
+    }],
+    "name": "getPositionBalances",
+    "outputs": [{
+        "internalType": "uint256[]",
+        "name": "balances",
+        "type": "uint256[]"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+    }],
+    "name": "getRemainingBuyAmount",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+    }],
+    "name": "getUserClosedPositions",
+    "outputs": [{
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+    }],
+    "name": "getUserOpenPositions",
+    "outputs": [{
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "lastMarketTime",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "marketConfig",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "initialFunding",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "maxBuyAmountPerQuestion",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "minBuyAmount",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }, {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+    }, {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+    }, {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+    }],
+    "name": "onERC1155BatchReceived",
+    "outputs": [{
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+    }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }, {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }, {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }, {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+    }],
+    "name": "onERC1155Received",
+    "outputs": [{
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+    }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "pythOracle",
+    "outputs": [{
+        "internalType": "contract IPyth",
+        "name": "",
+        "type": "address"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+    }],
+    "name": "questions",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "beginTimestamp",
+        "type": "uint256"
+    }, {
+        "internalType": "uint256",
+        "name": "endTimestamp",
+        "type": "uint256"
+    }, {
+        "internalType": "address",
+        "name": "fpmm",
+        "type": "address"
+    }, {
+        "internalType": "bytes32",
+        "name": "priceFeedId",
+        "type": "bytes32"
+    }, {
+        "internalType": "bytes32",
+        "name": "conditionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "int64",
+        "name": "initialPrice",
+        "type": "int64"
+    }, {
+        "internalType": "int64",
+        "name": "finalPrice",
+        "type": "int64"
+    }, {
+        "internalType": "uint256",
+        "name": "finalPriceTimestamp",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "uint256[]",
+        "name": "indexSets",
+        "type": "uint256[]"
+    }],
+    "name": "redeemPosition",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "num",
+        "type": "uint256"
+    }],
+    "name": "redeemPositions",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "questionId",
+        "type": "bytes32"
+    }, {
+        "internalType": "bytes[]",
+        "name": "priceUpdateData",
+        "type": "bytes[]"
+    }, {
+        "internalType": "string",
+        "name": "answerCid",
+        "type": "string"
+    }],
+    "name": "resolveMarket",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "sellEnabled",
+    "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [],
+    "name": "stopTradingBeforeMarketEnd",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+    }],
+    "name": "supportsInterface",
+    "outputs": [{
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+    }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "_conditionalTokens",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "_FPMMFactory",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "_collateralToken",
+        "type": "address"
+    }, {
+        "internalType": "address",
+        "name": "_pythOracle",
+        "type": "address"
+    }],
+    "name": "updateContracts",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "_maxBuyAmountPerQuestion",
+        "type": "uint256"
+    }],
+    "name": "updateMaxBuyAmountPerQuestion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "_minBuyAmount",
+        "type": "uint256"
+    }],
+    "name": "updateMinBuyAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "uint256",
+        "name": "_stopTradingBeforeMarketEnd",
+        "type": "uint256"
+    }],
+    "name": "updateStopTradingBeforeMarketEnd",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+    }, {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }],
+    "name": "userBuyAmounts",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }],
+    "name": "userRedeemed",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "inputs": [{
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+    }],
+    "name": "userSpendings",
+    "outputs": [{
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+    }],
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "stateMutability": "payable",
+    "type": "receive"
+}]
