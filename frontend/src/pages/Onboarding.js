@@ -5,7 +5,7 @@ import Logo from '../components/Logo';
 import './Onboarding.css';
 
 const Onboarding = () => {
-  const { address, connectWallet, error } = useWallet();
+  const { address, isConnected, connectWallet, disconnectWallet, isPending, error } = useWallet();
   const navigate = useNavigate();
 
   console.log('Onboarding component rendered, address:', address, 'error:', error);
@@ -21,7 +21,13 @@ const Onboarding = () => {
   useEffect(() => {
     console.log('Address changed:', address);
     if (address) {
-      navigate('/swipe');
+      // Check if user is already age verified
+      const isVerified = localStorage.getItem(`verified_${address}`);
+      if (isVerified === 'true') {
+        navigate('/swipe');
+      } else {
+        navigate('/verify-age');
+      }
     }
   }, [address, navigate]);
 
@@ -30,7 +36,16 @@ const Onboarding = () => {
       <Logo />
       <h1 className="title">CryptoSwipe</h1>
       <p className="tagline">Swipe to Predict Crypto Prices & Win</p>
-      <button onClick={handleConnectWallet} className="cta-button">Connect Wallet</button>
+      {isConnected ? (
+        <div className="wallet-connected">
+          <p className="wallet-address">Connected: {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'No address'}</p>
+          <button onClick={disconnectWallet} className="disconnect-button">Disconnect</button>
+        </div>
+      ) : (
+        <button onClick={handleConnectWallet} className="cta-button" disabled={isPending}>
+          {isPending ? 'Connecting...' : 'Connect Wallet'}
+        </button>
+      )}
       {error && <p className="error">{error}</p>}
     </div>
   );

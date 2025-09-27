@@ -150,9 +150,9 @@ const from = (i) => ({
   opacity: 0
 });
 
-// Clean Tinder-style transform function
-const trans = (x, y, rot, rotZ, scale) => 
-  `translate3d(${x}px, ${y}px, 0) rotateZ(${rot}deg) scale(${scale})`;
+// Clean Tinder-style transform function (unused but kept for reference)
+// const trans = (x, y, rot, rotZ, scale) => 
+//   `translate3d(${x}px, ${y}px, 0) rotateZ(${rot}deg) scale(${scale})`;
 
 const Swipe = () => {
   const { address } = useWallet();
@@ -167,6 +167,14 @@ const Swipe = () => {
   useEffect(() => {
     if (!address) {
       navigate('/');
+      return;
+    }
+    
+    // Check if user is age verified
+    const isVerified = localStorage.getItem(`verified_${address}`);
+    if (isVerified !== 'true') {
+      navigate('/verify-age');
+      return;
     }
   }, [address, navigate]);
 
@@ -280,7 +288,6 @@ const Swipe = () => {
   const like = () => handleSwipe('right');
   const dislike = () => handleSwipe('left');
 
-  const visiblePredictions = predictions.slice(currentIndex);
   const visibleProps = props.slice(currentIndex);
 
   return (

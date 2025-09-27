@@ -2,7 +2,6 @@ import React from 'react';
 import './BetCard.css';
 
 const BetCard = ({ bet }) => {
-  const statusClass = bet.status === 'active' ? 'status-active' : bet.outcome === 'win' ? 'status-win' : 'status-loss';
   const bgColor = bet.status === 'active' ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : 
                    bet.outcome === 'win' ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' : 
                    'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';

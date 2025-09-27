@@ -22,6 +22,14 @@ const MyBets = () => {
   useEffect(() => {
     if (!address) {
       navigate('/');
+      return;
+    }
+    
+    // Check if user is age verified
+    const isVerified = localStorage.getItem(`verified_${address}`);
+    if (isVerified !== 'true') {
+      navigate('/verify-age');
+      return;
     }
   }, [address, navigate]);
 

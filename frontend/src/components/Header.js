@@ -1,10 +1,11 @@
 import React from 'react';
-import { useWallet } from '../contexts/WalletContext';
 import { useNavigate } from 'react-router-dom';
+import { useWallet } from '../contexts/WalletContext';
+import { ConnectWalletButton } from './ConnectWalletButton';
 import './Header.css';
 
 const Header = () => {
-  const { address, disconnectWallet } = useWallet();
+  const { address, isConnected, disconnect } = useWallet();
   const navigate = useNavigate();
 
   return (
@@ -21,13 +22,13 @@ const Header = () => {
       </div>
       <div className="header-right">
         <div className="wallet-info">
-          {address ? (
+          {isConnected ? (
             <>
               <span className="address-text">{address.substring(0, 6)}...{address.substring(address.length - 4)}</span>
-              <button onClick={disconnectWallet} className="disconnect-btn">Disconnect</button>
+              <button onClick={() => disconnect()} className="disconnect-btn">Disconnect</button>
             </>
           ) : (
-            <button onClick={() => navigate('/')} className="connect-btn">Connect Wallet</button>
+            <ConnectWalletButton />
           )}
         </div>
       </div>
