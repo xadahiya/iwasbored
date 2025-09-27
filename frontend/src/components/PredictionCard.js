@@ -92,7 +92,7 @@ const PredictionCard = ({ prediction }) => {
         <div className="chart-container">
           {isLoading && <p>Loading chart data...</p>}
           {error && <p style={{ color: 'red' }}>Could not load chart.</p>}
-          {priceData && historicalData.length > 0 && (
+          {priceData && historicalData.length > 0 && prediction.status == undefined && (
             <ResponsiveContainer width="100%" height={120}>
               <LineChart data={historicalData}>
                 <XAxis dataKey="name" tick={{ fontSize: 10 }} />
@@ -125,15 +125,13 @@ const PredictionCard = ({ prediction }) => {
           )}
         </div>
       </div>
-
       <div className="prediction-section">
-        <div className="prediction-question">
-          {prediction.question}
+          <div className="prediction-question">
+            {prediction.question}
+          </div>
         </div>
-        
       </div>
       
-    </div>
   );
 };
 

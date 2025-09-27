@@ -13,8 +13,8 @@ const Header = () => {
     <header className="header">
       <div className="header-left">
         <div className="logo">
-          <span>◈</span>
-          <span>CryptoSwipe</span>
+          <span>🫩</span>
+          <span>I Was BORED</span>
         </div>
         <nav className="nav-menu">
           <button className="nav-item active" onClick={() => navigate('/swipe')}>Discover</button>

@@ -138,11 +138,7 @@ const Swipe = () => {
       console.error('Error buying position:', writeError);
       alert(`Transaction failed: ${writeError.message}`); // Show alert for error
     }
-    if (writeData) {
-      console.log('Buy position transaction successful:', writeData);
-      alert(`Transaction successful! Hash: ${writeData.hash}`); // Show alert for success
-    }
-  }, [isWriteLoading, writeError, writeData]);
+  }, [isWriteLoading, writeError]);
 
 
   const handleSwipe = async (direction) => { // Made async

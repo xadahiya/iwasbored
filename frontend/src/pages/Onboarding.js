@@ -41,8 +41,8 @@ const Onboarding = () => {
   return (
     <div className="onboarding">
       <Logo />
-      <h1 className="title">CryptoSwipe</h1>
-      <p className="tagline">Swipe to Predict Crypto Prices & Win</p>
+      <h1 className="title">I Was BORED</h1>
+      <p className="tagline">I was bored, so I made a prediction market.</p>
       {isConnected ? (
         <div className="wallet-connected">
           <p className="wallet-address">Connected: {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'No address'}</p>

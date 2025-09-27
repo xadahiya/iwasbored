@@ -61,7 +61,10 @@ export const useOracleContract = () => {
   const getActiveMarketIdsConfig = useCallback(() => getReadConfig('getActiveMarketIds'), [getReadConfig]);
   const getMarketDataConfig = useCallback((questionId) => getReadConfig('getMarketData', [questionId]), [getReadConfig]);
   const getDetailedMarketDataConfig = useCallback((questionId) => getReadConfig('getDetailedMarketData', [questionId]), [getReadConfig]);
-
+  const getUserOpenPositionsConfig = useCallback((userAddress) => getReadConfig('getUserOpenPositions', [userAddress]), [getReadConfig]);
+  const getUserClosedPositionsConfig = useCallback((userAddress) => getReadConfig('getUserClosedPositions', [userAddress]), [getReadConfig]);
+  const getUserSpendingsConfig = useCallback((userAddress) => getReadConfig('userSpendings', [userAddress]), [getReadConfig]);
+  const getUserRedeemedConfig = useCallback((userAddress) => getReadConfig('userRedeemed', [userAddress]), [getReadConfig]);
   // Expose specific write functions for convenience
   const createMarket = useCallback((questionId, randomIndex, marketEndTimestamp, priceUpdateData, value = 0) =>
     write('createMarket', [questionId, randomIndex, marketEndTimestamp, priceUpdateData], value), [write]);
@@ -71,6 +74,9 @@ export const useOracleContract = () => {
 
   const redeemPosition = useCallback((questionId, indexSets) =>
     write('redeemPosition', [questionId, indexSets]), [write]);
+
+  const redeemPositions = useCallback((num) =>
+    write('redeemPositions', [num]), [write]);
 
   return {
     getReadConfig,
@@ -84,9 +90,14 @@ export const useOracleContract = () => {
     getActiveMarketIdsConfig,
     getMarketDataConfig,
     getDetailedMarketDataConfig,
+    getUserOpenPositionsConfig,
+    getUserClosedPositionsConfig,
     createMarket,
     buyPosition,
     redeemPosition,
+    redeemPositions,
+    getUserSpendingsConfig,
+    getUserRedeemedConfig,
   };
 };
 
