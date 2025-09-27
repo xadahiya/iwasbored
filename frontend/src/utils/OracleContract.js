@@ -1,6 +1,7 @@
 import { useReadContract, useWriteContract } from 'wagmi';
 import { sepolia } from 'viem/chains';
 import abi from './abi.json'; // Import the ABI
+import { useCallback } from 'react'; // Import useCallback
 
 // Define the Oracle contract address
 const ORACLE_CONTRACT_ADDRESS = '0xC16a6c2720308DE8d7811428A18D3810513A677C';
@@ -13,10 +14,9 @@ const ORACLE_CONTRACT_ADDRESS = '0xC16a6c2720308DE8d7811428A18D3810513A677C';
  * @returns {object} An object containing functions to read from and write to the contract.
  */
 export const useContract = (contractAddress, contractAbi, chainId) => {
-  // For writes, useWriteContract is called at the top level of the hook.
   const { writeContract, data: writeData, isLoading: isWriteLoading, isSuccess: isWriteSuccess, error: writeError } = useWriteContract();
 
-  const write = (functionName, args = [], value = 0) => {
+  const write = useCallback((functionName, args = [], value = 0) => {
     writeContract({
       address: contractAddress,
       abi: contractAbi,
@@ -25,19 +25,18 @@ export const useContract = (contractAddress, contractAbi, chainId) => {
       chainId: chainId,
       value: value,
     });
-  };
+  }, [writeContract, contractAddress, contractAbi, chainId]); // Dependencies for useCallback
 
-  // The 'getReadConfig' function will now be a helper that returns the parameters for useReadContract
-  const getReadConfig = (functionName, args = []) => ({
+  const getReadConfig = useCallback((functionName, args = []) => ({
     address: contractAddress,
     abi: contractAbi,
     functionName: functionName,
     args: args,
     chainId: chainId,
-  });
+  }), [contractAddress, contractAbi, chainId]); // Dependencies for useCallback
 
   return {
-    getReadConfig, // Return a function to get read config for useReadContract
+    getReadConfig,
     write,
     writeData,
     isWriteLoading,
@@ -58,31 +57,29 @@ export const useOracleContract = () => {
   );
 
   // Expose specific read functions for convenience, now returning config for useReadContract
-  const getOwnerConfig = () => getReadConfig('owner');
-  const getActiveMarketIdsConfig = () => getReadConfig('getActiveMarketIds');
-  const getMarketDataConfig = (questionId) => getReadConfig('getMarketData', [questionId]);
-  const getDetailedMarketDataConfig = (questionId) => getReadConfig('getDetailedMarketData', [questionId]);
+  const getOwnerConfig = useCallback(() => getReadConfig('owner'), [getReadConfig]);
+  const getActiveMarketIdsConfig = useCallback(() => getReadConfig('getActiveMarketIds'), [getReadConfig]);
+  const getMarketDataConfig = useCallback((questionId) => getReadConfig('getMarketData', [questionId]), [getReadConfig]);
+  const getDetailedMarketDataConfig = useCallback((questionId) => getReadConfig('getDetailedMarketData', [questionId]), [getReadConfig]);
 
   // Expose specific write functions for convenience
-  const createMarket = (questionId, randomIndex, marketEndTimestamp, priceUpdateData, value = 0) =>
-    write('createMarket', [questionId, randomIndex, marketEndTimestamp, priceUpdateData], value);
+  const createMarket = useCallback((questionId, randomIndex, marketEndTimestamp, priceUpdateData, value = 0) =>
+    write('createMarket', [questionId, randomIndex, marketEndTimestamp, priceUpdateData], value), [write]);
 
-  const buyPosition = (questionId, outcomeIndex, amount, minOutcomeTokensToBuy, conditionTokensReceiver) =>
-    write('buyPosition', [questionId, outcomeIndex, amount, minOutcomeTokensToBuy, conditionTokensReceiver]);
+  const buyPosition = useCallback((questionId, outcomeIndex, amount, minOutcomeTokensToBuy, conditionTokensReceiver) =>
+    write('buyPosition', [questionId, outcomeIndex, amount, minOutcomeTokensToBuy, conditionTokensReceiver]), [write]);
 
-  const redeemPosition = (questionId, indexSets) =>
-    write('redeemPosition', [questionId, indexSets]);
+  const redeemPosition = useCallback((questionId, indexSets) =>
+    write('redeemPosition', [questionId, indexSets]), [write]);
 
   return {
-    // Generic read/write access
-    getReadConfig, // Expose generic read config getter
+    getReadConfig,
     write,
     writeData,
     isWriteLoading,
     isWriteSuccess,
     writeError,
 
-    // Specific Oracle contract functions (now returning config for useReadContract)
     getOwnerConfig,
     getActiveMarketIdsConfig,
     getMarketDataConfig,
@@ -93,5 +90,4 @@ export const useOracleContract = () => {
   };
 };
 
-// You can also export the ABI and address directly if needed elsewhere
 export { abi, ORACLE_CONTRACT_ADDRESS };

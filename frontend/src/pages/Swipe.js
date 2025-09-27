@@ -5,13 +5,27 @@ import Header from '../components/Header';
 import PredictionCard from '../components/PredictionCard';
 import { useSprings, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
-import { useOracleContract } from '../utils/OracleContract'; // Import the Oracle contract hook
+import { useOracleContract } from '../utils/OracleContract';
 import './Swipe.css';
 
+const PYTH_PRICE_FEEDS = {
+  "ETH": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
+  "BTC": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+  "USDC": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
+  "SOL": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d"
+};
+
+const REVERSE_PYTH_PRICE_FEEDS = {
+  "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace": "ETH",
+  "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43": "BTC",
+  "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a": "USDC",
+  "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d": "SOL"
+};
+
 const predictions = [
-  { 
-    id: 1, 
-    question: 'ETH above $2,500 in 5 mins?', 
+  {
+    id: 1,
+    question: 'ETH above $2,500 in 5 mins?',
     stake: 0.10,
     title: 'Ethereum',
     description: 'Will ETH reach $2,500 within the next 5 minutes?',
@@ -19,9 +33,9 @@ const predictions = [
     color: '#627eea',
     type: 'crypto'
   },
-  { 
-    id: 2, 
-    question: 'BTC above $30,000 in 10 mins?', 
+  {
+    id: 2,
+    question: 'BTC above $30,000 in 10 mins?',
     stake: 0.15,
     title: 'Bitcoin',
     description: 'Will BTC break the $30,000 barrier?',
@@ -29,131 +43,66 @@ const predictions = [
     color: '#f7931a',
     type: 'crypto'
   },
-  { 
-    id: 3, 
-    question: 'DOGE above $0.15 in 2 mins?', 
-    stake: 0.08,
-    title: 'Dogecoin',
-    description: 'Meme coin madness continues?',
-    icon: 'Ð',
-    color: '#c3a637',
-    type: 'crypto'
-  },
-  { 
-    id: 4, 
-    question: 'SOL above $180 in 8 mins?', 
-    stake: 0.12,
-    title: 'Solana',
-    description: 'Will SOL continue its bull run?',
-    icon: '◎',
-    color: '#00D4AA',
-    type: 'crypto'
-  },
-  { 
-    id: 5, 
-    question: 'Will AAPL hit $200 by EOD?', 
-    stake: 0.18,
-    title: 'Apple Inc.',
-    description: 'Tech giant continues upward trend?',
-    icon: '🍎',
-    color: '#000000',
-    type: 'stock'
-  },
-  { 
-    id: 6, 
-    question: 'TSLA above $250 in 15 mins?', 
-    stake: 0.14,
-    title: 'Tesla',
-    description: 'Electric vehicle surge continues?',
-    icon: '🚗',
-    color: '#CC0000',
-    type: 'stock'
-  },
-  { 
-    id: 7, 
-    question: 'NFLX above $450 in 20 mins?', 
-    stake: 0.16,
-    title: 'Netflix',
-    description: 'Streaming giant keeps climbing?',
-    icon: '📺',
-    color: '#E50914',
-    type: 'stock'
-  },
-  { 
-    id: 8, 
-    question: 'Gold above $2,000/oz in 30 mins?', 
-    stake: 0.20,
-    title: 'Gold',
-    description: 'Safe haven demand surges?',
-    icon: '🏆',
-    color: '#FFD700',
-    type: 'commodity'
-  },
-  { 
-    id: 9, 
-    question: 'Oil above $85/barrel in 45 mins?', 
-    stake: 0.22,
-    title: 'Crude Oil',
-    description: 'Energy prices keep rising?',
-    icon: '⛽',
-    color: '#8B4513',
-    type: 'commodity'
-  },
-  { 
-    id: 10, 
-    question: 'EUR/USD above 1.10 in 10 mins?', 
-    stake: 0.11,
-    title: 'EUR/USD',
-    description: 'Euro strengthens against dollar?',
-    icon: '💶',
-    color: '#0080FF',
-    type: 'forex'
-  },
-  { 
-    id: 11, 
-    question: 'BTC dominance above 50%?', 
-    stake: 0.13,
-    title: 'BTC Dominance',
-    description: 'Bitcoin market share growing?',
-    icon: '🪙',
-    color: '#FFA500',
-    type: 'metric'
-  },
-  { 
-    id: 12, 
-    question: 'DeFi TVL above $80B?', 
-    stake: 0.17,
-    title: 'DeFi Total Value',
-    description: 'DeFi ecosystem continues expanding?',
-    icon: '📊',
-    color: '#00CED1',
-    type: 'defi'
-  },
+
 ];
 
-const to = (i) => ({ 
-  x: 0, 
-  y: 0, 
-  rot: 0, 
+const to = (i) => ({
+  x: 0,
+  y: 0,
+  rot: 0,
   rotZ: 0,
-  scale: 1, 
+  scale: 1,
   opacity: 1,
   delay: i * 50,
   config: { tension: 120, friction: 14 }
 });
 
-const from = (i) => ({ 
-  x: 0, 
-  y: 0, 
-  rot: 0, 
+const from = (i) => ({
+  x: 0,
+  y: 0,
+  rot: 0,
   rotZ: 0,
-  scale: 1, 
+  scale: 1,
   opacity: 0
 });
 
-// Clean Tinder-style transform function (unused but kept for reference)
-// const trans = (x, y, rot, rotZ, scale) => 
-//   `translate3d(${x}px, ${y}px, 0) rotateZ(${rot}deg) scale(${scale})`;
+// New component to fetch and display detailed market data for a single market
+const MarketDetailsFetcher = ({ questionId }) => {
+  const { getDetailedMarketDataConfig } = useOracleContract();
+  const { data: marketDetails, isLoading, error } = useReadContract(getDetailedMarketDataConfig(questionId));
+  console.log('Market Details:', marketDetails);
+
+  if (isLoading) return <li>Loading details for {questionId}...</li>;
+  if (error) return <li>Error loading details for {questionId}: {error.message}</li>;
+
+  // Access questionData from the first element of the returned tuple
+  const questionData = marketDetails ? marketDetails[0] : null;
+  const tokenSymbol = REVERSE_PYTH_PRICE_FEEDS[questionData.priceFeedId];
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  // Ensure both operands are BigInt for safe subtraction and handle missing data gracefully
+  const timeRemaining = questionData && questionData.endTimestamp
+    ? Number(questionData.endTimestamp) - Number(currentTimestamp)
+    : 0;
+  const isMarketActive = timeRemaining > 0;
+  const timeRemainingMinutes = Math.floor(timeRemaining / 60);
+  const data = {
+    id: questionData.questionId,
+    question: `${tokenSymbol} above $2,500 in ${timeRemainingMinutes} mins?`,
+    initialPrice: questionData.initialPrice,
+    finalPrice: questionData.finalPrice,
+    stake: 0,
+    title: tokenSymbol,
+    icon: tokenSymbol,
+    color: '#627eea',
+    type: 'crypto',
+    isMarketActive: isMarketActive,
+    feedId: questionData.priceFeedId
+  }
+  return (
+    <PredictionCard prediction={data} />
+  );
+};
+
 
 const Swipe = () => {
   const { address } = useAccount();
@@ -166,17 +115,20 @@ const Swipe = () => {
   const cardRef = useRef(null);
 
   // Use the Oracle contract hook to get read configs
-  const { getOwnerConfig } = useOracleContract();
+  const { getOwnerConfig, getActiveMarketIdsConfig } = useOracleContract();
 
-  // Use useReadContract with the config from useOracleContract
+  // Fetch the contract owner
   const { data: owner, isLoading: isOwnerLoading, error: ownerError } = useReadContract(getOwnerConfig());
+
+  // Fetch all active market IDs
+  const { data: activeMarketIds, isLoading: isActiveMarketIdsLoading, error: activeMarketIdsError } = useReadContract(getActiveMarketIdsConfig());
 
   useEffect(() => {
     if (!address) {
       navigate('/');
       return;
     }
-    
+
     // Check if user is age verified
     const isVerified = localStorage.getItem(`verified_${address}`);
     if (isVerified !== 'true') {
@@ -207,7 +159,7 @@ const Swipe = () => {
     setIsAnimating(true);
     const dir = direction === 'right' ? 1 : -1;
     gone.add(currentCardIndex);
-    
+
     set((i) => {
       if (currentCardIndex !== i) return;
       return {
@@ -220,34 +172,34 @@ const Swipe = () => {
         config: { friction: 50, tension: 200 }
       };
     });
-    
+
     setTimeout(() => {
       setCurrentIndex(prev => prev + 1);
       setIsAnimating(false);
     }, 300);
   };
 
-  const bind = useDrag(({ 
-    args: [index], 
-    down, 
-    movement: [mx, my], 
-    direction: [xDir], 
-    cancel, 
+  const bind = useDrag(({
+    args: [index],
+    down,
+    movement: [mx, my],
+    direction: [xDir],
+    cancel,
     velocity
   }) => {
     if (isAnimating || index !== currentIndex) return;
-    
+
     const trigger = Math.abs(mx) > window.innerWidth / 3;
     const vx = velocity?.[0] || 0;
     const velocityThreshold = Math.abs(vx) > 0.5;
-    
+
     // Determine swipe direction and handle completion
     if (!down && (trigger || velocityThreshold)) {
       const dir = mx > 0 ? 'right' : 'left';
       handleSwipe(dir);
       return;
     }
-    
+
     // If drag is released but not triggered, snap back to original position
     if (!down && !trigger && !velocityThreshold) {
       set((i) => {
@@ -267,7 +219,7 @@ const Swipe = () => {
       });
       return;
     }
-    
+
     set((i) => {
       if (index !== i) {
         // Simple background card animation - just scale up slightly
@@ -279,11 +231,11 @@ const Swipe = () => {
         }
         return { ...to(i) };
       }
-      
+
       // Classic Tinder tilt physics - simple and clean
       const rotation = mx * 0.15; // Clean rotation based on horizontal movement (increased for more visible tilt)
       const scale = down ? 0.95 : 1; // Slight scale down when dragging
-      
+
       return {
         x: mx,
         y: my * 0.5, // Reduced vertical movement
@@ -292,13 +244,13 @@ const Swipe = () => {
         scale: scale,
         opacity: 1, // Keep full opacity
         delay: 0,
-        config: { 
+        config: {
           tension: down ? 200 : 170,
           friction: down ? 30 : 26
         }
       };
     });
-    
+
     if ((trigger || velocityThreshold) && !down) cancel();
   });
 
@@ -311,25 +263,26 @@ const Swipe = () => {
     <div className="swipe">
       <Header />
       <div className="swipe-content">
-        {isOwnerLoading && <p>Loading Oracle Contract Owner...</p>}
-        {ownerError && <p>Error loading Oracle Contract Owner: {ownerError.message}</p>}
-        {owner && <p>Oracle Contract Owner: {owner}</p>} {/* Display the owner */}
+
+        {isActiveMarketIdsLoading && <p>Loading Active Market IDs...</p>}
+        {activeMarketIdsError && <p>Error loading Active Market IDs: {activeMarketIdsError.message}</p>}
+        
         <div ref={cardRef} className="card-stack">
           {visibleProps.map(({ x, y, rot, rotZ, scale, opacity }, i) => {
             const actualIndex = currentIndex + i;
             if (gone.has(actualIndex) || actualIndex >= predictions.length) return null;
-            
+
             // Simple stacking - only show top 3 cards max
             if (i > 2) return null;
-            
+
             // Clean stacking with minimal offset
             const stackOffset = i * 4; // Subtle vertical offset
             const stackScale = 1 - (i * 0.02); // Minimal scale reduction
-            
+
             return (
-              <animated.div 
-                key={predictions[actualIndex].id} 
-                style={{ 
+              <animated.div
+                key={predictions[actualIndex].id}
+                style={{
                   position: 'absolute',
                   zIndex: predictions.length - actualIndex,
                   transform: i === 0 ? 'none' : `translateY(${stackOffset}px) scale(${stackScale})`,
@@ -338,9 +291,9 @@ const Swipe = () => {
                   height: '100%'
                 }}
               >
-                <animated.div 
+                <animated.div
                   {...(i === 0 ? bind(actualIndex) : {})}
-                  style={{ 
+                  style={{
                     x: i === 0 ? x : 0,
                     y: i === 0 ? y : 0,
                     rotate: i === 0 ? rot : 0,
@@ -353,70 +306,15 @@ const Swipe = () => {
                   }}
                   onMouseDown={(e) => i === 0 && e.preventDefault()}
                 >
-                  <PredictionCard prediction={predictions[actualIndex]} />
+                  {activeMarketIds && (
+                    <MarketDetailsFetcher key={activeMarketIds[actualIndex]} questionId={activeMarketIds[actualIndex]} />
+                  )}
                 </animated.div>
               </animated.div>
             );
           })}
         </div>
-        
-        {currentIndex < predictions.length && (
-          <>
-            <div className="stake-controls">
-              <div className="stake-display">
-                <span className="stake-label">Stake Amount</span>
-                <span className="stake-value">{stakeAmount.toFixed(2)} ETH</span>
-              </div>
-              <div className="stake-slider-container">
-                <input
-                  type="range"
-                  min="0.01"
-                  max="1.00"
-                  step="0.01"
-                  value={stakeAmount}
-                  onChange={(e) => setStakeAmount(parseFloat(e.target.value))}
-                  className="stake-slider"
-                  disabled={isAnimating}
-                />
-                <div className="stake-range-labels">
-                  <span>0.01 ETH</span>
-                  <span>1.00 ETH</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="swipe-actions">
-              <button 
-                className="swipe-button dislike" 
-                onClick={dislike}
-                disabled={isAnimating}
-                title="Bet NO on this prediction"
-              >
-                <div className="button-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="button-label">No</span>
-              </button>
-              
-              <button 
-                className="swipe-button like" 
-                onClick={like}
-                disabled={isAnimating}
-                title="Bet YES on this prediction"
-              >
-                <div className="button-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span className="button-label">Yes</span>
-              </button>
-            </div>
-          </>
-        )}
-        
+
         {currentIndex >= predictions.length && (
           <div className="swipe-complete">
             <h2>All predictions swiped!</h2>
@@ -429,4 +327,3 @@ const Swipe = () => {
 };
 
 export default Swipe;
-
