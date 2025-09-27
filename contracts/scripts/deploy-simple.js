@@ -42,7 +42,7 @@ async function main() {
   console.log("Deploying AgeVerification contract...");
   const ageVerification = await AgeVerification.deploy(
     CELO_SEPOLIA_HUB,
-    "iwasbored", // Scope for this verification
+    "self-workshop", // Scope for this verification
     verificationConfig
   );
 
@@ -62,7 +62,7 @@ async function main() {
     ageVerificationAddress: contractAddress,
     hubAddress: CELO_SEPOLIA_HUB,
     verificationConfigId: configId,
-    scope: "iwasbored",
+    scope: "self-workshop",
     explorer: `https://celo-sepolia.blockscout.com/address/${contractAddress}`,
     deployedAt: new Date().toISOString(),
     verificationConfig: verificationConfig

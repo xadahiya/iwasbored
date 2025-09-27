@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
   // Update this with your deployed contract address
-  const contractAddress = "0x1A0Da9073e1BB0DD0613196CAcDFC9706e2E1b5D";
+  const contractAddress = "0x5e5b05e86b98ea1133cadde46b67dcbbb9f13dee";
   
   const SELF_HUB_ADDRESS = "0x16ECBA51e18a4a7e61fdC417f0d47AFEeDfbed74";
   const verificationConfig = {
@@ -19,7 +19,7 @@ async function main() {
       address: contractAddress,
       constructorArguments: [
         SELF_HUB_ADDRESS,
-        "iwasbored",
+        "self-workshop",
         verificationConfig
       ]
     });
@@ -42,7 +42,7 @@ async function main() {
       console.log("5. Copy and paste the flattened source code");
       console.log("6. Constructor Arguments:");
       console.log(`   - ${SELF_HUB_ADDRESS}`);
-      console.log(`   - "iwasbored"`);
+      console.log(`   - "self-workshop"`);
       console.log(`   - Tuple: (18,["USA"],false)`);
     }
   }

@@ -30,7 +30,7 @@ describe("AgeVerification", function () {
     const AgeVerification = await ethers.getContractFactory("AgeVerification");
     ageVerification = await AgeVerification.deploy(
       await mockHub.getAddress(),
-      "iwasbored",
+      "self-workshop",
       mockVerificationConfig
     );
     await ageVerification.waitForDeployment();

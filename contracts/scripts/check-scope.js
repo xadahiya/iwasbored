@@ -25,9 +25,9 @@ async function main() {
     const configId = await contract.verificationConfigId();
     console.log("📋 Verification Config ID:", configId);
     
-    // The scope should be a uint256 representation of the string "iwasbored"
+    // The scope should be a uint256 representation of the string "self-workshop"
     // Self Protocol converts string scopes to uint256 using keccak256
-    const expectedScopeHash = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("iwasbored"));
+    const expectedScopeHash = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("self-workshop"));
     console.log("🎯 Expected Scope Hash:", expectedScopeHash);
     console.log("🎯 Expected Scope (uint256):", BigInt(expectedScopeHash).toString());
     

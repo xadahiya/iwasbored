@@ -5,8 +5,10 @@ import Header from '../components/Header';
 import {
   SelfQRcodeWrapper,
   SelfAppBuilder,
+  countries,
   getUniversalLink,
 } from "@selfxyz/qrcode";
+import { ethers } from "ethers";
 import './AgeVerification.css';
 
 const AgeVerification = () => {
@@ -19,9 +21,10 @@ const AgeVerification = () => {
   const [universalLink, setUniversalLink] = useState("");
   const [isVerified, setIsVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [userId] = useState(address || ethers.ZeroAddress);
 
-  // Use useMemo to cache the excluded countries array
-  const excludedCountries = useMemo(() => [], []); // No countries excluded for age verification
+  // Use useMemo to cache the excluded countries array to avoid creating a new array on each render
+  const excludedCountries = useMemo(() => [countries.UNITED_STATES], []);
 
   // Check if user already verified (you would implement this with your backend/contract)
   useEffect(() => {
@@ -39,7 +42,7 @@ const AgeVerification = () => {
     checkVerificationStatus();
   }, [address]);
 
-  // Initialize Self Protocol app
+  // Use useEffect to ensure code only executes on the client side
   useEffect(() => {
     if (!address) return;
 
@@ -51,26 +54,27 @@ const AgeVerification = () => {
 
       const app = new SelfAppBuilder({
         version: 2,
-        appName: process.env.REACT_APP_SELF_APP_NAME || "IWasBored Age Verification",
+        appName: process.env.REACT_APP_SELF_APP_NAME || "Self Workshop",
         scope: process.env.REACT_APP_SELF_SCOPE || "iwasbored",
-        endpoint: process.env.REACT_APP_SELF_ENDPOINT || process.env.REACT_APP_AGE_VERIFICATION_CONTRACT || "0x0000000000000000000000000000000000000000",
-        logoBase64: "https://i.postimg.cc/mrmVf9hm/self.png",
+        endpoint: `${process.env.REACT_APP_SELF_ENDPOINT || process.env.REACT_APP_AGE_VERIFICATION_CONTRACT || "0x0000000000000000000000000000000000000000"}`,
+        logoBase64: "https://i.postimg.cc/mrmVf9hm/self.png", // url of a png image, base64 is accepted but not recommended
         userId: address,
-        endpointType: "celo", // Use "celo" for mainnet
-        userIdType: "hex",
-        userDefinedData: "Age verification for betting platform",
+        endpointType: "staging_celo",
+        userIdType: "hex", // use 'hex' for ethereum address or 'uuid' for uuidv4
+        userDefinedData: "Hello Eth Delhi!!!",
         disclosures: {
-          // Verification requirements
+          // what you want to verify from users' identity
           minimumAge: 18,
+          // ofac: true,
           excludedCountries: excludedCountries,
-          ofac: false, // Set to true for OFAC compliance if needed
-          // What you want users to reveal (optional)
-          name: false,
-          nationality: false,
-          date_of_birth: false,
-          gender: false,
-          passport_number: false,
-          expiry_date: false,
+          // what you want users to reveal
+          // name: false,
+          // issuing_state: true,
+          // nationality: true,
+          // date_of_birth: true,
+          // passport_number: false,
+          // gender: true,
+          // expiry_date: false,
         }
       }).build();
 
@@ -113,7 +117,7 @@ const AgeVerification = () => {
 
   const handleSuccessfulVerification = () => {
     setIsLoading(true);
-    displayToast("Verification successful! Processing...");
+    displayToast("Verification successful! Redirecting...");
     
     // Store verification status locally (in production, this would be handled by your smart contract)
     localStorage.setItem(`verified_${address}`, 'true');
@@ -121,13 +125,12 @@ const AgeVerification = () => {
     setTimeout(() => {
       setIsVerified(true);
       setIsLoading(false);
-      displayToast("Age verification complete! You can now use the platform.");
-    }, 2000);
+      navigate('/swipe'); // Redirect to the main app like in the Next.js example
+    }, 1500);
   };
 
-  const handleVerificationError = (error) => {
-    console.error("Verification error:", error);
-    displayToast("Verification failed. Please try again.");
+  const handleVerificationError = () => {
+    displayToast("Error: Failed to verify identity");
   };
 
   const proceedToPlatform = () => {

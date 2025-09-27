@@ -5,6 +5,10 @@
   "scripts": {
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js --network celo-sepolia",
+    "deploy:amoy": "hardhat run scripts/deploy-amoy.js --network amoy",
+    "check:amoy": "hardhat run scripts/check-markets-amoy.js --network amoy",
+    "create:amoy": "hardhat run scripts/create-market-amoy.js --network amoy",
+    "automate": "node scripts/automate-markets.js",
     "test": "hardhat test",
     "clean": "hardhat clean"
   },
@@ -12,13 +16,22 @@
     "hardhat": "^2.22.15",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
-    "ethers": "^6.13.4"
+    "@nomicfoundation/hardhat-verify": "^2.0.9",
+    "ethers": "^6.13.4",
+    "hardhat-gas-reporter": "^1.0.10"
   },
   "dependencies": {
     "@selfxyz/contracts": "^1.2.3",
-    "@openzeppelin/contracts": "^5.1.0"
+    "@openzeppelin/contracts": "^5.1.0",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
+    "@openzeppelin/defender-sdk-base-client": "1.13.1",
+    "@openzeppelin/defender-sdk-deploy-client": "1.13.1",
+    "@openzeppelin/defender-sdk-network-client": "1.13.1",
+    "@openzeppelin/hardhat-upgrades": "^3.1.0",
+    "@pythnetwork/pyth-sdk-solidity": "^4.2.0",
+    "dotenv": "^16.4.5"
   },
-  "keywords": ["hardhat", "solidity", "ethereum", "celo", "age-verification", "self-protocol"],
+  "keywords": ["hardhat", "solidity", "ethereum", "celo", "polygon", "age-verification", "self-protocol", "pyth", "prediction-markets"],
   "author": "",
   "license": "MIT"
 }

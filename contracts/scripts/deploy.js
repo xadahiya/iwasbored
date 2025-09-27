@@ -49,7 +49,7 @@ async function main() {
     ofacEnabled: false
   };
 
-  const scopeString = "iwasbored";
+  const scopeString = "self-workshop";
   
   const SELF_HUB_ADDRESS = HUB_ADDRESSES[network];
   const networkConfig = NETWORK_CONFIGS[network];
@@ -167,7 +167,7 @@ async function main() {
   console.log("5. Upload the contract source code from contracts/AgeVerification.sol");
   console.log("6. Constructor Arguments (ABI-encoded):");
   console.log(`   - Hub Address: ${SELF_HUB_ADDRESS}`);
-  console.log(`   - Scope: "iwasbored"`);
+  console.log(`   - Scope: "self-workshop"`);
   console.log(`   - Config: {"olderThan": 18, "forbiddenCountries": ["USA"], "ofacEnabled": false}`);
   
   try {
@@ -177,7 +177,7 @@ async function main() {
       address: contractAddress,
       constructorArguments: [
         SELF_HUB_ADDRESS,
-        "iwasbored",
+        "self-workshop",
         verificationConfig
       ]
     });
@@ -200,7 +200,7 @@ async function main() {
       console.log("5. Copy and paste the flattened source code");
       console.log("6. Constructor Arguments:");
       console.log(`   - ${SELF_HUB_ADDRESS}`);
-      console.log(`   - "iwasbored"`);
+      console.log(`   - "self-workshop"`);
       console.log(`   - Tuple: (18,["USA"],false)`);
     }
   }
@@ -210,7 +210,7 @@ async function main() {
   console.log(`REACT_APP_AGE_VERIFICATION_CONTRACT=${contractAddress}`);
   console.log(`REACT_APP_SELF_ENDPOINT=${contractAddress}`);
   console.log(`REACT_APP_SELF_APP_NAME="IWasBored Age Verification"`);
-  console.log(`REACT_APP_SELF_SCOPE="iwasbored"`);
+  console.log(`REACT_APP_SELF_SCOPE="self-workshop"`);
 
   console.log("\n📌 Deployment Commands:");
   console.log("To deploy to Celo Sepolia (testnet):");
