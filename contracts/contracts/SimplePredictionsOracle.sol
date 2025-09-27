@@ -91,7 +91,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
     );
 
     // Constants and configuration variables
-    uint constant ONE = 10**18;
+    uint constant ONE = 10**6;
     uint256 public minBuyAmount = 1e18; // 1 token minimum
     uint256 public maxBuyAmountPerQuestion = 1000e18; // 1000 tokens max
     uint256 public stopTradingBeforeMarketEnd = 300; // 5 minutes default

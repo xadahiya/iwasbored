@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from logger import logger
 
 state_logger = logger.bind(
-    service='PowerLoom|App State',
+    service='I Was BORED|App State',
 )
 
 

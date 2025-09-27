@@ -63,7 +63,7 @@ const AgeVerification = () => {
         userId: address,
         endpointType: "staging_celo",
         userIdType: "hex", // use 'hex' for ethereum address or 'uuid' for uuidv4
-        userDefinedData: "Hello Eth Delhi!!!",
+        userDefinedData: "Verify your age to gamble your life savings!",
         disclosures: {
           // what you want to verify from users' identity
           minimumAge: 18,

@@ -151,12 +151,13 @@ const MyBets = () => {
 
   useEffect(() => {
     if (userSpendings) {
-      setUserSpendingsValue(ethers.formatEther(userSpendings));
+      // Convert userSpendings from 6 decimals to a human-readable string (PYUSD has 6 decimals)
+      setUserSpendingsValue((Number(userSpendings) / 1e6).toFixed(2));
     }
   }, [userSpendings]);
   useEffect(() => {
     if (userRedeemed) {
-      setUserRedeemedValue(ethers.formatEther(userRedeemed));
+      setUserRedeemedValue((Number(userRedeemed) / 1e6).toFixed(2));
     }
   }, [userRedeemed]);
 
@@ -170,11 +171,11 @@ const MyBets = () => {
       <div className="user-stats-container">
         <div className="user-stat-card">
           <h3>Total Buys</h3>
-          <p>{userSpendingsValue} <span className="eth-label">ETH</span></p>
+          <p>{userSpendingsValue} <span className="eth-label">PYUSD</span></p>
         </div>
         <div className="user-stat-card">
           <h3>Total Earnings</h3>
-          <p>{userRedeemedValue} <span className="eth-label">ETH</span></p>
+          <p>{userRedeemedValue} <span className="eth-label">PYUSD</span></p>
         </div>
       </div>
       <div className="my-bets-content">

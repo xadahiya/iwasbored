@@ -108,13 +108,13 @@ async function main() {
         // 1. Deploy Token
         console.log("\n1️⃣ Deploying Token...");
         const Token = await ethers.getContractFactory("Token");
-        const popToken = await Token.deploy("TestToken", "TEST");
-        await popToken.waitForDeployment();
-        deployedAddresses.TOKEN = popToken.target;
-        console.log("✅ Token deployed:", popToken.target);
+        const testToken = await Token.deploy("TestToken", "TEST");
+        await testToken.waitForDeployment();
+        deployedAddresses.TOKEN = testToken.target;
+        console.log("✅ Token deployed:", testToken.target);
         
         // Verify Token
-        await verifyContract(popToken.target, ["TestToken", "TEST"]);
+        await verifyContract(testToken.target, ["TestToken", "TEST"]);
 
         // 2. Deploy ConditionalTokens
         console.log("\n2️⃣ Deploying ConditionalTokens...");
@@ -146,7 +146,7 @@ async function main() {
         const oracle = await Oracle.deploy(
             conditionalTokens.target,
             factory.target,
-            popToken.target,
+            testToken.target,
             ETHEREUM_SEPOLIA_ADDRESSES.PYTH_ORACLE
         );
         await oracle.waitForDeployment();
@@ -157,7 +157,7 @@ async function main() {
         await verifyContract(oracle.target, [
             conditionalTokens.target,
             factory.target,
-            popToken.target,
+            testToken.target,
             ETHEREUM_SEPOLIA_ADDRESSES.PYTH_ORACLE
         ]);
 
@@ -169,7 +169,7 @@ async function main() {
         // 6. Fund the oracle with tokens (minimal amount for testing)
         console.log("\n6️⃣ Funding Oracle...");
         const fundingAmount = ethers.parseEther("100"); // Minimal 100 tokens for testing
-        await popToken.transfer(oracle.target, fundingAmount);
+        await testToken.transfer(oracle.target, fundingAmount);
         console.log("✅ Oracle funded with", ethers.formatEther(fundingAmount), "tokens");
 
         // 7. Configure market parameters

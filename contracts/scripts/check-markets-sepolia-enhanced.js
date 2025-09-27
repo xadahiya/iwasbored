@@ -22,7 +22,7 @@ async function main() {
         const Oracle = await ethers.getContractFactory("SimplePredictionsOracle");
         const oracle = Oracle.attach(ORACLE_ADDRESS);
         
-        const popToken = await ethers.getContractAt("Token", POP_TOKEN_ADDRESS);
+        const testToken = await ethers.getContractAt("Token", POP_TOKEN_ADDRESS);
         
         console.log("\n🔧 Oracle Configuration");
         console.log("=======================");
@@ -35,7 +35,7 @@ async function main() {
         // Check oracle balances
         console.log("\n💰 Oracle Balances");
         console.log("==================");
-        const oracleBalance = await popToken.balanceOf(ORACLE_ADDRESS);
+        const oracleBalance = await testToken.balanceOf(ORACLE_ADDRESS);
         console.log("Token balance:", ethers.formatEther(oracleBalance), "tokens");
         
         const ethBalance = await ethers.provider.getBalance(ORACLE_ADDRESS);
@@ -52,7 +52,7 @@ async function main() {
         // Check user balances
         console.log("\n👤 User Account");
         console.log("===============");
-        const userPopBalance = await popToken.balanceOf(deployer.address);
+        const userPopBalance = await testToken.balanceOf(deployer.address);
         console.log("Your token balance:", ethers.formatEther(userPopBalance), "tokens");
         
         const userEthBalance = await ethers.provider.getBalance(deployer.address);

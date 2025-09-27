@@ -6,6 +6,8 @@ import PredictionCard from '../components/PredictionCard';
 import { useSprings, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import { useOracleContract } from '../utils/OracleContract';
+import { usePYUSDToken } from '../utils/useERC20Token';
+import { ethers } from 'ethers';
 import './Swipe.css';
 
 const PYTH_PRICE_FEEDS = {
@@ -87,10 +89,27 @@ const Swipe = () => {
   const [gone] = useState(() => new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [stakeAmount, setStakeAmount] = useState(1); // Managed in Swipe.js
+  const [stakeAmount, setStakeAmount] = useState(0.1); // Managed in Swipe.js
+  const [needsApproval, setNeedsApproval] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
+
+  const ORACLE_CONTRACT_ADDRESS = '0x29471e7732F79E9A5f9e1ca09Cc653f53928742F'; // Oracle contract address
 
   // Use the Oracle contract hook to get read configs and write functions
   const { getOwnerConfig, getActiveMarketIdsConfig, buyPosition, isWriteLoading, writeError, writeData } = useOracleContract();
+  const { getAllowanceConfig, approve } = usePYUSDToken();
+
+  const { data: allowance, isLoading: isAllowanceLoading, refetch: refetchAllowance } = useReadContract(
+    getAllowanceConfig(address, ORACLE_CONTRACT_ADDRESS),
+    { enabled: !!address }
+  );
+
+  useEffect(() => {
+    if (allowance !== undefined && address) {
+      const requiredAllowance = ethers.parseEther(stakeAmount.toString()); 
+      setNeedsApproval(allowance < requiredAllowance);
+    }
+  }, [allowance, address, stakeAmount]);
 
   // Fetch the contract owner
   const { data: owner, isLoading: isOwnerLoading, error: ownerError } = useReadContract(getOwnerConfig());
@@ -140,14 +159,38 @@ const Swipe = () => {
     }
   }, [isWriteLoading, writeError]);
 
+  const handleApprove = async () => {
+    if (!address) {
+      alert("Please connect your wallet to approve.");
+      return;
+    }
+    setIsApproving(true);
+    try {
+      const amountToApprove = ethers.MaxUint256; // Approve a very large amount
+      await approve(ORACLE_CONTRACT_ADDRESS, amountToApprove);
+      // After approval, refetch allowance to update UI
+      await refetchAllowance();
+      setNeedsApproval(false); // Assuming approval was successful
+    } catch (error) {
+      console.error("Approval failed:", error);
+      alert("Approval failed. See console for details.");
+    } finally {
+      setIsApproving(false);
+    }
+  };
 
   const handleSwipe = async (direction) => { // Made async
     const currentCardIndex = currentIndex;
     if (currentCardIndex >= (activeMarketIds ? activeMarketIds.length : 0) || isAnimating) return;
 
+    if (needsApproval) {
+      alert("Please approve the PYUSD token spending first.");
+      return;
+    }
+
     const questionId = activeMarketIds[currentCardIndex]; // Get the questionId for the current card
     const outcomeIndex = direction === 'right' ? 1 : 0; // 1 for Yes, 0 for No (assuming binary outcomes)
-    const amount = Number(Math.floor(stakeAmount * 1e18)); // Convert stakeAmount to BigInt with 18 decimals
+    const amount = Number(Math.floor(stakeAmount * 1e6)); // Convert stakeAmount to BigInt with 18 decimals
     const minOutcomeTokensToBuy = Number(0); // Assuming 0 for now, can be made dynamic
     const conditionTokensReceiver = address; // The connected wallet address
 
@@ -327,49 +370,62 @@ const Swipe = () => {
               <div className="stake-slider-container">
                 <input
                   type="range"
-                  min="1"
+                  min="0.1"
                   max="10"
-                  step="0.10"
+                  step="0.1"
                   value={stakeAmount}
                   onChange={(e) => setStakeAmount(parseFloat(e.target.value))}
                   className="stake-slider"
                   disabled={isAnimating || isWriteLoading} // Disable slider during transaction
                 />
                 <div className="stake-range-labels">
-                  <span>1 PYUSD</span>
+                  <span>0.1 PYUSD</span>
                   <span>10 PYUSD</span>
                 </div>
               </div>
             </div>
 
             <div className="swipe-actions">
-              <button
-                className="swipe-button dislike"
-                onClick={dislike}
-                disabled={isAnimating || isWriteLoading} // Disable button during transaction
-                title="Bet NO on this prediction"
-              >
-                <div className="button-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <span className="button-label">No</span>
-              </button>
+              {needsApproval ? (
+                <button
+                  className="swipe-button approve"
+                  onClick={handleApprove}
+                  disabled={isApproving || isAnimating || isWriteLoading}
+                  title="Approve PYUSD spending"
+                >
+                  {isApproving ? 'Approving...' : 'Approve PYUSD'}
+                </button>
+              ) : (
+                <>
+                  <button
+                    className="swipe-button dislike"
+                    onClick={dislike}
+                    disabled={isAnimating || isWriteLoading} // Disable button during transaction
+                    title="Bet NO on this prediction"
+                  >
+                    <div className="button-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                    <span className="button-label">No</span>
+                  </button>
 
-              <button
-                className="swipe-button like"
-                onClick={like}
-                disabled={isAnimating || isWriteLoading} // Disable button during transaction
-                title="Bet YES on this prediction"
-              >
-                <div className="button-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span className="button-label">Yes</span>
-              </button>
+                  <button
+                    className="swipe-button like"
+                    onClick={like}
+                    disabled={isAnimating || isWriteLoading} // Disable button during transaction
+                    title="Bet YES on this prediction"
+                  >
+                    <div className="button-icon">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <span className="button-label">Yes</span>
+                  </button>
+                </>
+              )}
             </div>
             {isWriteLoading && <p>Confirming transaction in wallet...</p>}
             {writeError && <p style={{ color: 'red' }}>Transaction failed: {writeError.message}</p>}

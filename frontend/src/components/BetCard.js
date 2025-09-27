@@ -1,48 +1,110 @@
 import React from 'react';
+import { useAccount, useReadContract } from 'wagmi';
+import { ethers } from 'ethers';
+import { useOracleContract } from '../utils/OracleContract';
+import { usePYUSDToken } from '../utils/useERC20Token';
 import './BetCard.css';
 
-const BetCard = ({ bet }) => {
-  const bgColor = bet.status === 'active' ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : 
-                   bet.outcome === 'win' ? 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' : 
-                   'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+function BetCard({ prediction, onSwipe }) {
+    const { address } = useAccount();
+    const { buyPosition } = useOracleContract();
+    const { getAllowanceConfig, approve } = usePYUSDToken();
+    const [isExpired, setIsExpired] = useState(false);
+    const [needsApproval, setNeedsApproval] = useState(false);
+    const [isApproving, setIsApproving] = useState(false);
 
-  const cryptoIcon = getCryptoIcon(bet.question);
-  const cryptoName = getCryptoName(bet.question);
+    const ORACLE_CONTRACT_ADDRESS = '0xC16a6c2720308DE8d7811428A18D3810513A677C'; // Oracle contract address
 
-  return (
-    <div className="bet-card">
-      <div className="bet-header" style={{ background: bgColor }}>
-        <div className="crypto-icon-small">
-          <span>{cryptoIcon}</span>
+    const { data: allowance, isLoading: isAllowanceLoading, refetch: refetchAllowance } = useReadContract(
+        getAllowanceConfig(address, ORACLE_CONTRACT_ADDRESS),
+        { enabled: !!address }
+    );
+
+    useEffect(() => {
+        if (allowance !== undefined && address) {
+            // Assuming a fixed bet amount for simplicity, e.g., 0.01 ETH (which is 10^16 wei)
+            // This should ideally come from the UI or prediction data
+            const requiredAllowance = ethers.parseEther("0.01"); 
+            setNeedsApproval(allowance < requiredAllowance);
+        }
+    }, [allowance, address]);
+
+    useEffect(() => {
+        const checkExpiration = () => {
+            const currentTime = Math.floor(Date.now() / 1000);
+            setIsExpired(prediction.endTime <= currentTime);
+        };
+
+        checkExpiration();
+        const intervalId = setInterval(checkExpiration, 1000); // Check every second
+
+        return () => clearInterval(intervalId);
+    }, [prediction.endTime]);
+
+    const handleApprove = async () => {
+        if (!address) {
+            alert("Please connect your wallet to approve.");
+            return;
+        }
+        setIsApproving(true);
+        try {
+            const amountToApprove = ethers.MaxUint256; // Approve a very large amount
+            await approve(ORACLE_CONTRACT_ADDRESS, amountToApprove);
+            // After approval, refetch allowance to update UI
+            await refetchAllowance();
+            setNeedsApproval(false); // Assuming approval was successful
+        } catch (error) {
+            console.error("Approval failed:", error);
+            alert("Approval failed. See console for details.");
+        } finally {
+            setIsApproving(false);
+        }
+    };
+
+    const handleBet = async (outcome) => {
+        if (isExpired) {
+            alert("This prediction has expired and no longer accepts bets.");
+            return;
+        }
+        if (!address) {
+            alert("Please connect your wallet to place a bet.");
+            return;
+        }
+        if (needsApproval) {
+            alert("Please approve the PYUSD token spending first.");
+            return;
+        }
+        try {
+            const outcomeIndex = outcome ? 1 : 0; // Assuming true maps to 1, false to 0
+            const amount = ethers.parseEther("0.01"); // Placeholder for 0.01 ETH
+            const minOutcomeTokensToBuy = 0; // Placeholder
+            const conditionTokensReceiver = address; // Receiver is the current wallet address
+
+            await buyPosition(prediction.id, outcomeIndex, amount, minOutcomeTokensToBuy, conditionTokensReceiver);
+            onSwipe();
+        } catch (error) {
+            console.error("Betting failed:", error);
+            alert("Failed to place bet. See console for details.");
+        }
+    };
+    return (
+        <div className={`bet-card ${isExpired ? 'expired' : ''}`}>
+            <PredictionCard prediction={prediction} />
+            <div className="bet-buttons">
+                {needsApproval ? (
+                    <button onClick={handleApprove} disabled={isApproving || isExpired}>
+                        {isApproving ? 'Approving...' : 'Approve PYUSD'}
+                    </button>
+                ) : (
+                    <>
+                        <button onClick={() => handleBet(true)} disabled={isExpired}>Yes</button>
+                        <button onClick={() => handleBet(false)} disabled={isExpired}>No</button>
+                    </>
+                )}
+            </div>
         </div>
-        <div className="crypto-name">
-          <h3>{cryptoName}</h3>
-          <p className="bet-status-text">
-            {bet.status === 'active' ? 'Active' : `Resolved: ${bet.outcome}`}
-          </p>
-        </div>
-        <div className="stake-amount">
-          ${bet.stake}
-        </div>
-      </div>
-      <div className="bet-content">
-        <div className="bet-question">
-          {bet.question}
-        </div>
-        <div className="bet-details">
-          <div className="detail-row">
-            <span className="label">Time Remaining</span>
-            <span className="value">5:00</span>
-          </div>
-          <div className="detail-row">
-            <span className="label">Potential Winnings</span>
-            <span className="value">${(bet.stake * 1.9).toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+    );
+}
 
 function getCryptoIcon(question) {
   if (question.includes('ETH') || question.includes('Ethereum')) return '◈';

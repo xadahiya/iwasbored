@@ -4,7 +4,7 @@ import abi from './abi.json'; // Import the ABI
 import { useCallback } from 'react'; // Import useCallback
 
 // Define the Oracle contract address
-const ORACLE_CONTRACT_ADDRESS = '0xC16a6c2720308DE8d7811428A18D3810513A677C';
+const ORACLE_CONTRACT_ADDRESS = '0x29471e7732F79E9A5f9e1ca09Cc653f53928742F';
 
 /**
  * Generic hook to interact with any contract.

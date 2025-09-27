@@ -40,13 +40,6 @@
 }
 
 .stake-display {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.stake-label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #374151;
@@ -240,4 +233,15 @@
   .swipe-content {
     padding: 1rem;
   }
+}
+
+.swipe-button.approve {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.swipe-button.approve:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(99, 102, 241, 0.25);
 }

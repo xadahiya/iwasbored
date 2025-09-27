@@ -18,22 +18,17 @@ module.exports = {
     "celo-sepolia": {
       url: "https://forno.celo-sepolia.celo-testnet.org",
       chainId: 11142220,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : ["0x093cfb88e8530420e563bf195094195c10adfa0d5834290a1366ff6bc128867a"]
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     },
     "celo-mainnet": {
       url: "https://forno.celo.org",
       chainId: 42220,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : ["0x093cfb88e8530420e563bf195094195c10adfa0d5834290a1366ff6bc128867a"]
-    },
-    base: {
-      url: process.env.RPC_URL_CONDUIT || "https://mainnet.base.org",
-      chainId: 8453,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     },
     sepolia: {
-      url: process.env.SEPOLIA_RPC_URL || "https://sepolia.infura.io/v3/1c6b5e4765a341b29b9d77dd2549c025",
+      url: process.env.SEPOLIA_RPC_URL || "",
       chainId: 11155111,
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : ["0x093cfb88e8530420e563bf195094195c10adfa0d5834290a1366ff6bc128867a"]
+      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     }
   },
   etherscan: {
