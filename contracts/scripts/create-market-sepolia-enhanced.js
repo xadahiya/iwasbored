@@ -1,4 +1,29 @@
 const { ethers } = require("hardhat");
+const https = require('https');
+
+async function getPythUpdateData(priceFeedId) {
+    return new Promise((resolve, reject) => {
+        const url = `https://hermes.pyth.network/api/latest_vaas?ids[]=${priceFeedId}`;
+        https.get(url, (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                try {
+                    const parsed = JSON.parse(data);
+                    const priceUpdateData = parsed.map(d => '0x' + Buffer.from(d, 'base64').toString('hex'));
+                    resolve(priceUpdateData);
+                    resolve(priceUpdateData);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+        }).on('error', (err) => {
+            reject(err);
+        });
+    });
+}
 
 async function main() {
     console.log("🎲 Creating Random Market on Ethereum Sepolia...");
@@ -44,7 +69,12 @@ async function main() {
         const questionId = ethers.keccak256(ethers.toUtf8Bytes(`market-${Date.now()}`));
         const endTimestamp = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
         
-        const tx = await oracle.createMarket(questionId, endTimestamp, [], { 
+        const priceFeedId = "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"; // ETH/USD
+        console.log("📞 Fetching Pyth update data for ETH/USD...");
+        const priceUpdateData = await getPythUpdateData(priceFeedId);
+        console.log("✅ Pyth update data received.");
+
+        const tx = await oracle.createMarket(questionId, 0, endTimestamp, priceUpdateData, { 
             value: updateFee
         });
         

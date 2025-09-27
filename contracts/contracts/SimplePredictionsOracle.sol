@@ -299,6 +299,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
 
         userRedeemed[msg.sender] += totalPayout;
         userOpenPositions[msg.sender].remove(questionId);
+        userClosedPositions[msg.sender].add(questionId);
 
         emit RedeemPosition(msg.sender, questions[questionId].fpmm, questionId, indexSets, totalPayout);
     }
@@ -353,7 +354,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
     /**
      * @dev Creates a random market using PYTH price feeds
      */
-    function createMarket(bytes32 questionId, uint256 randomIndex, uint256 marketEndTimestamp, bytes[] calldata priceUpdateData) external onlyOwner payable returns (bytes32) {
+    function createMarket(bytes32 questionId, uint256 randomIndex, uint256 marketEndTimestamp, bytes[] calldata priceUpdateData) external payable returns (bytes32) {
         require(randomIndex < marketConfig.priceIds.length, "Invalid random index");
         require(marketConfig.priceIds.length > 0, "No price feeds configured");
 
