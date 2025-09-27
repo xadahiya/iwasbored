@@ -12,8 +12,6 @@ const Onboarding = () => {
   const navigate = useNavigate();
 
   console.log('Onboarding component rendered, address:', address);
-  // print chain id
-  console.log('Chain id:', chainId);
 
   const handleConnectWallet = async (e) => {
     e.preventDefault();
