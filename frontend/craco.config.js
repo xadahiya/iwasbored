@@ -77,4 +77,14 @@ module.exports = {
       return webpackConfig;
     },
   },
+  devServer: { // Add devServer configuration for proxy
+    proxy: {
+      '/pyth-api': {
+        target: 'https://api.pyth.network',
+        changeOrigin: true,
+        pathRewrite: { '^/pyth-api': '' }, // Rewrite path to remove /pyth-api prefix
+        secure: false, // Set to true for production, false for development if needed
+      },
+    },
+  },
 };

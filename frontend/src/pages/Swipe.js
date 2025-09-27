@@ -96,7 +96,7 @@ const MarketDetailsFetcher = ({ questionId }) => {
     color: '#627eea',
     type: 'crypto',
     isMarketActive: isMarketActive,
-    feedId: questionData.priceFeedId
+    priceFeedId: questionData.priceFeedId
   }
   return (
     <PredictionCard prediction={data} />
