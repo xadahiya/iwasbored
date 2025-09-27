@@ -5,9 +5,11 @@
   "scripts": {
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.js --network celo-sepolia",
-    "deploy:amoy": "hardhat run scripts/deploy-amoy.js --network amoy",
-    "check:amoy": "hardhat run scripts/check-markets-amoy.js --network amoy",
-    "create:amoy": "hardhat run scripts/create-market-amoy.js --network amoy",
+    "deploy:sepolia": "hardhat run scripts/deploy-sepolia.js --network sepolia",
+    "check:sepolia": "hardhat run scripts/check-markets-sepolia.js --network sepolia",
+    "create:sepolia": "hardhat run scripts/create-market-sepolia.js --network sepolia",
+    "check:sepolia:enhanced": "hardhat run scripts/check-markets-sepolia-enhanced.js --network sepolia",
+    "create:sepolia:enhanced": "hardhat run scripts/create-market-sepolia-enhanced.js --network sepolia",
     "automate": "node scripts/automate-markets.js",
     "test": "hardhat test",
     "clean": "hardhat clean"

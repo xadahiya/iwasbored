@@ -30,9 +30,9 @@ module.exports = {
       chainId: 8453,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     },
-    amoy: {
-      url: process.env.POLYGON_AMOY_RPC || "https://rpc-amoy.polygon.technology/",
-      chainId: 80002,
+    sepolia: {
+      url: process.env.SEPOLIA_RPC_URL || "https://sepolia.infura.io/v3/1c6b5e4765a341b29b9d77dd2549c025",
+      chainId: 11155111,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : ["0x093cfb88e8530420e563bf195094195c10adfa0d5834290a1366ff6bc128867a"]
     }
   },
@@ -41,7 +41,7 @@ module.exports = {
       "celo-sepolia": "abc",  // BlockScout doesn't require a real API key
       "celo-mainnet": "abc",   // BlockScout doesn't require a real API key
       "conduit": "",
-      "polygonAmoy": process.env.POLYGONSCAN_API_KEY || ""
+      "sepolia": process.env.ETHERSCAN_API_KEY || ""
     },
     customChains: [
       {
@@ -69,11 +69,11 @@ module.exports = {
         }
       },
       {
-        network: "amoy",
-        chainId: 80002,
+        network: "sepolia",
+        chainId: 11155111,
         urls: {
-          apiURL: "https://api-amoy.polygonscan.com/api",
-          browserURL: "https://amoy.polygonscan.com/",
+          apiURL: "https://api-sepolia.etherscan.io/api",
+          browserURL: "https://sepolia.etherscan.io/",
         }
       }
     ]

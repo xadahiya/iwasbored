@@ -1,9 +1,9 @@
-const { ethers } = require("hardhat");
+const { ethers, run } = require("hardhat");
 
-// Polygon Amoy Testnet addresses
-const POLYGON_AMOY_ADDRESSES = {
-    // PYTH Oracle on Polygon Amoy
-    PYTH_ORACLE: "0xA2aa501b19aff244D90cc15a4Cf739D2725B5729",
+// Ethereum Sepolia Testnet addresses
+const ETHEREUM_SEPOLIA_ADDRESSES = {
+    // PYTH Oracle on Ethereum Sepolia - Official address
+    PYTH_ORACLE: "0xDd24F84d36BF92C65F92307595335bdFab5Bbd21",
     
     // We'll deploy our own test tokens since this is testnet
     TOKEN: null, // Will deploy
@@ -11,27 +11,68 @@ const POLYGON_AMOY_ADDRESSES = {
     FACTORY: null, // Will deploy
 };
 
-// PYTH price feed IDs for testing
+// Simple deployment without gas configuration - let Hardhat handle it
+
+// Helper function to verify contracts
+async function verifyContract(address, constructorArguments = []) {
+    // Skip verification if no API key is provided
+    if (!process.env.ETHERSCAN_API_KEY) {
+        console.log("⏭️  Skipping verification (no ETHERSCAN_API_KEY)");
+        console.log("💡 Manual verification command:");
+        console.log(`npx hardhat verify --network sepolia ${address} ${constructorArguments.join(" ")}`);
+        console.log(""); // Add spacing
+        return;
+    }
+
+    console.log("🔍 Verifying contract at:", address);
+    try {
+        await run("verify:verify", {
+            address: address,
+            constructorArguments: constructorArguments,
+        });
+        console.log("✅ Contract verified successfully!");
+    } catch (error) {
+        if (error.message.toLowerCase().includes("already verified")) {
+            console.log("✅ Contract already verified!");
+        } else {
+            console.log("⚠️  Verification failed:", error.message);
+            console.log("💡 You can verify manually later using:");
+            console.log(`npx hardhat verify --network sepolia ${address} ${constructorArguments.join(" ")}`);
+        }
+    }
+    console.log(""); // Add spacing
+}
+
+// PYTH price feed IDs for testing (same across all networks)
 const PYTH_PRICE_FEEDS = {
     "ETH/USD": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
     "BTC/USD": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
-    "MATIC/USD": "0x5de33a9112c2b700b8d30b8a3402c103578ccfa2765696471cc672bd5cf6ac52",
+    "USDC/USD": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
     "SOL/USD": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d"
 };
 
 async function main() {
-    console.log("🚀 Deploying SimplePredictionsOracle to Polygon Amoy...");
+    console.log("🚀 Deploying SimplePredictionsOracle to Ethereum Sepolia...");
     
     const [deployer] = await ethers.getSigners();
     console.log("📝 Deploying with account:", deployer.address);
     
     // Check balance
     const balance = await ethers.provider.getBalance(deployer.address);
-    console.log("💰 Account balance:", ethers.formatEther(balance), "MATIC");
+    console.log("💰 Account balance:", ethers.formatEther(balance), "ETH");
     
     if (balance < ethers.parseEther("0.1")) {
-        console.log("⚠️  Low balance detected. You may need more MATIC for deployment.");
-        console.log("🔗 Get MATIC from: https://faucet.polygon.technology/");
+        console.log("⚠️  Low balance detected. You may need more ETH for deployment.");
+        console.log("🔗 Get Sepolia ETH from: https://sepoliafaucet.com/");
+        console.log("🔗 Alternative faucet: https://faucet.quicknode.com/ethereum/sepolia");
+    }
+
+    // Check if Etherscan API key is set for verification
+    if (!process.env.ETHERSCAN_API_KEY) {
+        console.log("\n⚠️  ETHERSCAN_API_KEY not found in environment variables.");
+        console.log("💡 Contract verification will be skipped. Set ETHERSCAN_API_KEY in your .env file to enable verification.");
+        console.log("🔗 Get your API key from: https://etherscan.io/apis");
+        console.log("");
     }
 
     // Deployment results
@@ -41,18 +82,26 @@ async function main() {
         // 1. Deploy Token
         console.log("\n1️⃣ Deploying Token...");
         const Token = await ethers.getContractFactory("Token");
-        const popToken = await Token.deploy("Token", "TOKEN");
+        const popToken = await Token.deploy("TestToken", "TEST");
         await popToken.waitForDeployment();
         deployedAddresses.TOKEN = popToken.target;
         console.log("✅ Token deployed:", popToken.target);
+        
+        // Verify Token
+        await verifyContract(popToken.target, ["TestToken", "TEST"]);
 
         // 2. Deploy ConditionalTokens
         console.log("\n2️⃣ Deploying ConditionalTokens...");
         const ConditionalTokens = await ethers.getContractFactory("ConditionalTokens");
-        const conditionalTokens = await ConditionalTokens.deploy("https://api.onchainpoints.xyz/metadata/".substring(0, 32));
+        const conditionalTokens = await ConditionalTokens.deploy(
+            "https://api.onchainpoints.xyz/metadata/".substring(0, 32)
+        );
         await conditionalTokens.waitForDeployment();
         deployedAddresses.CONDITIONAL_TOKENS = conditionalTokens.target;
         console.log("✅ ConditionalTokens deployed:", conditionalTokens.target);
+        
+        // Verify ConditionalTokens
+        await verifyContract(conditionalTokens.target, ["https://api.onchainpoints.xyz/metadata/".substring(0, 32)]);
 
         // 3. Deploy Factory
         console.log("\n3️⃣ Deploying Factory...");
@@ -61,6 +110,9 @@ async function main() {
         await factory.waitForDeployment();
         deployedAddresses.FACTORY = factory.target;
         console.log("✅ Factory deployed:", factory.target);
+        
+        // Verify Factory
+        await verifyContract(factory.target, []);
 
         // 4. Deploy SimplePredictionsOracle
         console.log("\n4️⃣ Deploying SimplePredictionsOracle...");
@@ -69,20 +121,28 @@ async function main() {
             conditionalTokens.target,
             factory.target,
             popToken.target,
-            POLYGON_AMOY_ADDRESSES.PYTH_ORACLE
+            ETHEREUM_SEPOLIA_ADDRESSES.PYTH_ORACLE
         );
         await oracle.waitForDeployment();
         deployedAddresses.ORACLE = oracle.target;
         console.log("✅ SimplePredictionsOracle deployed:", oracle.target);
+        
+        // Verify SimplePredictionsOracle
+        await verifyContract(oracle.target, [
+            conditionalTokens.target,
+            factory.target,
+            popToken.target,
+            ETHEREUM_SEPOLIA_ADDRESSES.PYTH_ORACLE
+        ]);
 
         // 5. Set oracle address in ConditionalTokens
         console.log("\n5️⃣ Configuring ConditionalTokens...");
         await conditionalTokens.setOracleAddress(oracle.target);
         console.log("✅ Oracle address set in ConditionalTokens");
 
-        // 6. Fund the oracle with tokens (reduced amount)
+        // 6. Fund the oracle with tokens (minimal amount for testing)
         console.log("\n6️⃣ Funding Oracle...");
-        const fundingAmount = ethers.parseEther("1000"); // 1K tokens instead of 50K
+        const fundingAmount = ethers.parseEther("100"); // Minimal 100 tokens for testing
         await popToken.transfer(oracle.target, fundingAmount);
         console.log("✅ Oracle funded with", ethers.formatEther(fundingAmount), "tokens");
 
@@ -94,7 +154,7 @@ async function main() {
             300,  // 5 minutes min duration
             3600, // 1 hour max duration
             180,  // 3 minutes between markets
-            ethers.parseEther("1000"), // 1000 tokens initial funding per market
+            ethers.parseEther("10"), // Minimal 10 tokens per market for testing
             true  // auto-create enabled
         );
         console.log("✅ Random markets configured with", priceIds.length, "price feeds");
@@ -102,8 +162,8 @@ async function main() {
         // 8. Verification info
         console.log("\n📋 Deployment Summary");
         console.log("=====================");
-        console.log("Network: Polygon Amoy Testnet");
-        console.log("Chain ID: 80002");
+        console.log("Network: Ethereum Sepolia Testnet");
+        console.log("Chain ID: 11155111");
         console.log("Deployer:", deployer.address);
         console.log("");
         
@@ -111,33 +171,35 @@ async function main() {
         Object.entries(deployedAddresses).forEach(([name, address]) => {
             console.log(`${name}: ${address}`);
         });
-        console.log(`PYTH_ORACLE: ${POLYGON_AMOY_ADDRESSES.PYTH_ORACLE}`);
+        console.log(`PYTH_ORACLE: ${ETHEREUM_SEPOLIA_ADDRESSES.PYTH_ORACLE}`);
 
-        console.log("\n🔗 Block Explorer URLs:");
+        console.log("\n🔗 Etherscan URLs:");
         Object.entries(deployedAddresses).forEach(([name, address]) => {
-            console.log(`${name}: https://amoy.polygonscan.com/address/${address}`);
+            console.log(`${name}: https://sepolia.etherscan.io/address/${address}`);
         });
 
         console.log("\n💡 Environment Variables:");
         console.log("Add these to your .env file:");
-        console.log(`AMOY_TOKEN=${deployedAddresses.TOKEN}`);
-        console.log(`AMOY_CONDITIONAL_TOKENS=${deployedAddresses.CONDITIONAL_TOKENS}`);
-        console.log(`AMOY_FACTORY=${deployedAddresses.FACTORY}`);
-        console.log(`AMOY_ORACLE=${deployedAddresses.ORACLE}`);
-        console.log(`AMOY_PYTH_ORACLE=${POLYGON_AMOY_ADDRESSES.PYTH_ORACLE}`);
+        console.log(`SEPOLIA_TOKEN=${deployedAddresses.TOKEN}`);
+        console.log(`SEPOLIA_CONDITIONAL_TOKENS=${deployedAddresses.CONDITIONAL_TOKENS}`);
+        console.log(`SEPOLIA_FACTORY=${deployedAddresses.FACTORY}`);
+        console.log(`SEPOLIA_ORACLE=${deployedAddresses.ORACLE}`);
+        console.log(`SEPOLIA_PYTH_ORACLE=${ETHEREUM_SEPOLIA_ADDRESSES.PYTH_ORACLE}`);
 
         console.log("\n🧪 Testing Commands:");
         console.log("# Create a random market:");
-        console.log(`npx hardhat run scripts/create-market-amoy.js --network amoy`);
+        console.log(`npx hardhat run scripts/create-market-sepolia.js --network sepolia`);
         console.log("");
         console.log("# Check market status:");
-        console.log(`npx hardhat run scripts/check-markets-amoy.js --network amoy`);
+        console.log(`npx hardhat run scripts/check-markets-sepolia.js --network sepolia`);
 
         // 9. Create a test market
         console.log("\n🎲 Creating Test Market...");
         try {
             const updateFee = ethers.parseEther("0.001"); // Small fee for PYTH update
-            const tx = await oracle.createRandomMarket([], { value: updateFee });
+            const tx = await oracle.createRandomMarket([], { 
+                value: updateFee
+            });
             const receipt = await tx.wait();
             
             // Find the market creation event
@@ -162,21 +224,24 @@ async function main() {
             }
         } catch (error) {
             console.log("⚠️  Could not create test market:", error.message);
-            console.log("   This might be due to PYTH oracle connectivity");
+            console.log("   This might be due to PYTH oracle connectivity or insufficient fee");
         }
 
         console.log("\n🎉 Deployment completed successfully!");
-        console.log("🔧 Ready for testing on Polygon Amoy!");
+        console.log("🔧 Ready for testing on Ethereum Sepolia!");
+        console.log("✅ All contracts have been automatically verified on Etherscan!");
 
     } catch (error) {
         console.error("❌ Deployment failed:", error);
         
         if (error.message.includes("insufficient funds")) {
-            console.log("💡 Solution: Get more MATIC from https://faucet.polygon.technology/");
+            console.log("💡 Solution: Get more Sepolia ETH from https://sepoliafaucet.com/");
         } else if (error.message.includes("nonce")) {
             console.log("💡 Solution: Wait a moment and try again");
         } else if (error.message.includes("gas")) {
             console.log("💡 Solution: Try increasing gas limit or gas price");
+        } else if (error.message.includes("replacement")) {
+            console.log("💡 Solution: Wait for pending transactions to complete");
         }
         
         process.exit(1);
@@ -205,4 +270,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { main, POLYGON_AMOY_ADDRESSES, PYTH_PRICE_FEEDS };
+module.exports = { main, ETHEREUM_SEPOLIA_ADDRESSES, PYTH_PRICE_FEEDS };

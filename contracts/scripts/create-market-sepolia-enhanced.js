@@ -1,16 +1,16 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-    console.log("🎲 Creating Random Market on Polygon Amoy...");
+    console.log("🎲 Creating Random Market on Ethereum Sepolia...");
     
     const [deployer] = await ethers.getSigners();
     console.log("📝 Using account:", deployer.address);
     
     // Contract addresses (you'll need to update these after deployment)
-    const ORACLE_ADDRESS = process.env.AMOY_ORACLE || "0x..."; // Update after deployment
+    const ORACLE_ADDRESS = process.env.SEPOLIA_ORACLE || "0x..."; // Update after deployment
     
     if (ORACLE_ADDRESS === "0x...") {
-        console.error("❌ Please set AMOY_ORACLE environment variable with the deployed oracle address");
+        console.error("❌ Please set SEPOLIA_ORACLE environment variable with the deployed oracle address");
         process.exit(1);
     }
     
@@ -42,17 +42,16 @@ async function main() {
         // PYTH update fee (usually very small)
         const updateFee = ethers.parseEther("0.001"); // Conservative estimate
         
-        console.log("💰 PYTH update fee:", ethers.formatEther(updateFee), "MATIC");
+        console.log("💰 PYTH update fee:", ethers.formatEther(updateFee), "ETH");
         
         // Create the market
         console.log("🚀 Creating random market...");
         const tx = await oracle.createRandomMarket([], { 
-            value: updateFee,
-            gasLimit: 500000 // Conservative gas limit
+            value: updateFee
         });
         
         console.log("⏳ Transaction submitted:", tx.hash);
-        console.log("🔗 View on explorer: https://amoy.polygonscan.com/tx/" + tx.hash);
+        console.log("🔗 View on explorer: https://sepolia.etherscan.io/tx/" + tx.hash);
         
         const receipt = await tx.wait();
         console.log("✅ Transaction confirmed in block:", receipt.blockNumber);
@@ -78,13 +77,13 @@ async function main() {
             console.log("Target Price:", targetPrice.toString());
             console.log("End Time:", new Date(Number(endTimestamp) * 1000).toLocaleString());
             console.log("FPMM Address:", fpmmAddress);
-            console.log("🔗 FPMM on explorer: https://amoy.polygonscan.com/address/" + fpmmAddress);
+            console.log("🔗 FPMM on explorer: https://sepolia.etherscan.io/address/" + fpmmAddress);
             
             // Get human-readable price feed name
             const priceFeeds = {
                 "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace": "ETH/USD",
                 "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43": "BTC/USD",
-                "0x5de33a9112c2b700b8d30b8a3402c103578ccfa2765696471cc672bd5cf6ac52": "MATIC/USD",
+                "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a": "USDC/USD",
                 "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d": "SOL/USD"
             };
             
@@ -115,8 +114,8 @@ async function main() {
             
             console.log("\n💡 Test Commands:");
             console.log(`export MARKET_ID=${questionId}`);
-            console.log("npx hardhat run scripts/buy-position-amoy.js --network amoy");
-            console.log("npx hardhat run scripts/resolve-market-amoy.js --network amoy");
+            console.log("npx hardhat run scripts/buy-position-sepolia.js --network sepolia");
+            console.log("npx hardhat run scripts/resolve-market-sepolia.js --network sepolia");
             
         } else {
             console.log("⚠️  Market created but could not parse event data");
@@ -126,7 +125,7 @@ async function main() {
         console.error("❌ Failed to create market:", error.message);
         
         if (error.message.includes("insufficient funds")) {
-            console.log("💡 Solution: Get more MATIC from https://faucet.polygon.technology/");
+            console.log("💡 Solution: Get more ETH from https://sepoliafaucet.com/");
         } else if (error.message.includes("Market interval not elapsed")) {
             console.log("💡 Solution: Wait for the market interval to pass");
         } else if (error.message.includes("Random market creation is disabled")) {

@@ -124,7 +124,7 @@ Find more price feeds at: https://pyth.network/developers/price-feed-ids
 - **Sepolia**: `0xDd24F84d36BF92C65F92307595335bdFab5Bbd21`
 - **Mumbai**: `0xd0D9315473E8dbb22Af0525123Df3e50Da71700B`
 - **Fuji**: `0xd0D9315473E8dbb22Af0525123Df3e50Da71700B`
-- **Polygon Amoy**: `0xA2aa501b19aff244D90cc15a4Cf739D2725B5729`
+- **Ethereum Sepolia**: `0xDd24F84d36BF92C65F92307595335bdFab5Bbd21`
 
 ## Usage Examples
 

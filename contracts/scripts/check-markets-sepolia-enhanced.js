@@ -1,19 +1,19 @@
 const { ethers } = require("hardhat");
 
 async function main() {
-    console.log("📊 Checking Markets on Polygon Amoy...");
+    console.log("📊 Checking Markets on Ethereum Sepolia...");
     
     const [deployer] = await ethers.getSigners();
     console.log("📝 Using account:", deployer.address);
     
     // Contract addresses
-    const ORACLE_ADDRESS = process.env.AMOY_ORACLE || "0x...";
-    const POP_TOKEN_ADDRESS = process.env.AMOY_POP_TOKEN || "0x...";
+    const ORACLE_ADDRESS = process.env.SEPOLIA_ORACLE || "0x...";
+    const POP_TOKEN_ADDRESS = process.env.SEPOLIA_TOKEN || "0x...";
     
     if (ORACLE_ADDRESS === "0x..." || POP_TOKEN_ADDRESS === "0x...") {
         console.error("❌ Please set environment variables:");
-        console.error("   AMOY_ORACLE=0x...");
-        console.error("   AMOY_POP_TOKEN=0x...");
+        console.error("   SEPOLIA_ORACLE=0x...");
+        console.error("   SEPOLIA_TOKEN=0x...");
         process.exit(1);
     }
     
@@ -22,8 +22,7 @@ async function main() {
         const Oracle = await ethers.getContractFactory("SimplePredictionsOracle");
         const oracle = Oracle.attach(ORACLE_ADDRESS);
         
-        const ERC20 = await ethers.getContractFactory("ERC20");
-        const popToken = ERC20.attach(POP_TOKEN_ADDRESS);
+        const popToken = await ethers.getContractAt("Token", POP_TOKEN_ADDRESS);
         
         console.log("\n🔧 Oracle Configuration");
         console.log("=======================");
@@ -43,8 +42,8 @@ async function main() {
         const oracleBalance = await popToken.balanceOf(ORACLE_ADDRESS);
         console.log("Token balance:", ethers.formatEther(oracleBalance), "tokens");
         
-        const maticBalance = await ethers.provider.getBalance(ORACLE_ADDRESS);
-        console.log("MATIC balance:", ethers.formatEther(maticBalance), "MATIC");
+        const ethBalance = await ethers.provider.getBalance(ORACLE_ADDRESS);
+        console.log("ETH balance:", ethers.formatEther(ethBalance), "ETH");
         
         // Check if can create market
         const canCreate = await oracle.canCreateRandomMarket();
@@ -56,8 +55,8 @@ async function main() {
         const userPopBalance = await popToken.balanceOf(deployer.address);
         console.log("Your token balance:", ethers.formatEther(userPopBalance), "tokens");
         
-        const userMaticBalance = await ethers.provider.getBalance(deployer.address);
-        console.log("Your MATIC balance:", ethers.formatEther(userMaticBalance), "MATIC");
+        const userEthBalance = await ethers.provider.getBalance(deployer.address);
+        console.log("Your ETH balance:", ethers.formatEther(userEthBalance), "ETH");
         
         // Check open positions
         const openPositions = await oracle.getUserOpenPositions(deployer.address);
@@ -117,47 +116,115 @@ async function main() {
         const priceFeeds = {
             "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace": "ETH/USD",
             "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43": "BTC/USD",
-            "0x5de33a9112c2b700b8d30b8a3402c103578ccfa2765696471cc672bd5cf6ac52": "MATIC/USD",
+            "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a": "USDC/USD",
             "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d": "SOL/USD"
         };
         
         for (const priceId of config.priceIds) {
             const feedName = priceFeeds[priceId] || "Unknown";
             try {
+                console.log(`Fetching price for ${feedName} (${priceId})...`);
                 const price = await oracle.getCurrentPrice(priceId);
                 const formattedPrice = (Number(price.price) / 1e8).toFixed(2);
                 const ageSeconds = Math.floor(Date.now() / 1000) - Number(price.publishTime);
                 console.log(`${feedName}: $${formattedPrice} (${ageSeconds}s ago)`);
             } catch (error) {
-                console.log(`${feedName}: Error fetching price`);
+                console.log(`${feedName}: Error fetching price - ${error.message}`);
+                console.log(`   Price ID: ${priceId}`);
+                
+                // Try to get more details about the error
+                if (error.message.includes("revert")) {
+                    console.log(`   This might be a contract call revert - check if PYTH oracle is properly configured`);
+                } else if (error.message.includes("network")) {
+                    console.log(`   This might be a network connectivity issue`);
+                } else {
+                    console.log(`   Raw error: ${error}`);
+                }
             }
+        }
+        
+        // Additional PYTH oracle debugging
+        console.log("\n🔍 PYTH Oracle Debugging");
+        console.log("========================");
+        
+        try {
+            // Check if oracle has the PYTH oracle address set
+            const pythOracleAddress = await oracle.pythOracle();
+            console.log("PYTH Oracle Address:", pythOracleAddress);
+            
+            // Check if it matches the expected Sepolia address
+            const expectedPythAddress = "0xDd24F84d36BF92C65F92307595335bdFab5Bbd21";
+            if (pythOracleAddress.toLowerCase() === expectedPythAddress.toLowerCase()) {
+                console.log("✅ PYTH Oracle address is correct for Sepolia");
+            } else {
+                console.log("⚠️  PYTH Oracle address doesn't match expected Sepolia address");
+                console.log("   Expected:", expectedPythAddress);
+                console.log("   Actual:  ", pythOracleAddress);
+            }
+            
+        } catch (error) {
+            console.log("❌ Could not fetch PYTH oracle address:", error.message);
+        }
+        
+        // Try to call PYTH oracle directly
+        try {
+            console.log("\n🔄 Testing Direct PYTH Oracle Call");
+            console.log("==================================");
+            
+            const pythOracleAddress = "0xDd24F84d36BF92C65F92307595335bdFab5Bbd21";
+            const pythOracle = await ethers.getContractAt([
+                "function getPrice(bytes32 id) external view returns (int64 price, uint64 conf, int32 expo, uint256 publishTime)",
+                "function getPriceUnsafe(bytes32 id) external view returns (int64 price, uint64 conf, int32 expo, uint256 publishTime)",
+                "function getPriceNoOlderThan(bytes32 id, uint age) external view returns (int64 price, uint64 conf, int32 expo, uint256 publishTime)"
+            ], pythOracleAddress);
+            
+            // Try to get ETH/USD price directly from PYTH
+            const ethPriceId = "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace";
+            console.log("Attempting direct PYTH call for ETH/USD...");
+            
+            try {
+                const priceUnsafe = await pythOracle.getPriceNoOlderThan(ethPriceId, 100000);
+                console.log("✅ Direct PYTH call successful!");
+                const price = Number(priceUnsafe.price) * Math.pow(10, Number(priceUnsafe.expo));
+                console.log(`   Price: $${price.toFixed(2)}`);
+                console.log(`   Confidence: ${priceUnsafe.conf.toString()}`);
+                console.log(`   Expo: ${priceUnsafe.expo.toString()}`);
+                console.log(`   Publish Time: ${new Date(Number(priceUnsafe.publishTime) * 1000).toLocaleString()}`);
+                
+            } catch (directError) {
+                console.log("❌ Direct PYTH call failed:", directError.message);
+                console.log("   This suggests the PYTH oracle on Sepolia might not have this price feed");
+            }
+            
+        } catch (setupError) {
+            console.log("❌ Could not set up direct PYTH oracle test:", setupError.message);
         }
         
         console.log("\n💡 Available Actions");
         console.log("===================");
         
         if (canCreate) {
-            console.log("🎲 Create random market: npx hardhat run scripts/create-market-amoy.js --network amoy");
+            console.log("🎲 Create random market: npx hardhat run scripts/create-market-sepolia.js --network sepolia");
         } else {
             console.log("⏳ Wait for market interval or fund oracle to create markets");
         }
         
         if (openPositions.length > 0) {
-            console.log("💰 Redeem positions: npx hardhat run scripts/redeem-positions-amoy.js --network amoy");
+            console.log("💰 Redeem positions: npx hardhat run scripts/redeem-positions-sepolia.js --network sepolia");
         }
         
         if (userPopBalance > ethers.parseEther("10")) {
-            console.log("🛒 Buy positions: npx hardhat run scripts/buy-position-amoy.js --network amoy");
+            console.log("🛒 Buy positions: npx hardhat run scripts/buy-position-sepolia.js --network sepolia");
         } else {
             console.log("🪙 Get tokens from the deployed contract owner");
         }
         
         console.log("\n🔗 Useful Links");
         console.log("===============");
-        console.log("Oracle contract:", `https://amoy.polygonscan.com/address/${ORACLE_ADDRESS}`);
-        console.log("Token contract:", `https://amoy.polygonscan.com/address/${POP_TOKEN_ADDRESS}`);
+        console.log("Oracle contract:", `https://sepolia.etherscan.io/address/${ORACLE_ADDRESS}`);
+        console.log("Token contract:", `https://sepolia.etherscan.io/address/${POP_TOKEN_ADDRESS}`);
         console.log("PYTH Network:", "https://pyth.network/price-feeds");
-        console.log("Polygon Faucet:", "https://faucet.polygon.technology/");
+        console.log("Sepolia Faucet:", "https://sepoliafaucet.com/");
         
     } catch (error) {
         console.error("❌ Failed to check markets:", error.message);
