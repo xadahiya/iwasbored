@@ -64,7 +64,7 @@ const MarketDetailsFetcher = ({ questionId }) => {
   const timeRemainingMinutes = Math.floor(timeRemaining / 60);
   const data = {
     id: questionData.questionId,
-    question: `${tokenSymbol} above $2,500 in ${timeRemainingMinutes} mins?`,
+    question: `${tokenSymbol} above ${Number(questionData.initialPrice)/1e8} in ${timeRemainingMinutes} mins?`,
     initialPrice: questionData.initialPrice,
     finalPrice: questionData.finalPrice,
     stake: 0,
