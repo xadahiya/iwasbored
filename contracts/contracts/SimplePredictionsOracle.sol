@@ -22,6 +22,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
     using EnumerableSet for EnumerableSet.AddressSet;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
+
     // External contract interfaces
     ConditionalTokens public conditionalTokens;
     IFactory public FPMMFactory;
@@ -69,13 +70,8 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
     );
     event MarketResolved(
         bytes32 indexed questionId,
-        bytes32 indexed priceFeedId,
-        int64 initialPrice,
         int64 finalPrice,
-        bool priceWentUp,
-        uint256[] payouts,
-        address resolver,
-        string answerCid
+        uint256[] payouts
     );
     event BuyPosition(
         address indexed wallet,
@@ -357,17 +353,9 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
     /**
      * @dev Creates a random market using PYTH price feeds
      */
-    function createMarket(bytes32 questionId, uint256 marketEndTimestamp, bytes[] calldata priceUpdateData) external payable returns (bytes32) {
-        
+    function createMarket(bytes32 questionId, uint256 randomIndex, uint256 marketEndTimestamp, bytes[] calldata priceUpdateData) external onlyOwner payable returns (bytes32) {
+        require(randomIndex < marketConfig.priceIds.length, "Invalid random index");
         require(marketConfig.priceIds.length > 0, "No price feeds configured");
-        require(
-            collateralToken.balanceOf(address(this)) >= marketConfig.initialFunding,
-            "Insufficient funds for random market"
-        );
-
-        // Select random price feed
-        uint256 randomIndex = uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % marketConfig.priceIds.length;
-        bytes32 selectedPriceId = marketConfig.priceIds[randomIndex];
 
         // Update PYTH price feeds
         uint updateFee = pythOracle.getUpdateFee(priceUpdateData);
@@ -376,9 +364,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
 
 
         // Get current price (fresh after update)
-        PythStructs.Price memory currentPrice = pythOracle.getPriceUnsafe(selectedPriceId);
-        require(currentPrice.price > 0, "Invalid price data");
-        require(currentPrice.publishTime > 0, "Invalid price timestamp");
+        PythStructs.Price memory currentPrice = pythOracle.getPriceUnsafe(marketConfig.priceIds[randomIndex]);
 
         int64 initialPrice = currentPrice.price;
 
@@ -398,24 +384,22 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
             address(this)
         );
 
-        address fpmmAddress = address(fpmm);
-
         // Add initial funding with 50/50 distribution
         uint256[] memory distributionHints = new uint256[](2);
         distributionHints[0] = ONE / 2; // 50% for "price goes up"
         distributionHints[1] = ONE / 2; // 50% for "price goes down"
 
-        collateralToken.approve(fpmmAddress, marketConfig.initialFunding);
+        collateralToken.approve(address(fpmm), marketConfig.initialFunding);
         fpmm.addFunding(marketConfig.initialFunding, distributionHints);
 
         // Set approval for spending conditional tokens
-        conditionalTokens.setApprovalForAll(fpmmAddress, true);
+        conditionalTokens.setApprovalForAll(address(fpmm), true);
 
         questions[questionId] = QuestionData(
             block.timestamp,
             marketEndTimestamp,
-            fpmmAddress,
-            selectedPriceId,
+            address(fpmm),
+            marketConfig.priceIds[randomIndex],
             conditionId,
             initialPrice,
             0, // finalPrice - set during resolution
@@ -426,7 +410,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
 
         activeMarketIds.push(questionId);
 
-        emit MarketCreated(questionId, selectedPriceId, initialPrice, marketEndTimestamp, fpmmAddress);
+        emit MarketCreated(questionId, marketConfig.priceIds[randomIndex], initialPrice, marketEndTimestamp, address(fpmm));
 
         return questionId;
     }
@@ -438,7 +422,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
         bytes32 questionId,
         bytes[] calldata priceUpdateData,
         string memory answerCid
-    ) external payable {
+    ) external onlyOwner payable {
         require(questionId != bytes32(0), "No question to resolve");
 
         QuestionData memory questionData = questions[questionId];
@@ -486,7 +470,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
 
         conditionalTokens.reportPayouts(questionId, payouts);
 
-        emit MarketResolved(questionId, questionData.priceFeedId, questionData.initialPrice, finalPrice, priceWentUp, payouts, msg.sender, answers[questionId].answerCid);
+        emit MarketResolved(questionId, finalPrice,  payouts);
     }
 
     /**

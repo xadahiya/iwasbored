@@ -94,14 +94,14 @@ async function main() {
         console.log("\n2️⃣ Deploying ConditionalTokens...");
         const ConditionalTokens = await ethers.getContractFactory("ConditionalTokens");
         const conditionalTokens = await ConditionalTokens.deploy(
-            "https://api.onchainpoints.xyz/metadata/".substring(0, 32)
+            "ETH"
         );
         await conditionalTokens.waitForDeployment();
         deployedAddresses.CONDITIONAL_TOKENS = conditionalTokens.target;
         console.log("✅ ConditionalTokens deployed:", conditionalTokens.target);
         
         // Verify ConditionalTokens
-        await verifyContract(conditionalTokens.target, ["https://api.onchainpoints.xyz/metadata/".substring(0, 32)]);
+        await verifyContract(conditionalTokens.target, ["ETH"]);
 
         // 3. Deploy Factory
         console.log("\n3️⃣ Deploying Factory...");
