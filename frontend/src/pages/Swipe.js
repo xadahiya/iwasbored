@@ -87,7 +87,7 @@ const Swipe = () => {
   const [gone] = useState(() => new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [stakeAmount, setStakeAmount] = useState(0.10); // Managed in Swipe.js
+  const [stakeAmount, setStakeAmount] = useState(1); // Managed in Swipe.js
 
   // Use the Oracle contract hook to get read configs and write functions
   const { getOwnerConfig, getActiveMarketIdsConfig, buyPosition, isWriteLoading, writeError, writeData } = useOracleContract();
@@ -183,7 +183,7 @@ const Swipe = () => {
     });
 
     setTimeout(() => {
-      setCurrentIndex(prev => prev + 1);
+      setCurrentIndex(prev => (prev + 1) % (activeMarketIds ? activeMarketIds.length : 0));
       setIsAnimating(false);
     }, 300);
   };
@@ -325,13 +325,13 @@ const Swipe = () => {
           <>
             <div className="stake-controls">
               <div className="stake-display">
-                <span className="stake-label">Stake Amount</span>
+                <span className="stake-label">Buy Amount</span>
                 <span className="stake-value">{stakeAmount.toFixed(2)} PYUSD</span>
               </div>
               <div className="stake-slider-container">
                 <input
                   type="range"
-                  min="0.10"
+                  min="1"
                   max="10"
                   step="0.10"
                   value={stakeAmount}
@@ -340,7 +340,7 @@ const Swipe = () => {
                   disabled={isAnimating || isWriteLoading} // Disable slider during transaction
                 />
                 <div className="stake-range-labels">
-                  <span>0.10 PYUSD</span>
+                  <span>1 PYUSD</span>
                   <span>10 PYUSD</span>
                 </div>
               </div>
@@ -379,13 +379,6 @@ const Swipe = () => {
             {writeError && <p style={{ color: 'red' }}>Transaction failed: {writeError.message}</p>}
             {writeData && <p>Transaction successful! Hash: {writeData.hash}</p>}
           </>
-        )}
-
-        {currentIndex >= (activeMarketIds ? activeMarketIds.length : 0) && (
-          <div className="swipe-complete">
-            <h2>All predictions swiped!</h2>
-            <p>Check out your My Bets to see your active predictions</p>
-          </div>
         )}
       </div>
     </div>
