@@ -436,7 +436,8 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
      */
     function resolveMarket(
         bytes32 questionId,
-        bytes[] calldata priceUpdateData
+        bytes[] calldata priceUpdateData,
+        string memory answerCid
     ) external payable {
         require(questionId != bytes32(0), "No question to resolve");
 
@@ -480,12 +481,7 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
         answers[questionId] = AnswerData(
             payouts,
             block.timestamp,
-            string(abi.encodePacked(
-                "Resolved: Price ", 
-                priceWentUp ? "went UP" : "went DOWN",
-                " from $", _int64ToString(questionData.initialPrice),
-                " to $", _int64ToString(finalPrice)
-            ))
+            answerCid
         );
 
         conditionalTokens.reportPayouts(questionId, payouts);
