@@ -1,0 +1,2808 @@
+{
+  "version": "3.4",
+  "log": [
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin/contracts/access/Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin/contracts/access/Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC1155Errors": {
+        "src": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:113",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC20Errors": {
+        "src": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC721Errors": {
+        "src": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:55",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:ERC1155": {
+        "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:19",
+        "inherit": [
+          "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC1155Errors",
+          "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol:IERC1155MetadataURI",
+          "@openzeppelin/contracts/token/ERC1155/IERC1155.sol:IERC1155",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "@openzeppelin/contracts/utils/Arrays.sol:Arrays",
+          "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Utils.sol:ERC1155Utils"
+        ],
+        "methods": [
+          "supportsInterface(bytes4)",
+          "uri(uint256)",
+          "balanceOf(address,uint256)",
+          "balanceOfBatch(address[],uint256[])",
+          "setApprovalForAll(address,bool)",
+          "isApprovedForAll(address,address)",
+          "safeTransferFrom(address,address,uint256,uint256,bytes)",
+          "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ERC1155",
+            "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:33"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:23"
+            },
+            {
+              "label": "_operatorApprovals",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_bool))",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:25"
+            },
+            {
+              "label": "_uri",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_string_storage",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:28"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_bool))": {
+              "label": "mapping(address => mapping(address => bool))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(uint256 => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/IERC1155.sol:IERC1155": {
+        "src": "@openzeppelin/contracts/token/ERC1155/IERC1155.sol:12",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165"
+        ],
+        "libraries": [],
+        "methods": [
+          "balanceOf(address,uint256)",
+          "balanceOfBatch(address[],uint256[])",
+          "setApprovalForAll(address,bool)",
+          "isApprovedForAll(address,address)",
+          "safeTransferFrom(address,address,uint256,uint256,bytes)",
+          "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol:IERC1155Receiver": {
+        "src": "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol:12",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165"
+        ],
+        "libraries": [],
+        "methods": [
+          "onERC1155Received(address,address,uint256,uint256,bytes)",
+          "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:ERC1155URIStorage": {
+        "src": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:13",
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:ERC1155",
+          "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC1155Errors",
+          "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol:IERC1155MetadataURI",
+          "@openzeppelin/contracts/token/ERC1155/IERC1155.sol:IERC1155",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "@openzeppelin/contracts/utils/Strings.sol:Strings"
+        ],
+        "methods": [
+          "uri(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "state-variable-assignment",
+            "name": "_baseURI",
+            "src": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:17"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:23"
+            },
+            {
+              "label": "_operatorApprovals",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_bool))",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:25"
+            },
+            {
+              "label": "_uri",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_string_storage",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:28"
+            },
+            {
+              "label": "_baseURI",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "ERC1155URIStorage",
+              "src": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:17"
+            },
+            {
+              "label": "_tokenURIs",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_mapping(t_uint256,t_string_storage)",
+              "contract": "ERC1155URIStorage",
+              "src": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:20"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_bool))": {
+              "label": "mapping(address => mapping(address => bool))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(uint256 => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_string_storage)": {
+              "label": "mapping(uint256 => string)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol:IERC1155MetadataURI": {
+        "src": "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol:12",
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC1155/IERC1155.sol:IERC1155",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165"
+        ],
+        "libraries": [],
+        "methods": [
+          "uri(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol:ERC1155Holder": {
+        "src": "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol:15",
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol:IERC1155Receiver",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165"
+        ],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)",
+          "onERC1155Received(address,address,uint256,uint256,bytes)",
+          "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Utils.sol:ERC1155Utils": {
+        "src": "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Utils.sol:16",
+        "version": {
+          "withMetadata": "f3e0d9ebb55e64189756136c4df625974ebc87925076321ad968e06130a618e6",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:29",
+        "inherit": [
+          "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC20Errors",
+          "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol:IERC20Metadata",
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()",
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ERC20",
+            "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:44"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:30"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:32"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:34"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:36"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:37"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin/contracts/token/ERC20/IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol:IERC20Metadata": {
+        "src": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol:11",
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20"
+        ],
+        "libraries": [],
+        "methods": [
+          "name()",
+          "symbol()",
+          "decimals()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Arrays.sol:Arrays": {
+        "src": "@openzeppelin/contracts/utils/Arrays.sol:15",
+        "version": {
+          "withMetadata": "5b3caf0b6cbce753de0810976b2198f62660d6be2e6c0242bc980df32e842daf",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts/utils/SlotDerivation.sol:SlotDerivation",
+          "@openzeppelin/contracts/utils/StorageSlot.sol:StorageSlot",
+          "@openzeppelin/contracts/utils/Comparators.sol:Comparators",
+          "@openzeppelin/contracts/utils/math/Math.sol:Math"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Comparators.sol:Comparators": {
+        "src": "@openzeppelin/contracts/utils/Comparators.sol:11",
+        "version": {
+          "withMetadata": "04071016253e7d98924a3168eb46c6e1f2f32443b08624a359b548a2970998f6",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin/contracts/utils/Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Panic.sol:Panic": {
+        "src": "@openzeppelin/contracts/utils/Panic.sol:26",
+        "version": {
+          "withMetadata": "6927c1144920a23f50125925fcaf7deb1a8fd5d5181d1560d2825c769a0d84bf",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard": {
+        "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:25",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:47"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:40"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/SlotDerivation.sol:SlotDerivation": {
+        "src": "@openzeppelin/contracts/utils/SlotDerivation.sol:41",
+        "version": {
+          "withMetadata": "6680c728c967d0407febca62a652473e06612c201d5a0a5d7bcbbf37db05b323",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/StorageSlot.sol:StorageSlot": {
+        "src": "@openzeppelin/contracts/utils/StorageSlot.sol:34",
+        "version": {
+          "withMetadata": "b12fe0616c11fc40b18f39b6921768b9ffd4bfc26e6fbeee0034c3d08920a157",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/Strings.sol:Strings": {
+        "src": "@openzeppelin/contracts/utils/Strings.sol:13",
+        "version": {
+          "withMetadata": "fccd8ddeb38a7d1a585c2bb768f4b16787eb6626855b4dce16dac902b08a8664",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts/utils/math/SafeCast.sol:SafeCast",
+          "@openzeppelin/contracts/utils/math/Math.sol:Math",
+          "@openzeppelin/contracts/utils/math/SignedMath.sol:SignedMath"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165": {
+        "src": "@openzeppelin/contracts/utils/introspection/ERC165.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165"
+        ],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165": {
+        "src": "@openzeppelin/contracts/utils/introspection/IERC165.sol:15",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/math/Math.sol:Math": {
+        "src": "@openzeppelin/contracts/utils/math/Math.sol:12",
+        "version": {
+          "withMetadata": "9d4548a19d2e77bb3b844064475b42b37ceb3cd710e8c578a8facb1d31a2a22d",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts/utils/math/SafeCast.sol:SafeCast",
+          "@openzeppelin/contracts/utils/math/Math.sol:Math",
+          "@openzeppelin/contracts/utils/Panic.sol:Panic"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/math/SafeCast.sol:SafeCast": {
+        "src": "@openzeppelin/contracts/utils/math/SafeCast.sol:19",
+        "version": {
+          "withMetadata": "302f0c9c979e313ac611f0c108487536fff4e9752e05da760161ed6a8e5a8338",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/math/SignedMath.sol:SignedMath": {
+        "src": "@openzeppelin/contracts/utils/math/SignedMath.sol:11",
+        "version": {
+          "withMetadata": "8fa15dd067e9d6606d146837b0bb23c27c15487b23a64a298b25ae739a8cabc7",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts/utils/math/SafeCast.sol:SafeCast"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@openzeppelin/contracts/utils/structs/EnumerableSet.sol:EnumerableSet": {
+        "src": "@openzeppelin/contracts/utils/structs/EnumerableSet.sol:50",
+        "version": {
+          "withMetadata": "fdde8c7f9a5b46e1c854da1605c1dc830f265e899ccd7702dc89c82271d4ec26",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@openzeppelin/contracts/utils/Arrays.sol:Arrays",
+          "@openzeppelin/contracts/utils/math/Math.sol:Math"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@pythnetwork/pyth-sdk-solidity/IPyth.sol:IPyth": {
+        "src": "@pythnetwork/pyth-sdk-solidity/IPyth.sol:10",
+        "inherit": [
+          "@pythnetwork/pyth-sdk-solidity/IPythEvents.sol:IPythEvents"
+        ],
+        "libraries": [],
+        "methods": [
+          "getPriceUnsafe(bytes32)",
+          "getPriceNoOlderThan(bytes32,uint256)",
+          "getEmaPriceUnsafe(bytes32)",
+          "getEmaPriceNoOlderThan(bytes32,uint256)",
+          "updatePriceFeeds(bytes[])",
+          "updatePriceFeedsIfNecessary(bytes[],bytes32[],uint64[])",
+          "getUpdateFee(bytes[])",
+          "getTwapUpdateFee(bytes[])",
+          "parsePriceFeedUpdates(bytes[],bytes32[],uint64,uint64)",
+          "parsePriceFeedUpdatesWithConfig(bytes[],bytes32[],uint64,uint64,bool,bool,bool)",
+          "parseTwapPriceFeedUpdates(bytes[],bytes32[])",
+          "parsePriceFeedUpdatesUnique(bytes[],bytes32[],uint64,uint64)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@pythnetwork/pyth-sdk-solidity/IPythEvents.sol:IPythEvents": {
+        "src": "@pythnetwork/pyth-sdk-solidity/IPythEvents.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@pythnetwork/pyth-sdk-solidity/PythStructs.sol:PythStructs": {
+        "src": "@pythnetwork/pyth-sdk-solidity/PythStructs.sol:4",
+        "version": {
+          "withMetadata": "a9d4e90265808f53fb2a7be1c1e825481c3d34293292fdfb3ae2fa192a63c793",
+          "withoutMetadata": "ac0db523ddc3e330f735df7b3b0b24460531c71290a891170e840f8f67d5ff6b",
+          "linkedWithoutMetadata": "ac0db523ddc3e330f735df7b3b0b24460531c71290a891170e840f8f67d5ff6b"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:SelfVerificationRoot": {
+        "src": "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:18",
+        "inherit": [
+          "@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol:ISelfVerificationRoot"
+        ],
+        "libraries": [
+          "@selfxyz/contracts/contracts/libraries/SelfUtils.sol:SelfUtils",
+          "@selfxyz/contracts/contracts/libraries/Formatter.sol:Formatter"
+        ],
+        "methods": [
+          "scope()",
+          "verifySelfProof(bytes,bytes)",
+          "onVerificationSuccess(bytes,bytes)",
+          "getConfigId(bytes32,bytes32,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SelfVerificationRoot",
+            "src": "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:61"
+          },
+          {
+            "kind": "state-variable-immutable",
+            "name": "_identityVerificationHubV2",
+            "src": "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:37"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_scope",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "SelfVerificationRoot",
+              "src": "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:33"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/constants/AttestationId.sol:AttestationId": {
+        "src": "@selfxyz/contracts/contracts/constants/AttestationId.sol:10",
+        "version": {
+          "withMetadata": "ef667288cf8d7cc4d30ae5cbb5b58c86b137d73a991c6d0efb25eee0366e2c29",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/constants/CircuitConstantsV2.sol:CircuitConstantsV2": {
+        "src": "@selfxyz/contracts/contracts/constants/CircuitConstantsV2.sol:12",
+        "version": {
+          "withMetadata": "eef3193b49de7c30d39cc155f7a2f7a210d9363b6a87852ab9963ac34630a603",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@selfxyz/contracts/contracts/constants/AttestationId.sol:AttestationId"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/interfaces/IDscCircuitVerifier.sol:IDscCircuitVerifier": {
+        "src": "@selfxyz/contracts/contracts/interfaces/IDscCircuitVerifier.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/interfaces/IIdentityVerificationHubV2.sol:IIdentityVerificationHubV2": {
+        "src": "@selfxyz/contracts/contracts/interfaces/IIdentityVerificationHubV2.sol:13",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "registerCommitment(bytes32,uint256,(uint256[2],uint256[2][2],uint256[2],uint256[3]))",
+          "registerDscKeyCommitment(bytes32,uint256,(uint256[2],uint256[2][2],uint256[2],uint256[2]))",
+          "setVerificationConfigV2((bool,uint256,bool,uint256[4],bool[3]))",
+          "verify(bytes,bytes)",
+          "updateRegistry(bytes32,address)",
+          "updateVcAndDiscloseCircuit(bytes32,address)",
+          "updateRegisterCircuitVerifier(bytes32,uint256,address)",
+          "updateDscVerifier(bytes32,uint256,address)",
+          "batchUpdateRegisterCircuitVerifiers(bytes32[],uint256[],address[])",
+          "batchUpdateDscCircuitVerifiers(bytes32[],uint256[],address[])",
+          "registry(bytes32)",
+          "discloseVerifier(bytes32)",
+          "registerCircuitVerifiers(bytes32,uint256)",
+          "dscCircuitVerifiers(bytes32,uint256)",
+          "rootTimestamp(bytes32,uint256)",
+          "getIdentityCommitmentMerkleRoot(bytes32)",
+          "verificationConfigV2Exists(bytes32)",
+          "generateConfigId((bool,uint256,bool,uint256[4],bool[3]))"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/interfaces/IPoseidonT3.sol:IPoseidonT3": {
+        "src": "@selfxyz/contracts/contracts/interfaces/IPoseidonT3.sol:8",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "hash(uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/interfaces/IRegisterCircuitVerifier.sol:IAadhaarRegisterCircuitVerifier": {
+        "src": "@selfxyz/contracts/contracts/interfaces/IRegisterCircuitVerifier.sol:49",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[4])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/interfaces/IRegisterCircuitVerifier.sol:IRegisterCircuitVerifier": {
+        "src": "@selfxyz/contracts/contracts/interfaces/IRegisterCircuitVerifier.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol:ISelfVerificationRoot": {
+        "src": "@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifySelfProof(bytes,bytes)",
+          "onVerificationSuccess(bytes,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/libraries/Formatter.sol:Formatter": {
+        "src": "@selfxyz/contracts/contracts/libraries/Formatter.sol:8",
+        "version": {
+          "withMetadata": "a5a274b0463f414a12a7f66fc827ae3b942a44c7c50dbf3d987f0442d34e36ab",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/libraries/SelfStructs.sol:SelfStructs": {
+        "src": "@selfxyz/contracts/contracts/libraries/SelfStructs.sol:9",
+        "version": {
+          "withMetadata": "e7438ca1c45c1a08d17b8c18f3736b883222fc7902bbf2128b63e4f88e815859",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "@selfxyz/contracts/contracts/libraries/SelfUtils.sol:SelfUtils": {
+        "src": "@selfxyz/contracts/contracts/libraries/SelfUtils.sol:5",
+        "version": {
+          "withMetadata": "1411c29f604321d5a5da698a981011e15bbf301f50600940992acdff3e4ecc15",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [
+          "@selfxyz/contracts/contracts/libraries/SelfStructs.sol:SelfStructs"
+        ],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/AgeVerification.sol:ProofOfHuman": {
+        "src": "contracts/AgeVerification.sol:15",
+        "version": {
+          "withMetadata": "a149fc1642c9f70a6c35852f78bc9da4bc4f26d508cd92a3d40a1de22be0263a",
+          "withoutMetadata": "e12ac3d5f79d0d5f55c8a99f2147c1280c9772ca3aa00b2757bef9e87a510eae",
+          "linkedWithoutMetadata": "e12ac3d5f79d0d5f55c8a99f2147c1280c9772ca3aa00b2757bef9e87a510eae"
+        },
+        "inherit": [
+          "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:SelfVerificationRoot",
+          "@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol:ISelfVerificationRoot"
+        ],
+        "libraries": [
+          "@selfxyz/contracts/contracts/libraries/SelfUtils.sol:SelfUtils"
+        ],
+        "methods": [
+          "(address,string,(uint256,string[],bool))",
+          "setConfigId(bytes32)",
+          "getConfigId(bytes32,bytes32,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ProofOfHuman",
+            "src": "contracts/AgeVerification.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_scope",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_uint256",
+              "contract": "SelfVerificationRoot",
+              "src": "@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol:33"
+            },
+            {
+              "label": "verificationSuccessful",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_bool",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:17"
+            },
+            {
+              "label": "lastOutput",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_struct(GenericDiscloseOutputV2)11391_storage",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:18"
+            },
+            {
+              "label": "lastUserData",
+              "offset": 0,
+              "slot": "18",
+              "type": "t_bytes_storage",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:19"
+            },
+            {
+              "label": "verificationConfig",
+              "offset": 0,
+              "slot": "19",
+              "type": "t_struct(VerificationConfigV2)13285_storage",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:20"
+            },
+            {
+              "label": "verificationConfigId",
+              "offset": 0,
+              "slot": "27",
+              "type": "t_bytes32",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:21"
+            },
+            {
+              "label": "lastUserAddress",
+              "offset": 0,
+              "slot": "28",
+              "type": "t_address",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:22"
+            },
+            {
+              "label": "verifiedHumans",
+              "offset": 0,
+              "slot": "29",
+              "type": "t_mapping(t_address,t_bool)",
+              "contract": "ProofOfHuman",
+              "src": "contracts/AgeVerification.sol:23"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_bool)3_storage": {
+              "label": "bool[3]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_string_storage)dyn_storage": {
+              "label": "string[]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_uint256)4_storage": {
+              "label": "uint256[4]",
+              "numberOfBytes": "128"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_bytes_storage": {
+              "label": "bytes",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(GenericDiscloseOutputV2)11391_storage": {
+              "label": "struct ISelfVerificationRoot.GenericDiscloseOutputV2",
+              "members": [
+                {
+                  "label": "attestationId",
+                  "type": "t_bytes32",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "userIdentifier",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "nullifier",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "forbiddenCountriesListPacked",
+                  "type": "t_array(t_uint256)4_storage",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "issuingState",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "7"
+                },
+                {
+                  "label": "name",
+                  "type": "t_array(t_string_storage)dyn_storage",
+                  "offset": 0,
+                  "slot": "8"
+                },
+                {
+                  "label": "idNumber",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "9"
+                },
+                {
+                  "label": "nationality",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "10"
+                },
+                {
+                  "label": "dateOfBirth",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "11"
+                },
+                {
+                  "label": "gender",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "12"
+                },
+                {
+                  "label": "expiryDate",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "13"
+                },
+                {
+                  "label": "olderThan",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "14"
+                },
+                {
+                  "label": "ofac",
+                  "type": "t_array(t_bool)3_storage",
+                  "offset": 0,
+                  "slot": "15"
+                }
+              ],
+              "numberOfBytes": "512"
+            },
+            "t_struct(VerificationConfigV2)13285_storage": {
+              "label": "struct SelfStructs.VerificationConfigV2",
+              "members": [
+                {
+                  "label": "olderThanEnabled",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "olderThan",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "forbiddenCountriesEnabled",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "forbiddenCountriesListPacked",
+                  "type": "t_array(t_uint256)4_storage",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "ofacEnabled",
+                  "type": "t_array(t_bool)3_storage",
+                  "offset": 0,
+                  "slot": "7"
+                }
+              ],
+              "numberOfBytes": "256"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/CTHelpers.sol:CTHelpers": {
+        "src": "contracts/CTHelpers.sol:7",
+        "version": {
+          "withMetadata": "e8209bf8f0b70edeed2120d46e17eafc5a687f3a3c41de1ae38cd2a4be5055bc",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/ConditionalTokens.sol:ConditionalTokens": {
+        "src": "contracts/ConditionalTokens.sol:11",
+        "version": {
+          "withMetadata": "1e001fe967f66a480c8baac1ec9af56b7489eabbdc3b637a256034f197c54954",
+          "withoutMetadata": "4f678661aa5cb06ad75af7829b0d7c00cfc3f0fe7ec341d60b20cfde5473ae34",
+          "linkedWithoutMetadata": "4f678661aa5cb06ad75af7829b0d7c00cfc3f0fe7ec341d60b20cfde5473ae34"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:ERC1155URIStorage",
+          "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:ERC1155",
+          "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC1155Errors",
+          "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol:IERC1155MetadataURI",
+          "@openzeppelin/contracts/token/ERC1155/IERC1155.sol:IERC1155",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "contracts/SafeMath.sol:SafeMath",
+          "contracts/CTHelpers.sol:CTHelpers",
+          "@openzeppelin/contracts/utils/Strings.sol:Strings"
+        ],
+        "methods": [
+          "(string)",
+          "setOracleAddress(address)",
+          "prepareCondition(address,bytes32,uint256)",
+          "reportPayouts(bytes32,uint256[])",
+          "splitPosition(address,bytes32,bytes32,uint256[],uint256)",
+          "mergePositions(address,bytes32,bytes32,uint256[],uint256)",
+          "redeemPositions(address,bytes32,bytes32,uint256[])",
+          "redeemPositionsOnBehalf(address,bytes32,bytes32,uint256[],address)",
+          "getOutcomeSlotCount(bytes32)",
+          "getConditionId(address,bytes32,uint256)",
+          "getCollectionId(bytes32,bytes32,uint256)",
+          "getPositionId(address,bytes32)",
+          "uri(uint256)",
+          "tokenURI(uint256)",
+          "setURI(string)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConditionalTokens",
+            "src": "contracts/ConditionalTokens.sol:68"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:23"
+            },
+            {
+              "label": "_operatorApprovals",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_bool))",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:25"
+            },
+            {
+              "label": "_uri",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "ERC1155",
+              "src": "@openzeppelin/contracts/token/ERC1155/ERC1155.sol:28"
+            },
+            {
+              "label": "_baseURI",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "ERC1155URIStorage",
+              "src": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:17"
+            },
+            {
+              "label": "_tokenURIs",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_mapping(t_uint256,t_string_storage)",
+              "contract": "ERC1155URIStorage",
+              "src": "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol:20"
+            },
+            {
+              "label": "oracleAddress",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_address",
+              "contract": "ConditionalTokens",
+              "src": "contracts/ConditionalTokens.sol:61"
+            },
+            {
+              "label": "payoutNumerators",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_mapping(t_bytes32,t_array(t_uint256)dyn_storage)",
+              "contract": "ConditionalTokens",
+              "src": "contracts/ConditionalTokens.sol:64"
+            },
+            {
+              "label": "payoutDenominator",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_bytes32,t_uint256)",
+              "contract": "ConditionalTokens",
+              "src": "contracts/ConditionalTokens.sol:66"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_bool))": {
+              "label": "mapping(address => mapping(address => bool))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_array(t_uint256)dyn_storage)": {
+              "label": "mapping(bytes32 => uint256[])",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_uint256)": {
+              "label": "mapping(bytes32 => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(uint256 => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_uint256,t_string_storage)": {
+              "label": "mapping(uint256 => string)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/ERC20.sol:Token": {
+        "src": "contracts/ERC20.sol:7",
+        "version": {
+          "withMetadata": "d653d60e0a17831a614a8f362c273816c721778f2e8a72f46d783f4718105abe",
+          "withoutMetadata": "5c7f66312fb45b6ce096cb9358da7ebb1a7da8dfd3be5c4032151d6d83dd0a50",
+          "linkedWithoutMetadata": "5c7f66312fb45b6ce096cb9358da7ebb1a7da8dfd3be5c4032151d6d83dd0a50"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20",
+          "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC20Errors",
+          "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol:IERC20Metadata",
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(string,string)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Token",
+            "src": "contracts/ERC20.sol:8"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:30"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:32"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:34"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:36"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:37"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/Factory.sol:Factory": {
+        "src": "contracts/Factory.sol:12",
+        "version": {
+          "withMetadata": "a3f698ce8fa4a246cbe909b4876642afaf2a70b9904d38ac4f48308cb76e6ec5",
+          "withoutMetadata": "67d5be0e9a0e8415a5c717d7be9c31492b911fb062bf49a0241062f7c9a6dab9",
+          "linkedWithoutMetadata": "67d5be0e9a0e8415a5c717d7be9c31492b911fb062bf49a0241062f7c9a6dab9"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "()",
+          "createFixedProductMarketMaker(address,address,bytes32[],uint256,uint256,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/FixedProductMarketMaker.sol:CeilDiv": {
+        "src": "contracts/FixedProductMarketMaker.sol:15",
+        "version": {
+          "withMetadata": "179a4aa7723d284584a080af4bca7655fec043369f6c67bb7dc816d426614292",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/FixedProductMarketMaker.sol:FixedProductMarketMaker": {
+        "src": "contracts/FixedProductMarketMaker.sol:29",
+        "version": {
+          "withMetadata": "f765caf1a5f772cf74b1ba2f214fa160779e40acc6199af2a9464215a9a9953f",
+          "withoutMetadata": "60508f631a25cd7de067cc599dd6b4214fca5b9e253127a7b65c4332f3dcdfa0",
+          "linkedWithoutMetadata": "60508f631a25cd7de067cc599dd6b4214fca5b9e253127a7b65c4332f3dcdfa0"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol:ERC1155Holder",
+          "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol:IERC1155Receiver",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/token/ERC20/ERC20.sol:ERC20",
+          "@openzeppelin/contracts/interfaces/draft-IERC6093.sol:IERC20Errors",
+          "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol:IERC20Metadata",
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "contracts/SafeMath.sol:SafeMath",
+          "contracts/FixedProductMarketMaker.sol:CeilDiv",
+          "contracts/CTHelpers.sol:CTHelpers"
+        ],
+        "methods": [
+          "()",
+          "initialize(address,address,bytes32[],uint256,uint256,address)",
+          "getAddressBalances(address)",
+          "sumArray(uint256[])",
+          "collectedFees()",
+          "feesWithdrawableBy(address)",
+          "withdrawFees(address)",
+          "addFunding(uint256,uint256[])",
+          "removeFunding(uint256)",
+          "calcBuyAmount(uint256,uint256)",
+          "calculateProbabilities()",
+          "calcSellAmount(uint256,uint256)",
+          "buy(uint256,uint256,uint256)",
+          "buyOnBehalf(uint256,uint256,uint256,address)",
+          "sell(uint256,uint256,uint256)",
+          "sellOnBehalf(uint256,uint256,uint256)",
+          "getPositionIds()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "FixedProductMarketMaker",
+            "src": "contracts/FixedProductMarketMaker.sol:71"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "MUL_FACTOR",
+            "src": "contracts/FixedProductMarketMaker.sol:57"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_balances",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:30"
+            },
+            {
+              "label": "_allowances",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:32"
+            },
+            {
+              "label": "_totalSupply",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:34"
+            },
+            {
+              "label": "_name",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:36"
+            },
+            {
+              "label": "_symbol",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "ERC20",
+              "src": "@openzeppelin/contracts/token/ERC20/ERC20.sol:37"
+            },
+            {
+              "label": "conditionalTokens",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_contract(ConditionalTokens)15469",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:41"
+            },
+            {
+              "label": "collateralToken",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_contract(IERC20)2298",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:42"
+            },
+            {
+              "label": "conditionIds",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_array(t_bytes32)dyn_storage",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:43"
+            },
+            {
+              "label": "fee",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_uint256",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:44"
+            },
+            {
+              "label": "isInitialized",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_bool",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:45"
+            },
+            {
+              "label": "marketEndTime",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_uint256",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:46"
+            },
+            {
+              "label": "uniqueBuys",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_uint256",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:47"
+            },
+            {
+              "label": "oracleAddress",
+              "offset": 0,
+              "slot": "12",
+              "type": "t_address",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:48"
+            },
+            {
+              "label": "outcomeSlotCounts",
+              "offset": 0,
+              "slot": "13",
+              "type": "t_array(t_uint256)dyn_storage",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:50"
+            },
+            {
+              "label": "collectionIds",
+              "offset": 0,
+              "slot": "14",
+              "type": "t_array(t_array(t_bytes32)dyn_storage)dyn_storage",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:51"
+            },
+            {
+              "label": "positionIds",
+              "offset": 0,
+              "slot": "15",
+              "type": "t_array(t_uint256)dyn_storage",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:52"
+            },
+            {
+              "label": "withdrawnFees",
+              "offset": 0,
+              "slot": "16",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:53"
+            },
+            {
+              "label": "totalWithdrawnFees",
+              "offset": 0,
+              "slot": "17",
+              "type": "t_uint256",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:54"
+            },
+            {
+              "label": "feePoolWeight",
+              "offset": 0,
+              "slot": "18",
+              "type": "t_uint256",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:55"
+            },
+            {
+              "label": "MUL_FACTOR",
+              "offset": 0,
+              "slot": "19",
+              "type": "t_uint256",
+              "contract": "FixedProductMarketMaker",
+              "src": "contracts/FixedProductMarketMaker.sol:57"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_array(t_bytes32)dyn_storage)dyn_storage": {
+              "label": "bytes32[][]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_bytes32)dyn_storage": {
+              "label": "bytes32[]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_contract(ConditionalTokens)15469": {
+              "label": "contract ConditionalTokens",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IERC20)2298": {
+              "label": "contract IERC20",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(address => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/MockIdentityVerificationHub.sol:MockIdentityVerificationHub": {
+        "src": "contracts/MockIdentityVerificationHub.sol:11",
+        "version": {
+          "withMetadata": "ee5d91fc5774e01c2e927ea51f923b6b43295b51a4d419a9b8067005ce1e3a28",
+          "withoutMetadata": "35fc43ecac1da6b582fb070abc0db5446f13334c42e0fe1507583633d7f3236a",
+          "linkedWithoutMetadata": "35fc43ecac1da6b582fb070abc0db5446f13334c42e0fe1507583633d7f3236a"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setVerificationConfigV2((bool,uint256,bool,uint256[4],bool[3]))",
+          "getVerificationConfig(bytes32)",
+          "mockVerifyUser(address,address,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [
+            {
+              "label": "verificationConfigs",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_mapping(t_bytes32,t_struct(VerificationConfigV2)13285_storage)",
+              "contract": "MockIdentityVerificationHub",
+              "src": "contracts/MockIdentityVerificationHub.sol:12"
+            },
+            {
+              "label": "configCounter",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "MockIdentityVerificationHub",
+              "src": "contracts/MockIdentityVerificationHub.sol:13"
+            }
+          ],
+          "types": {
+            "t_array(t_bool)3_storage": {
+              "label": "bool[3]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_uint256)4_storage": {
+              "label": "uint256[4]",
+              "numberOfBytes": "128"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_struct(VerificationConfigV2)13285_storage)": {
+              "label": "mapping(bytes32 => struct SelfStructs.VerificationConfigV2)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(VerificationConfigV2)13285_storage": {
+              "label": "struct SelfStructs.VerificationConfigV2",
+              "members": [
+                {
+                  "label": "olderThanEnabled",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "olderThan",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "forbiddenCountriesEnabled",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "forbiddenCountriesListPacked",
+                  "type": "t_array(t_uint256)4_storage",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "ofacEnabled",
+                  "type": "t_array(t_bool)3_storage",
+                  "offset": 0,
+                  "slot": "7"
+                }
+              ],
+              "numberOfBytes": "256"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/SafeMath.sol:SafeMath": {
+        "src": "contracts/SafeMath.sol:8",
+        "version": {
+          "withMetadata": "75a591e1f3c014e71fd750ad8a06587867ff7c6305e3a660208e87b40d594e4f",
+          "withoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db",
+          "linkedWithoutMetadata": "a64c6cf9c6ba9368f5132c93a0196b3204a7963dbb4dd05dfddb4ab23126b8db"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/SimplePredictionsOracle.sol:SimplePredictionsOracle": {
+        "src": "contracts/SimplePredictionsOracle.sol:21",
+        "version": {
+          "withMetadata": "e1b2f7c0b8b03f79c7b17975717cd2f4a6d19043048b46eebd3e29697d523788",
+          "withoutMetadata": "4b208ad3da9b5f672ae4908a3fd58bd89e83eb2478738ff744d583740d4f7e9a",
+          "linkedWithoutMetadata": "4b208ad3da9b5f672ae4908a3fd58bd89e83eb2478738ff744d583740d4f7e9a"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard",
+          "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol:ERC1155Holder",
+          "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol:IERC1155Receiver",
+          "@openzeppelin/contracts/utils/introspection/ERC165.sol:ERC165",
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [
+          "@openzeppelin/contracts/utils/structs/EnumerableSet.sol:EnumerableSet"
+        ],
+        "methods": [
+          "(address,address,address,address)",
+          "updateContracts(address,address,address,address)",
+          "updateMinBuyAmount(uint256)",
+          "updateMaxBuyAmountPerQuestion(uint256)",
+          "updateStopTradingBeforeMarketEnd(uint256)",
+          "getRemainingBuyAmount(bytes32,address)",
+          "getUserOpenPositions(address)",
+          "getMarketData(bytes32)",
+          "buyPosition(bytes32,uint256,uint256,uint256,address)",
+          "getPositionBalances(bytes32,uint256[],address)",
+          "redeemPosition(bytes32,uint256[])",
+          "redeemPositions(uint256)",
+          "configureRandomMarkets(bytes32[],uint256,uint256,uint256,uint256,bool)",
+          "createRandomMarket(bytes[])",
+          "autoResolveMarkets(bytes32[],bytes[])",
+          "updatePriceFeeds(bytes[])",
+          "getCurrentPrice(bytes32)",
+          "getDetailedMarketData(bytes32)",
+          "getRandomMarketConfig()",
+          "canCreateRandomMarket()",
+          "emergencyWithdraw()",
+          "emergencyWithdrawETH()",
+          "()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimplePredictionsOracle",
+            "src": "contracts/SimplePredictionsOracle.sol:130"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "minBuyAmount",
+            "src": "contracts/SimplePredictionsOracle.sol:111"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "maxBuyAmountPerQuestion",
+            "src": "contracts/SimplePredictionsOracle.sol:112"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "stopTradingBeforeMarketEnd",
+            "src": "contracts/SimplePredictionsOracle.sol:113"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "sellEnabled",
+            "src": "contracts/SimplePredictionsOracle.sol:114"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "Ownable",
+              "src": "@openzeppelin/contracts/access/Ownable.sol:21"
+            },
+            {
+              "label": "_status",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "ReentrancyGuard",
+              "src": "@openzeppelin/contracts/utils/ReentrancyGuard.sol:40"
+            },
+            {
+              "label": "conditionalTokens",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(ConditionalTokens)15469",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:26"
+            },
+            {
+              "label": "FPMMFactory",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_contract(IFactory)20252",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:27"
+            },
+            {
+              "label": "collateralToken",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_contract(Token)15502",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:28"
+            },
+            {
+              "label": "pythOracle",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_contract(IPyth)10396",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:29"
+            },
+            {
+              "label": "minBuyAmount",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:111"
+            },
+            {
+              "label": "maxBuyAmountPerQuestion",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_uint256",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:112"
+            },
+            {
+              "label": "stopTradingBeforeMarketEnd",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_uint256",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:113"
+            },
+            {
+              "label": "sellEnabled",
+              "offset": 0,
+              "slot": "9",
+              "type": "t_bool",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:114"
+            },
+            {
+              "label": "parentCollectionId",
+              "offset": 0,
+              "slot": "10",
+              "type": "t_bytes32",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:115"
+            },
+            {
+              "label": "randomMarketConfig",
+              "offset": 0,
+              "slot": "11",
+              "type": "t_struct(RandomMarketConfig)17975_storage",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:118"
+            },
+            {
+              "label": "lastRandomMarketTime",
+              "offset": 0,
+              "slot": "17",
+              "type": "t_uint256",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:119"
+            },
+            {
+              "label": "activePriceFeeds",
+              "offset": 0,
+              "slot": "18",
+              "type": "t_mapping(t_bytes32,t_bool)",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:120"
+            },
+            {
+              "label": "questions",
+              "offset": 0,
+              "slot": "19",
+              "type": "t_mapping(t_bytes32,t_struct(QuestionData)17938_storage)",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:123"
+            },
+            {
+              "label": "userSpendings",
+              "offset": 0,
+              "slot": "20",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:124"
+            },
+            {
+              "label": "userRedeemed",
+              "offset": 0,
+              "slot": "21",
+              "type": "t_mapping(t_address,t_uint256)",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:125"
+            },
+            {
+              "label": "userOpenPositions",
+              "offset": 0,
+              "slot": "22",
+              "type": "t_mapping(t_address,t_struct(Bytes32Set)9038_storage)",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:126"
+            },
+            {
+              "label": "answers",
+              "offset": 0,
+              "slot": "23",
+              "type": "t_mapping(t_bytes32,t_struct(AnswerData)17946_storage)",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:127"
+            },
+            {
+              "label": "userBuyAmounts",
+              "offset": 0,
+              "slot": "24",
+              "type": "t_mapping(t_bytes32,t_mapping(t_address,t_uint256))",
+              "contract": "SimplePredictionsOracle",
+              "src": "contracts/SimplePredictionsOracle.sol:128"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_bytes32)dyn_storage": {
+              "label": "bytes32[]",
+              "numberOfBytes": "32"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_contract(ConditionalTokens)15469": {
+              "label": "contract ConditionalTokens",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IFactory)20252": {
+              "label": "contract IFactory",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IPyth)10396": {
+              "label": "contract IPyth",
+              "numberOfBytes": "20"
+            },
+            "t_contract(Token)15502": {
+              "label": "contract Token",
+              "numberOfBytes": "20"
+            },
+            "t_int64": {
+              "label": "int64",
+              "numberOfBytes": "8"
+            },
+            "t_mapping(t_address,t_struct(Bytes32Set)9038_storage)": {
+              "label": "mapping(address => struct EnumerableSet.Bytes32Set)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_bool)": {
+              "label": "mapping(bytes32 => bool)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_mapping(t_address,t_uint256))": {
+              "label": "mapping(bytes32 => mapping(address => uint256))",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_struct(AnswerData)17946_storage)": {
+              "label": "mapping(bytes32 => struct SimplePredictionsOracle.AnswerData)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_struct(QuestionData)17938_storage)": {
+              "label": "mapping(bytes32 => struct SimplePredictionsOracle.QuestionData)",
+              "numberOfBytes": "32"
+            },
+            "t_mapping(t_bytes32,t_uint256)": {
+              "label": "mapping(bytes32 => uint256)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(AnswerData)17946_storage": {
+              "label": "struct SimplePredictionsOracle.AnswerData",
+              "members": [
+                {
+                  "label": "payouts",
+                  "type": "t_array(t_uint256)dyn_storage",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "answerTimestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "answerCid",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "2"
+                }
+              ],
+              "numberOfBytes": "96"
+            },
+            "t_struct(Bytes32Set)9038_storage": {
+              "label": "struct EnumerableSet.Bytes32Set",
+              "members": [
+                {
+                  "label": "_inner",
+                  "type": "t_struct(Set)8722_storage",
+                  "offset": 0,
+                  "slot": "0"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_struct(QuestionData)17938_storage": {
+              "label": "struct SimplePredictionsOracle.QuestionData",
+              "members": [
+                {
+                  "label": "beginTimestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "endTimestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "fpmm",
+                  "type": "t_address",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "conditionId",
+                  "type": "t_bytes32",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "priceId",
+                  "type": "t_bytes32",
+                  "offset": 0,
+                  "slot": "4"
+                },
+                {
+                  "label": "initialPrice",
+                  "type": "t_int64",
+                  "offset": 0,
+                  "slot": "5"
+                },
+                {
+                  "label": "finalPrice",
+                  "type": "t_int64",
+                  "offset": 8,
+                  "slot": "5"
+                },
+                {
+                  "label": "initialPriceTimestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "6"
+                },
+                {
+                  "label": "finalPriceTimestamp",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "7"
+                }
+              ],
+              "numberOfBytes": "256"
+            },
+            "t_struct(RandomMarketConfig)17975_storage": {
+              "label": "struct SimplePredictionsOracle.RandomMarketConfig",
+              "members": [
+                {
+                  "label": "priceIds",
+                  "type": "t_array(t_bytes32)dyn_storage",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "minDuration",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "1"
+                },
+                {
+                  "label": "maxDuration",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "2"
+                },
+                {
+                  "label": "marketInterval",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "3"
+                },
+                {
+                  "label": "initialFunding",
+                  "type": "t_uint256",
+                  "offset": 0,
+                  "slot": "4"
+                },
+                {
+                  "label": "autoCreateEnabled",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "5"
+                }
+              ],
+              "numberOfBytes": "192"
+            },
+            "t_struct(Set)8722_storage": {
+              "label": "struct EnumerableSet.Set",
+              "members": [
+                {
+                  "label": "_values",
+                  "type": "t_array(t_bytes32)dyn_storage",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "_positions",
+                  "type": "t_mapping(t_bytes32,t_uint256)",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/interfaces/IConditionalTokens.sol:IConditionalTokens": {
+        "src": "contracts/interfaces/IConditionalTokens.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "payoutNumerators(bytes32)",
+          "payoutDenominator(bytes32)",
+          "prepareCondition(address,bytes32,uint256)",
+          "reportPayouts(bytes32,uint256[])",
+          "splitPosition(address,bytes32,bytes32,uint256[],uint256)",
+          "mergePositions(address,bytes32,bytes32,uint256[],uint256)",
+          "redeemPositions(address,bytes32,bytes32,uint256[])",
+          "redeemPositionsOnBehalf(address,bytes32,bytes32,uint256[],address)",
+          "getOutcomeSlotCount(bytes32)",
+          "getConditionId(address,bytes32,uint256)",
+          "getCollectionId(bytes32,bytes32,uint256)",
+          "getPositionId(address,bytes32)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/interfaces/IFactory.sol:IFactory": {
+        "src": "contracts/interfaces/IFactory.sol:8",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "createFixedProductMarketMaker(address,address,bytes32[],uint256,uint256,address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/interfaces/IFixedProductMarketMaker.sol:IFixedProductMarketMaker": {
+        "src": "contracts/interfaces/IFixedProductMarketMaker.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "initialize(address,address,bytes32[],uint256,uint256,address)",
+          "collectedFees()",
+          "feesWithdrawableBy(address)",
+          "withdrawFees(address)",
+          "addFunding(uint256,uint256[])",
+          "removeFunding(uint256)",
+          "calcBuyAmount(uint256,uint256)",
+          "buy(uint256,uint256,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      },
+      "contracts/interfaces/IPredictionsOracle.sol:IPredictionsOracle": {
+        "src": "contracts/interfaces/IPredictionsOracle.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "sellEnabled()",
+          "stopTradingBeforeMarketEnd()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.28"
+      }
+    }
+  ]
+}
