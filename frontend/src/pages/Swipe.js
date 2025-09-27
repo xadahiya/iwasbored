@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWallet } from '../contexts/WalletContext';
+import { useAccount } from 'wagmi';
 import Header from '../components/Header';
 import PredictionCard from '../components/PredictionCard';
 import { useSprings, animated } from 'react-spring';
@@ -155,7 +155,7 @@ const from = (i) => ({
 //   `translate3d(${x}px, ${y}px, 0) rotateZ(${rot}deg) scale(${scale})`;
 
 const Swipe = () => {
-  const { address } = useWallet();
+  const { address } = useAccount();
   const navigate = useNavigate();
   const [gone] = useState(() => new Set());
   const [currentIndex, setCurrentIndex] = useState(0);

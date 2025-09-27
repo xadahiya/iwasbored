@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWallet } from '../contexts/WalletContext';
-import { ConnectWalletButton } from './ConnectWalletButton';
+import { useAccount, useDisconnect } from 'wagmi';
+import { ConnectKitButton } from 'connectkit';
 import './Header.css';
 
 const Header = () => {
-  const { address, isConnected, disconnect } = useWallet();
+  const { address, isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
   const navigate = useNavigate();
 
   return (
@@ -28,7 +29,7 @@ const Header = () => {
               <button onClick={() => disconnect()} className="disconnect-btn">Disconnect</button>
             </>
           ) : (
-            <ConnectWalletButton />
+            <ConnectKitButton />
           )}
         </div>
       </div>

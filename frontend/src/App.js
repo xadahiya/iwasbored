@@ -4,7 +4,7 @@ import Onboarding from './pages/Onboarding';
 import AgeVerification from './pages/AgeVerification';
 import Swipe from './pages/Swipe';
 import MyBets from './pages/MyBets';
-import { WalletProvider } from './contexts/WalletContext';
+import { WalletProvider } from './wagmiProvider';
 import './App.css';
 
 function App() {

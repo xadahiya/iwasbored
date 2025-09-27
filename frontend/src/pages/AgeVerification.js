@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWallet } from '../contexts/WalletContext';
+import { useAccount, useConnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
 import Header from '../components/Header';
 import {
   SelfQRcodeWrapper,
@@ -13,7 +14,8 @@ import './AgeVerification.css';
 
 const AgeVerification = () => {
   const navigate = useNavigate();
-  const { address, connectWallet, testWalletConnection } = useWallet();
+  const { address } = useAccount();
+  const { connect } = useConnect();
   const [linkCopied, setLinkCopied] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -139,7 +141,7 @@ const AgeVerification = () => {
 
   const handleConnectWallet = async () => {
     try {
-      await connectWallet();
+      connect({ connector: injected() });
     } catch (error) {
       displayToast("Failed to connect wallet. Please try again.");
     }
@@ -171,8 +173,7 @@ const AgeVerification = () => {
               <button 
                 className="connect-wallet-button"
                 onClick={() => {
-                  console.log('🐛 Debug button clicked');
-                  testWalletConnection();
+                  console.log('🐛 Debug button clicked - this function was removed in wagmi migration');
                 }}
                 style={{ 
                   marginTop: '10px', 
@@ -180,7 +181,7 @@ const AgeVerification = () => {
                   fontSize: '12px'
                 }}
               >
-                🐛 Debug Wallet
+                🐛 Debug (Removed)
               </button>
             </div>
           </div>

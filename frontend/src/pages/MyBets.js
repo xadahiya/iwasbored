@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWallet } from '../contexts/WalletContext';
+import { useAccount } from 'wagmi';
 import Header from '../components/Header';
 import BetCard from '../components/BetCard';
 import './MyBets.css';
@@ -14,7 +14,7 @@ const allBets = [
 ];
 
 const MyBets = () => {
-  const { address } = useWallet();
+  const { address } = useAccount();
   const navigate = useNavigate();
   const [filter, setFilter] = useState('all');
   const [filteredBets, setFilteredBets] = useState(allBets);
