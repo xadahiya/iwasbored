@@ -140,6 +140,14 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
         pythOracle = IPyth(_pythOracle);
     }
 
+    function getActiveMarketIds() external view returns (bytes32[] memory) {
+        bytes32[] memory activeMarketIdsArray = new bytes32[](activeMarketIds.length);
+        for (uint256 i = 0; i < activeMarketIds.length; i++) {
+            activeMarketIdsArray[i] = activeMarketIds[i];
+        }
+        return activeMarketIdsArray;
+    }
+
     /**
      * @dev Updates the minimum buy amount
      */
