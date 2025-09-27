@@ -1,4 +1,3 @@
-
 import { createConfig, http } from 'wagmi'
 import { sepolia } from 'wagmi/chains'
 import { injected } from 'wagmi/connectors'
@@ -9,6 +8,6 @@ export const config = createConfig({
     injected(),
   ],
   transports: {
-    sepolia: http(),
+    [sepolia.id]: http(), // Correctly assign the http() function to the chain ID
   },
 })

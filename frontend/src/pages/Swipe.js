@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import Header from '../components/Header';
 import PredictionCard from '../components/PredictionCard';
 import { useSprings, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
+import { useOracleContract } from '../utils/OracleContract'; // Import the Oracle contract hook
 import './Swipe.css';
 
 const predictions = [
@@ -164,6 +165,12 @@ const Swipe = () => {
   const [props, set] = useSprings(predictions.length, (i) => ({ ...to(i), from: from(i) }));
   const cardRef = useRef(null);
 
+  // Use the Oracle contract hook to get read configs
+  const { getOwnerConfig } = useOracleContract();
+
+  // Use useReadContract with the config from useOracleContract
+  const { data: owner, isLoading: isOwnerLoading, error: ownerError } = useReadContract(getOwnerConfig());
+
   useEffect(() => {
     if (!address) {
       navigate('/');
@@ -177,6 +184,16 @@ const Swipe = () => {
       return;
     }
   }, [address, navigate]);
+
+  // Log the owner when it's loaded
+  useEffect(() => {
+    if (owner) {
+      console.log('Oracle Contract Owner:', owner);
+    }
+    if (ownerError) {
+      console.error('Error loading Oracle Contract Owner:', ownerError);
+    }
+  }, [owner, ownerError]);
 
   const handleSwipe = (direction) => {
     const currentCardIndex = currentIndex;
@@ -294,6 +311,9 @@ const Swipe = () => {
     <div className="swipe">
       <Header />
       <div className="swipe-content">
+        {isOwnerLoading && <p>Loading Oracle Contract Owner...</p>}
+        {ownerError && <p>Error loading Oracle Contract Owner: {ownerError.message}</p>}
+        {owner && <p>Oracle Contract Owner: {owner}</p>} {/* Display the owner */}
         <div ref={cardRef} className="card-stack">
           {visibleProps.map(({ x, y, rot, rotZ, scale, opacity }, i) => {
             const actualIndex = currentIndex + i;
