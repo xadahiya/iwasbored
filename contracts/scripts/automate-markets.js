@@ -39,25 +39,17 @@ class PredictionMarketAutomator {
             console.log("\n=== Configuring PYTH Price Feeds ===");
             
             const priceIds = Object.values(PYTH_PRICE_IDS);
-            const minDuration = 300; // 5 minutes
-            const maxDuration = 3600; // 1 hour
-            const marketInterval = 180; // 3 minutes between markets
             const initialFunding = ethers.parseEther("100"); // 100 tokens
-            const autoCreateEnabled = true;
 
-            const tx = await this.oracle.configureRandomMarkets(
+            const tx = await this.oracle.configureMarkets(
                 priceIds,
-                minDuration,
-                maxDuration,
-                marketInterval,
-                initialFunding,
-                autoCreateEnabled
+                initialFunding
             );
 
             await tx.wait();
             console.log("✅ PYTH price feeds configured successfully");
             console.log("Price feeds:", Object.keys(PYTH_PRICE_IDS));
-            console.log("Market interval:", marketInterval, "seconds");
+            console.log("Initial funding:", ethers.formatEther(initialFunding), "tokens");
             
         } catch (error) {
             console.error("❌ Error configuring PYTH feeds:", error);
@@ -84,16 +76,9 @@ class PredictionMarketAutomator {
         }
     }
 
-    async createRandomMarket() {
+    async createMarket() {
         try {
-            console.log("\n=== Creating Random Market ===");
-            
-            // Check if we can create a random market
-            const canCreate = await this.oracle.canCreateRandomMarket();
-            if (!canCreate) {
-                console.log("⏳ Cannot create random market yet (interval not elapsed or insufficient funds)");
-                return null;
-            }
+            console.log("\n=== Creating Market ===");
 
             // Get price update data
             const priceUpdateData = await this.getPriceUpdateData();
@@ -101,18 +86,23 @@ class PredictionMarketAutomator {
             // Estimate update fee (usually very small, like 0.001 ETH)
             const updateFee = ethers.parseEther("0.001");
 
-            console.log("🎲 Creating random market...");
-            const tx = await this.oracle.createRandomMarket(priceUpdateData, {
+            console.log("🎲 Creating market...");
+            
+            // Generate unique question ID
+            const questionId = ethers.keccak256(ethers.toUtf8Bytes(`auto-market-${Date.now()}`));
+            const endTimestamp = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+            
+            const tx = await this.oracle.createMarket(questionId, endTimestamp, priceUpdateData, {
                 value: updateFee
             });
 
             const receipt = await tx.wait();
             
-            // Parse the RandomMarketCreated event
+            // Parse the MarketCreated event
             const event = receipt.logs.find(log => {
                 try {
                     const parsed = this.oracle.interface.parseLog(log);
-                    return parsed.name === "RandomMarketCreated";
+                    return parsed.name === "MarketCreated";
                 } catch {
                     return false;
                 }
@@ -120,26 +110,26 @@ class PredictionMarketAutomator {
 
             if (event) {
                 const parsed = this.oracle.interface.parseLog(event);
-                const { questionId, priceId, targetPrice, endTimestamp, fpmmAddress } = parsed.args;
+                const { questionId, priceId, initialPrice, endTimestamp, fpmmAddress } = parsed.args;
                 
-                console.log("✅ Random market created successfully!");
+                console.log("✅ Market created successfully!");
                 console.log("Question ID:", questionId);
                 console.log("Price Feed:", this.getPriceFeedName(priceId));
-                console.log("Target Price:", targetPrice.toString());
+                console.log("Initial Price:", initialPrice.toString());
                 console.log("End Time:", new Date(Number(endTimestamp) * 1000).toLocaleString());
                 console.log("FPMM Address:", fpmmAddress);
                 
                 return {
                     questionId,
                     priceId,
-                    targetPrice,
+                    initialPrice,
                     endTimestamp,
                     fpmmAddress
                 };
             }
             
         } catch (error) {
-            console.error("❌ Error creating random market:", error);
+            console.error("❌ Error creating market:", error);
             return null;
         }
     }
@@ -148,26 +138,48 @@ class PredictionMarketAutomator {
         try {
             console.log("\n=== Resolving Expired Markets ===");
             
-            // In a real implementation, you would track active markets
-            // For this example, we'll just demonstrate the resolution function
+            // Get active markets and check which ones are expired
+            const activeMarkets = await this.oracle.activeMarketIds();
+            const expiredQuestionIds = [];
             
-            const expiredQuestionIds = []; // You would populate this with actual expired market IDs
+            for (const questionId of activeMarkets) {
+                try {
+                    const marketData = await this.oracle.getMarketData(questionId);
+                    const now = Math.floor(Date.now() / 1000);
+                    const isExpired = now >= Number(marketData.questionData.endTimestamp);
+                    const isResolved = marketData.answerData.answerTimestamp > 0;
+                    
+                    if (isExpired && !isResolved) {
+                        expiredQuestionIds.push(questionId);
+                    }
+                } catch (error) {
+                    console.log(`Error checking market ${questionId}:`, error.message);
+                }
+            }
             
             if (expiredQuestionIds.length === 0) {
                 console.log("ℹ️ No expired markets to resolve");
                 return;
             }
 
+            console.log(`🔄 Found ${expiredQuestionIds.length} expired markets to resolve`);
+            
             const priceUpdateData = await this.getPriceUpdateData();
             const updateFee = ethers.parseEther("0.001");
 
-            console.log(`🔄 Resolving ${expiredQuestionIds.length} expired markets...`);
-            const tx = await this.oracle.autoResolveMarkets(expiredQuestionIds, priceUpdateData, {
-                value: updateFee
-            });
-
-            const receipt = await tx.wait();
-            console.log("✅ Markets resolved successfully!");
+            // Resolve each market individually
+            for (const questionId of expiredQuestionIds) {
+                try {
+                    console.log(`Resolving market ${questionId}...`);
+                    const tx = await this.oracle.resolveMarket(questionId, priceUpdateData, "auto-resolved", {
+                        value: updateFee
+                    });
+                    await tx.wait();
+                    console.log(`✅ Market ${questionId} resolved successfully!`);
+                } catch (error) {
+                    console.log(`❌ Error resolving market ${questionId}:`, error.message);
+                }
+            }
             
         } catch (error) {
             console.error("❌ Error resolving markets:", error);
@@ -187,13 +199,14 @@ class PredictionMarketAutomator {
         try {
             console.log("\n=== Market Status ===");
             
-            const config = await this.oracle.getRandomMarketConfig();
-            const canCreate = await this.oracle.canCreateRandomMarket();
+            const config = await this.oracle.getMarketConfig();
+            const activeMarkets = await this.oracle.activeMarketIds();
+            const lastMarketTime = await this.oracle.lastMarketTime();
             
-            console.log("Auto-creation enabled:", config.autoCreateEnabled);
-            console.log("Market interval:", config.marketInterval.toString(), "seconds");
-            console.log("Can create new market:", canCreate);
             console.log("Available price feeds:", config.priceIds.length);
+            console.log("Initial funding per market:", ethers.formatEther(config.initialFunding), "tokens");
+            console.log("Active markets:", activeMarkets.length);
+            console.log("Last market created:", new Date(Number(lastMarketTime) * 1000).toLocaleString());
             
         } catch (error) {
             console.error("❌ Error getting market status:", error);
@@ -209,7 +222,7 @@ class PredictionMarketAutomator {
         // Start automation loop
         setInterval(async () => {
             await this.getMarketStatus();
-            await this.createRandomMarket();
+            await this.createMarket();
             await this.resolveExpiredMarkets();
         }, 60000); // Check every minute
         
@@ -233,7 +246,7 @@ async function main() {
         
         // For testing, you can run individual functions:
         await automator.getMarketStatus();
-        await automator.createRandomMarket();
+        await automator.createMarket();
         
         // Or start full automation:
         // await automator.startAutomation();

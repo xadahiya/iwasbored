@@ -19,21 +19,14 @@ async function main() {
         const Oracle = await ethers.getContractFactory("SimplePredictionsOracle");
         const oracle = Oracle.attach(ORACLE_ADDRESS);
         
-        // Check if we can create a market
-        const canCreate = await oracle.canCreateRandomMarket();
-        console.log("📊 Can create random market:", canCreate);
-        
-        if (!canCreate) {
-            console.log("⚠️  Cannot create market yet. Possible reasons:");
-            console.log("   - Market interval not elapsed");
-            console.log("   - Insufficient oracle funding");
-            console.log("   - Auto-creation disabled");
-            
-            const config = await oracle.getRandomMarketConfig();
-            console.log("   Auto-creation enabled:", config.autoCreateEnabled);
-            console.log("   Market interval:", config.marketInterval.toString(), "seconds");
-            
-            return;
+        // Check oracle configuration
+        try {
+            const config = await oracle.getMarketConfig();
+            console.log("📊 Oracle Configuration:");
+            console.log("   Price feeds available:", config.priceIds.length);
+            console.log("   Initial funding:", ethers.formatEther(config.initialFunding), "tokens");
+        } catch (error) {
+            console.log("⚠️  Could not fetch oracle configuration:", error.message);
         }
         
         // Estimate gas and fees
@@ -45,8 +38,13 @@ async function main() {
         console.log("💰 PYTH update fee:", ethers.formatEther(updateFee), "ETH");
         
         // Create the market
-        console.log("🚀 Creating random market...");
-        const tx = await oracle.createRandomMarket([], { 
+        console.log("🚀 Creating market...");
+        
+        // Generate a unique question ID
+        const questionId = ethers.keccak256(ethers.toUtf8Bytes(`market-${Date.now()}`));
+        const endTimestamp = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+        
+        const tx = await oracle.createMarket(questionId, endTimestamp, [], { 
             value: updateFee
         });
         
@@ -60,7 +58,7 @@ async function main() {
         const marketEvent = receipt.logs.find(log => {
             try {
                 const parsed = oracle.interface.parseLog(log);
-                return parsed.name === "RandomMarketCreated";
+                return parsed.name === "MarketCreated";
             } catch {
                 return false;
             }
@@ -68,13 +66,13 @@ async function main() {
         
         if (marketEvent) {
             const parsed = oracle.interface.parseLog(marketEvent);
-            const { questionId, priceId, targetPrice, endTimestamp, fpmmAddress } = parsed.args;
+            const { questionId, priceId, initialPrice, endTimestamp, fpmmAddress } = parsed.args;
             
-            console.log("\n🎉 Random Market Created Successfully!");
-            console.log("=====================================");
+            console.log("\n🎉 Market Created Successfully!");
+            console.log("===============================");
             console.log("Question ID:", questionId);
             console.log("Price Feed ID:", priceId);
-            console.log("Target Price:", targetPrice.toString());
+            console.log("Initial Price:", initialPrice.toString());
             console.log("End Time:", new Date(Number(endTimestamp) * 1000).toLocaleString());
             console.log("FPMM Address:", fpmmAddress);
             console.log("🔗 FPMM on explorer: https://sepolia.etherscan.io/address/" + fpmmAddress);
@@ -90,9 +88,9 @@ async function main() {
             const feedName = priceFeeds[priceId] || "Unknown";
             console.log("Asset:", feedName);
             
-            // Format target price (PYTH prices have 8 decimals)
-            const formattedTargetPrice = (Number(targetPrice) / 1e8).toFixed(2);
-            console.log("Target Price:", "$" + formattedTargetPrice);
+            // Format initial price (PYTH prices have 8 decimals)
+            const formattedInitialPrice = (Number(initialPrice) / 1e8).toFixed(2);
+            console.log("Initial Price:", "$" + formattedInitialPrice);
             
             // Get market probabilities
             try {

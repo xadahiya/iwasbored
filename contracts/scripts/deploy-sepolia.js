@@ -146,18 +146,14 @@ async function main() {
         await popToken.transfer(oracle.target, fundingAmount);
         console.log("✅ Oracle funded with", ethers.formatEther(fundingAmount), "tokens");
 
-        // 7. Configure random markets
-        console.log("\n7️⃣ Configuring Random Markets...");
+        // 7. Configure market parameters
+        console.log("\n7️⃣ Configuring Market Parameters...");
         const priceIds = Object.values(PYTH_PRICE_FEEDS);
-        await oracle.configureRandomMarkets(
+        await oracle.configureMarkets(
             priceIds,
-            300,  // 5 minutes min duration
-            3600, // 1 hour max duration
-            180,  // 3 minutes between markets
-            ethers.parseEther("10"), // Minimal 10 tokens per market for testing
-            true  // auto-create enabled
+            ethers.parseEther("10") // Minimal 10 tokens per market for testing
         );
-        console.log("✅ Random markets configured with", priceIds.length, "price feeds");
+        console.log("✅ Market configuration set with", priceIds.length, "price feeds");
 
         // 8. Verification info
         console.log("\n📋 Deployment Summary");
@@ -197,7 +193,10 @@ async function main() {
         console.log("\n🎲 Creating Test Market...");
         try {
             const updateFee = ethers.parseEther("0.001"); // Small fee for PYTH update
-            const tx = await oracle.createRandomMarket([], { 
+            const questionId = ethers.keccak256(ethers.toUtf8Bytes(`test-market-${Date.now()}`));
+            const endTimestamp = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+            
+            const tx = await oracle.createMarket(questionId, endTimestamp, [], { 
                 value: updateFee
             });
             const receipt = await tx.wait();
@@ -206,7 +205,7 @@ async function main() {
             const marketEvent = receipt.logs.find(log => {
                 try {
                     const parsed = oracle.interface.parseLog(log);
-                    return parsed.name === "RandomMarketCreated";
+                    return parsed.name === "MarketCreated";
                 } catch {
                     return false;
                 }
@@ -214,13 +213,14 @@ async function main() {
 
             if (marketEvent) {
                 const parsed = oracle.interface.parseLog(marketEvent);
-                const { questionId, priceId, targetPrice, endTimestamp } = parsed.args;
+                const { questionId, priceId, initialPrice, endTimestamp, fpmmAddress } = parsed.args;
                 
                 console.log("✅ Test market created successfully!");
                 console.log(`   Question ID: ${questionId}`);
                 console.log(`   Price Feed: ${priceId}`);
-                console.log(`   Target Price: ${targetPrice}`);
+                console.log(`   Initial Price: ${initialPrice}`);
                 console.log(`   End Time: ${new Date(Number(endTimestamp) * 1000).toLocaleString()}`);
+                console.log(`   FPMM Address: ${fpmmAddress}`);
             }
         } catch (error) {
             console.log("⚠️  Could not create test market:", error.message);

@@ -27,8 +27,13 @@ async function main() {
         const updateFee = ethers.parseEther("0.001");
         console.log("PYTH Update Fee:", ethers.formatEther(updateFee), "ETH");
         
-        console.log("\n🚀 Creating random market...");
-        const tx = await oracle.createRandomMarket([], {
+        console.log("\n🚀 Creating market...");
+        
+        // Generate a unique question ID
+        const questionId = ethers.keccak256(ethers.toUtf8Bytes(`market-${Date.now()}`));
+        const endTimestamp = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+        
+        const tx = await oracle.createMarket(questionId, endTimestamp, [], {
             value: updateFee
         });
         
@@ -42,7 +47,7 @@ async function main() {
         const marketEvent = receipt.logs.find(log => {
             try {
                 const parsed = oracle.interface.parseLog(log);
-                return parsed.name === "RandomMarketCreated";
+                return parsed.name === "MarketCreated";
             } catch {
                 return false;
             }
@@ -50,13 +55,14 @@ async function main() {
 
         if (marketEvent) {
             const parsed = oracle.interface.parseLog(marketEvent);
-            const { questionId, priceId, targetPrice, endTimestamp } = parsed.args;
+            const { questionId, priceId, initialPrice, endTimestamp, fpmmAddress } = parsed.args;
             
             console.log("\n🎉 Market created successfully!");
             console.log("Question ID:", questionId.toString());
             console.log("Price Feed ID:", priceId);
-            console.log("Target Price:", ethers.formatUnits(targetPrice, 8)); // PYTH uses 8 decimals
+            console.log("Initial Price:", ethers.formatUnits(initialPrice, 8)); // PYTH uses 8 decimals
             console.log("End Time:", new Date(Number(endTimestamp) * 1000).toLocaleString());
+            console.log("FPMM Address:", fpmmAddress);
             console.log("🔗 View on Etherscan:", `https://sepolia.etherscan.io/tx/${tx.hash}`);
         } else {
             console.log("⚠️  Market creation event not found in transaction logs");

@@ -24,12 +24,8 @@ async function main() {
         // Get oracle configuration
         console.log("\n🔧 Oracle Configuration:");
         try {
-            const config = await oracle.getRandomMarketConfig();
-            console.log("Min Duration:", config.minDuration.toString(), "seconds");
-            console.log("Max Duration:", config.maxDuration.toString(), "seconds");
-            console.log("Market Interval:", config.marketInterval.toString(), "seconds");
+            const config = await oracle.getMarketConfig();
             console.log("Initial Funding:", ethers.formatEther(config.initialFunding), "tokens");
-            console.log("Auto Create:", config.autoCreateEnabled);
             console.log("Price Feed Count:", config.priceIds.length);
         } catch (error) {
             console.log("Could not fetch oracle config:", error.message);
@@ -38,24 +34,32 @@ async function main() {
         // Check active markets
         console.log("\n📈 Active Markets:");
         try {
-            // This assumes there's a method to get active markets
-            // You may need to adjust based on your contract's actual interface
-            const activeMarkets = await oracle.getActiveMarkets();
+            const activeMarkets = await oracle.activeMarketIds();
             
             if (activeMarkets.length === 0) {
                 console.log("No active markets found");
             } else {
-                for (let i = 0; i < activeMarkets.length; i++) {
-                    const market = activeMarkets[i];
+                console.log(`Found ${activeMarkets.length} active market(s)`);
+                for (let i = 0; i < Math.min(activeMarkets.length, 5); i++) {
+                    const questionId = activeMarkets[i];
                     console.log(`\nMarket ${i + 1}:`);
-                    console.log("  Question ID:", market.questionId.toString());
-                    console.log("  End Time:", new Date(Number(market.endTimestamp) * 1000).toLocaleString());
-                    console.log("  Status:", market.resolved ? "Resolved" : "Active");
+                    console.log("  Question ID:", questionId.toString());
+                    
+                    try {
+                        const marketData = await oracle.getMarketData(questionId);
+                        console.log("  End Time:", new Date(Number(marketData.questionData.endTimestamp) * 1000).toLocaleString());
+                        console.log("  Status:", marketData.answerData.answerTimestamp > 0 ? "Resolved" : "Active");
+                        console.log("  FPMM:", marketData.questionData.fpmm);
+                    } catch (marketError) {
+                        console.log("  Error fetching market data:", marketError.message);
+                    }
+                }
+                if (activeMarkets.length > 5) {
+                    console.log(`  ... and ${activeMarkets.length - 5} more markets`);
                 }
             }
         } catch (error) {
-            console.log("Could not fetch active markets. This might be normal if the method doesn't exist.");
-            console.log("Error:", error.message);
+            console.log("Could not fetch active markets. Error:", error.message);
         }
         
         // Check oracle balance

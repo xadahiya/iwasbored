@@ -1730,8 +1730,8 @@
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/contracts/SimplePredictionsOracle.sol": {
-      "lastModificationDate": 1758981040800,
-      "contentHash": "10b4822a4eb6267bedd846d29d2c55ed",
+      "lastModificationDate": 1758981582549,
+      "contentHash": "e58f0386efdef1d239aae638fd1cc572",
       "sourceName": "contracts/SimplePredictionsOracle.sol",
       "solcConfig": {
         "version": "0.8.28",

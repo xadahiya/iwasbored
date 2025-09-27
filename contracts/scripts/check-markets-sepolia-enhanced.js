@@ -28,12 +28,8 @@ async function main() {
         console.log("=======================");
         
         // Check oracle configuration
-        const config = await oracle.getRandomMarketConfig();
-        console.log("Auto-creation enabled:", config.autoCreateEnabled);
+        const config = await oracle.getMarketConfig();
         console.log("Price feeds configured:", config.priceIds.length);
-        console.log("Min duration:", config.minDuration.toString(), "seconds");
-        console.log("Max duration:", config.maxDuration.toString(), "seconds");
-        console.log("Market interval:", config.marketInterval.toString(), "seconds");
         console.log("Initial funding per market:", ethers.formatEther(config.initialFunding), "tokens");
         
         // Check oracle balances
@@ -45,9 +41,13 @@ async function main() {
         const ethBalance = await ethers.provider.getBalance(ORACLE_ADDRESS);
         console.log("ETH balance:", ethers.formatEther(ethBalance), "ETH");
         
-        // Check if can create market
-        const canCreate = await oracle.canCreateRandomMarket();
-        console.log("Can create new market:", canCreate);
+        // Check last market time
+        try {
+            const lastMarketTime = await oracle.lastMarketTime();
+            console.log("Last market created:", new Date(Number(lastMarketTime) * 1000).toLocaleString());
+        } catch (error) {
+            console.log("Could not fetch last market time:", error.message);
+        }
         
         // Check user balances
         console.log("\n👤 User Account");
@@ -203,11 +203,7 @@ async function main() {
         console.log("\n💡 Available Actions");
         console.log("===================");
         
-        if (canCreate) {
-            console.log("🎲 Create random market: npx hardhat run scripts/create-market-sepolia.js --network sepolia");
-        } else {
-            console.log("⏳ Wait for market interval or fund oracle to create markets");
-        }
+        console.log("🎲 Create market: npx hardhat run scripts/create-market-sepolia.js --network sepolia");
         
         if (openPositions.length > 0) {
             console.log("💰 Redeem positions: npx hardhat run scripts/redeem-positions-sepolia.js --network sepolia");

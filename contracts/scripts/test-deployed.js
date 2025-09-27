@@ -3,11 +3,11 @@ const hre = require("hardhat");
 async function main() {
   console.log("🔍 Testing deployed contract...");
   
-  const contractAddress = "0x9C888f1EaD8ED1F8C182c62497383c6A8d91a81B";
+  const contractAddress = "0x5e5B05e86B98ea1133cADdE46B67dcBBB9f13DEe";
   
   try {
     // Get contract instance
-    const AgeVerification = await hre.ethers.getContractFactory("AgeVerification");
+    const AgeVerification = await hre.ethers.getContractFactory("ProofOfHuman");
     const contract = AgeVerification.attach(contractAddress);
 
     console.log("📍 Contract Address:", contractAddress);
@@ -26,6 +26,10 @@ async function main() {
     } catch (e) {
       console.log("❌ scope() failed:", e.message);
     }
+
+    // fetch lastUserAddress
+    const lastUserAddress = await contract.lastUserAddress();
+    console.log("✅ lastUserAddress():", lastUserAddress);
 
     try {
       // This might fail if constructor didn't complete
