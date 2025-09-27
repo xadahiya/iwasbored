@@ -317,7 +317,9 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
      */
     function redeemPositions(uint256 num) nonReentrant external {
         uint256 nUserPositions = userOpenPositions[msg.sender].length();
-        require(nUserPositions > 0, "No open positions to redeem");
+        if (nUserPositions == 0) {
+            return;
+        }
 
         if (num > nUserPositions) {
             num = nUserPositions;
