@@ -22,30 +22,6 @@ const REVERSE_PYTH_PRICE_FEEDS = {
   "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d": "SOL"
 };
 
-const predictions = [
-  {
-    id: 1,
-    question: 'ETH above $2,500 in 5 mins?',
-    stake: 0.10,
-    title: 'Ethereum',
-    description: 'Will ETH reach $2,500 within the next 5 minutes?',
-    icon: '◈',
-    color: '#627eea',
-    type: 'crypto'
-  },
-  {
-    id: 2,
-    question: 'BTC above $30,000 in 10 mins?',
-    stake: 0.15,
-    title: 'Bitcoin',
-    description: 'Will BTC break the $30,000 barrier?',
-    icon: '₿',
-    color: '#f7931a',
-    type: 'crypto'
-  },
-
-];
-
 const to = (i) => ({
   x: 0,
   y: 0,
@@ -66,7 +42,6 @@ const from = (i) => ({
   opacity: 0
 });
 
-// New component to fetch and display detailed market data for a single market
 const MarketDetailsFetcher = ({ questionId }) => {
   const { getDetailedMarketDataConfig } = useOracleContract();
   const { data: marketDetails, isLoading, error } = useReadContract(getDetailedMarketDataConfig(questionId));
@@ -110,9 +85,7 @@ const Swipe = () => {
   const [gone] = useState(() => new Set());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [stakeAmount, setStakeAmount] = useState(0.10);
-  const [props, set] = useSprings(predictions.length, (i) => ({ ...to(i), from: from(i) }));
-  const cardRef = useRef(null);
+  const [stakeAmount, setStakeAmount] = useState(0.10); // Managed in Swipe.js
 
   // Use the Oracle contract hook to get read configs
   const { getOwnerConfig, getActiveMarketIdsConfig } = useOracleContract();
@@ -122,6 +95,10 @@ const Swipe = () => {
 
   // Fetch all active market IDs
   const { data: activeMarketIds, isLoading: isActiveMarketIdsLoading, error: activeMarketIdsError } = useReadContract(getActiveMarketIdsConfig());
+
+  // Conditionally initialize useSprings only when activeMarketIds is available
+  const [props, set] = useSprings(activeMarketIds ? activeMarketIds.length : 0, (i) => ({ ...to(i), from: from(i) }));
+  const cardRef = useRef(null);
 
   useEffect(() => {
     if (!address) {
@@ -149,12 +126,12 @@ const Swipe = () => {
 
   const handleSwipe = (direction) => {
     const currentCardIndex = currentIndex;
-    if (currentCardIndex >= predictions.length || isAnimating) return;
+    if (currentCardIndex >= (activeMarketIds ? activeMarketIds.length : 0) || isAnimating) return;
 
     // Log the bet placement (in a real app, this would be sent to backend)
-    const prediction = predictions[currentCardIndex];
+    const prediction = activeMarketIds[currentCardIndex]; // This will also need to be handled carefully
     const betType = direction === 'right' ? 'YES' : 'NO';
-    console.log(`Placing bet: ${betType} on "${prediction.question}" with stake: ${stakeAmount} ETH`);
+    console.log(`Placing bet: ${betType} on "${prediction.question}" with stake: ${stakeAmount} PYUSD`); // Updated currency
 
     setIsAnimating(true);
     const dir = direction === 'right' ? 1 : -1;
@@ -211,7 +188,7 @@ const Swipe = () => {
           rotZ: 0,
           scale: 1,
           opacity: 1,
-          config: { 
+          config: {
             tension: 300,
             friction: 30
           }
@@ -263,14 +240,11 @@ const Swipe = () => {
     <div className="swipe">
       <Header />
       <div className="swipe-content">
-
-        {isActiveMarketIdsLoading && <p>Loading Active Market IDs...</p>}
-        {activeMarketIdsError && <p>Error loading Active Market IDs: {activeMarketIdsError.message}</p>}
         
         <div ref={cardRef} className="card-stack">
           {visibleProps.map(({ x, y, rot, rotZ, scale, opacity }, i) => {
             const actualIndex = currentIndex + i;
-            if (gone.has(actualIndex) || actualIndex >= predictions.length) return null;
+            if (gone.has(actualIndex) || actualIndex >= (activeMarketIds ? activeMarketIds.length : 0)) return null;
 
             // Simple stacking - only show top 3 cards max
             if (i > 2) return null;
@@ -281,10 +255,10 @@ const Swipe = () => {
 
             return (
               <animated.div
-                key={predictions[actualIndex].id}
+                key={activeMarketIds[actualIndex]} // Use marketId as key
                 style={{
                   position: 'absolute',
-                  zIndex: predictions.length - actualIndex,
+                  zIndex: (activeMarketIds ? activeMarketIds.length : 0) - actualIndex,
                   transform: i === 0 ? 'none' : `translateY(${stackOffset}px) scale(${stackScale})`,
                   opacity: i === 0 ? opacity : 0.8 - (i * 0.2),
                   width: '100%',
@@ -306,16 +280,74 @@ const Swipe = () => {
                   }}
                   onMouseDown={(e) => i === 0 && e.preventDefault()}
                 >
-                  {activeMarketIds && (
-                    <MarketDetailsFetcher key={activeMarketIds[actualIndex]} questionId={activeMarketIds[actualIndex]} />
+                  {activeMarketIds && ( // Conditionally render MarketDetailsFetcher
+                          <MarketDetailsFetcher key={activeMarketIds[actualIndex]} questionId={activeMarketIds[actualIndex]} />
                   )}
+
                 </animated.div>
               </animated.div>
             );
           })}
         </div>
 
-        {currentIndex >= predictions.length && (
+        {currentIndex < (activeMarketIds ? activeMarketIds.length : 0) && (
+          <>
+            <div className="stake-controls">
+              <div className="stake-display">
+                <span className="stake-label">Stake Amount</span>
+                <span className="stake-value">{stakeAmount.toFixed(2)} PYUSD</span>
+              </div>
+              <div className="stake-slider-container">
+                <input
+                  type="range"
+                  min="0.10"
+                  max="10"
+                  step="0.10"
+                  value={stakeAmount}
+                  onChange={(e) => setStakeAmount(parseFloat(e.target.value))}
+                  className="stake-slider"
+                  disabled={isAnimating}
+                />
+                <div className="stake-range-labels">
+                  <span>0.10 PYUSD</span>
+                  <span>10 PYUSD</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="swipe-actions">
+              <button
+                className="swipe-button dislike"
+                onClick={dislike}
+                disabled={isAnimating}
+                title="Bet NO on this prediction"
+              >
+                <div className="button-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <span className="button-label">No</span>
+              </button>
+
+              <button
+                className="swipe-button like"
+                onClick={like}
+                disabled={isAnimating}
+                title="Bet YES on this prediction"
+              >
+                <div className="button-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <span className="button-label">Yes</span>
+              </button>
+            </div>
+          </>
+        )}
+
+        {currentIndex >= (activeMarketIds ? activeMarketIds.length : 0) && (
           <div className="swipe-complete">
             <h2>All predictions swiped!</h2>
             <p>Check out your My Bets to see your active predictions</p>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, ResponsiveContainer, ReferenceDot, XAxis, YAxis, Tooltip } from 'recharts'; // Import YAxis and Tooltip
-import { fetchPythPriceData } from '../utils/pyth'; // Import the utility function
+import { LineChart, Line, ResponsiveContainer, ReferenceDot, XAxis, YAxis, Tooltip } from 'recharts';
+import { fetchPythPriceData } from '../utils/pyth';
 import './PredictionCard.css';
 
 const PredictionCard = ({ prediction }) => {
@@ -95,14 +95,14 @@ const PredictionCard = ({ prediction }) => {
           {priceData && historicalData.length > 0 && (
             <ResponsiveContainer width="100%" height={120}>
               <LineChart data={historicalData}>
-                <XAxis dataKey="name" tick={{ fontSize: 10 }} /> {/* Show XAxis labels */}
-                <YAxis domain={['auto', 'auto']} hide /> {/* Auto scale YAxis, hide labels */}
-                <Tooltip content={<CustomTooltip />} /> {/* Add Tooltip */}
+                <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+                <YAxis domain={['auto', 'auto']} hide />
+                <Tooltip content={<CustomTooltip />} />
                 <Line type="monotone" dataKey="price" stroke={prediction.color} strokeWidth={3} dot={false} />
 
                 {marketStartPoint && (
                   <ReferenceDot
-                    x={marketStartPoint.name} // Use name for x-position
+                    x={marketStartPoint.name}
                     y={marketStartPoint.price}
                     r={5}
                     fill="green"
@@ -112,7 +112,7 @@ const PredictionCard = ({ prediction }) => {
                 )}
                 {marketEndPoint && (
                   <ReferenceDot
-                    x={marketEndPoint.name} // Use name for x-position
+                    x={marketEndPoint.name}
                     y={marketEndPoint.price}
                     r={5}
                     fill="red"
@@ -130,20 +130,9 @@ const PredictionCard = ({ prediction }) => {
         <div className="prediction-question">
           {prediction.question}
         </div>
-        <div className="stake-section">
-          <div className="stake-info">
-            <span>Your Stake</span>
-            <span>${prediction.stake}</span>
-          </div>
-          <input type="range" className="stake-slider" min="0.10" max="10" step="0.10" defaultValue="0.10" />
-        </div>
+        
       </div>
-
-      <div className="countdown-timer">
-        <div className="timer-ring">
-          <span className="timer-text">5:00</span>
-        </div>
-      </div>
+      
     </div>
   );
 };

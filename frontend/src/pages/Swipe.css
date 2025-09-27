@@ -18,16 +18,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between; /* Distribute space between items */
   padding: 2rem;
-  position: relative;
+  /* position: relative; Removed as it's not needed with flexbox for this purpose */
 }
 
 .stake-controls {
-  position: fixed;
-  bottom: 140px;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Removed position: fixed, bottom, and transform */
+  /* position: fixed; */
+  /* bottom: 140px; */
+  /* transform: translateX(-50%); */
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 16px;
@@ -36,6 +36,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 100;
   min-width: 280px;
+  margin-top: 2rem; /* Add some space above controls */
 }
 
 .stake-display {
@@ -111,13 +112,15 @@
 }
 
 .swipe-actions {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Removed position: fixed, bottom, left, and transform */
+  /* position: fixed; */
+  /* bottom: 2rem; */
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
   display: flex;
   gap: 2rem;
   z-index: 100;
+  margin-top: 1rem; /* Add some space below controls */
 }
 
 .swipe-button {
@@ -238,4 +241,3 @@
     padding: 1rem;
   }
 }
-
