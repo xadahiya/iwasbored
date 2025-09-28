@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { usePublicClient } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 const addressCache = new Map();
 
 export const useENS = (address) => {
   const [ensName, setENSName] = useState(null);
   const [loading, setLoading] = useState(false);
-  const publicClient = usePublicClient();
+  const publicClient = usePublicClient({ chainId: mainnet.id });
 
   useEffect(() => {
     const resolveENS = async () => {

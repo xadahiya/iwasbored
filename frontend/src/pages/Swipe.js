@@ -76,6 +76,7 @@ const MarketDetailsFetcher = ({ questionId }) => {
     priceFeedId: questionData.priceFeedId,
     marketStartTimestamp: Number(questionData.beginTimestamp), // Pass actual timestamps
     marketEndTimestamp: Number(questionData.endTimestamp),     // Pass actual timestamps
+    probability: marketDetails[3],
   }
   return (
     <PredictionCard prediction={data} />

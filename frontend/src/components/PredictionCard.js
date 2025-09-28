@@ -130,7 +130,40 @@ const PredictionCard = ({ prediction }) => {
             {prediction.question}
           </div>
         </div>
+        {prediction.probability !== undefined && prediction.probability !== null && (
+        <div className="probability-section" style={{ marginTop: 12, textAlign: 'center', display: 'flex', justifyContent: 'center', gap: 24 }}>
+          {/* YES Probability */}
+          <div style={{ display: 'inline-block', textAlign: 'center' }}>
+            <span style={{ fontWeight: 500, fontSize: 14, color: '#888' }}>
+              Yes:&nbsp;
+              <span style={{ color: '#27ae60', fontWeight: 700 }}>
+                {Array.isArray(prediction.probability)
+                  ? (Number(prediction.probability[0]) / 1e7).toFixed(1) + '%'
+                  : (Number(prediction.probability) / 1e7).toFixed(1) + '%'
+                }
+              </span>
+            </span>
+          </div>
+          {/* NO Probability */}
+          <div style={{ display: 'inline-block', textAlign: 'center' }}>
+            <span style={{ fontWeight: 500, fontSize: 14, color: '#888' }}>
+              No:&nbsp;
+              <span style={{ color: '#e74c3c', fontWeight: 700 }}>
+                {Array.isArray(prediction.probability)
+                  ? (
+                      prediction.probability.length > 1
+                        ? (Number(prediction.probability[1]) / 1e7).toFixed(1) + '%'
+                        : (100 - (Number(prediction.probability[0]) / 1e7)).toFixed(1) + '%'
+                    )
+                  : (100 - (Number(prediction.probability) / 1e7)).toFixed(1) + '%'
+                }
+              </span>
+            </span>
+          </div>
+        </div>
+      )}
       </div>
+      
       
   );
 };

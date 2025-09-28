@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { ConnectKitButton } from 'connectkit';
 import { useENS } from '../hooks/useENS';
@@ -10,6 +10,11 @@ const Header = () => {
   const { disconnect } = useDisconnect();
   const { ensName, loading } = useENS(address);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const getButtonClass = (path) => {
+    return location.pathname === path ? 'nav-item active' : 'nav-item';
+  };
 
   return (
     <header className="header">
@@ -19,9 +24,9 @@ const Header = () => {
           <span>I Was BORED</span>
         </div>
         <nav className="nav-menu">
-          <button className="nav-item active" onClick={() => navigate('/swipe')}>Discover</button>
-          <button className="nav-item" onClick={() => navigate('/leaderboard')}>Leaderboard</button>
-          <button className="nav-item" onClick={() => navigate('/my-bets')}>My Bets</button>
+          <button className={getButtonClass('/swipe')} onClick={() => navigate('/swipe')}>Discover</button>
+          <button className={getButtonClass('/leaderboard')} onClick={() => navigate('/leaderboard')}>Leaderboard</button>
+          <button className={getButtonClass('/my-bets')} onClick={() => navigate('/my-bets')}>My Bets</button>
         </nav>
       </div>
       <div className="header-right">

@@ -1,4 +1,4 @@
-import { useReadContract, useWriteContract } from 'wagmi';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { sepolia } from 'viem/chains';
 import { useCallback } from 'react';
 
@@ -54,6 +54,7 @@ const ERC20_ABI = [
 const PYUSD_CONTRACT_ADDRESS = '0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9'; // Sepolia PYUSD address
 
 export const usePYUSDToken = () => {
+  const { chainId } = useAccount(); // Get chainId from connected wallet
   const { writeContract } = useWriteContract();
 
   const getAllowanceConfig = useCallback((owner, spender) => ({
@@ -61,8 +62,8 @@ export const usePYUSDToken = () => {
     abi: ERC20_ABI,
     functionName: 'allowance',
     args: [owner, spender],
-    chainId: sepolia.id,
-  }), []);
+    chainId: chainId || sepolia.id, // Use connected chainId or fallback to sepolia
+  }), [chainId]);
 
   const approve = useCallback((spender, amount) => {
     writeContract({
@@ -70,9 +71,9 @@ export const usePYUSDToken = () => {
       abi: ERC20_ABI,
       functionName: 'approve',
       args: [spender, amount],
-      chainId: sepolia.id,
+      chainId: chainId || sepolia.id, // Use connected chainId or fallback to sepolia
     });
-  }, [writeContract]);
+  }, [writeContract, chainId]);
 
   return {
     getAllowanceConfig,
