@@ -480,6 +480,16 @@ contract SimplePredictionsOracle is Ownable, ERC1155Holder, ReentrancyGuard {
         );
 
         conditionalTokens.reportPayouts(questionId, payouts);
+        // Remove the questionId from the activeMarketIds array
+        // Since activeMarketIds is a dynamic array, we need to manually find and remove the element
+        for (uint256 i = 0; i < activeMarketIds.length; i++) {
+            if (activeMarketIds[i] == questionId) {
+                // Move the last element into the place to delete and pop the last element
+                activeMarketIds[i] = activeMarketIds[activeMarketIds.length - 1];
+                activeMarketIds.pop();
+                break;
+            }
+        }
 
         emit MarketResolved(questionId, finalPrice,  payouts);
     }

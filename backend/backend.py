@@ -38,7 +38,7 @@ class MarketInfo(BaseModel):
 
 class ResolveMarketMessage(BaseModel):
     question_id: str
-    price_update_data: list[bytes]
+    price_update_data: list[str]
     answer_cid: str
     value: int
     auth_token: str

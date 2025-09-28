@@ -85,15 +85,14 @@ async def call_create_market_backend(url: str, market_data: dict) -> dict:
         raise
 
 
-async def main():
-    """Main function to create a market by calling backend (exact same as Hardhat script)"""
+async def create_single_market():
+    """Create a single market by calling backend (exact same as Hardhat script)"""
     logger.info("🎲 Creating a market via backend API...")
     
     # Backend URL (can be set via environment variable or hardcoded)
     backend_url = os.getenv('BACKEND_URL', 'http://localhost:8000/initializeMarket')
     
     # Generate unique question ID (exact same as Hardhat script)
-    from datetime import datetime
     timestamp_ms = int(datetime.now().timestamp() * 1000)
     question_id = '0x' + hashlib.sha256(f"market-{timestamp_ms}".encode()).hexdigest()
     logger.info(f"Generated Question ID: {question_id}")
@@ -117,7 +116,7 @@ async def main():
         "random_index": random_index,
         "market_end_timestamp": end_timestamp,
         "price_update_data": price_update_data,
-        "value": 1000000000000000,  # 0.001 ETH in wei (exactly same as Hardhat)
+        "value": 10000000000,  # 0.001 ETH in wei (exactly same as Hardhat)
         "auth_token": AUTH_TOKEN
     }
 
@@ -133,6 +132,31 @@ async def main():
         logger.error(f"❌ Market creation failed: {result}")
     
     return result
+
+
+async def run_continuously():
+    """Run the market creation script continuously every 10 minutes"""
+    interval = 10 * 60  # 10 minutes in seconds
+    logger.info(f"🔄 Starting continuous market creation every {interval/60} minutes...")
+    
+    while True:
+        try:
+            await create_single_market()
+            logger.info(f"⏰ Waiting {interval/60} minutes before creating next market...")
+            await asyncio.sleep(interval)
+        except KeyboardInterrupt:
+            logger.info("Script interrupted by user")
+            break
+        except Exception as e:
+            logger.error(f"❌ Error in continuous execution: {e}")
+            logger.info(f"⏰ Retrying in {interval/60} minutes...")
+            await asyncio.sleep(interval)
+
+
+async def main():
+    """Main function to start continuous market creation"""
+    logger.info("🎲 Starting continuous market creator...")
+    await run_continuously()
 
 if __name__ == "__main__":
     try:
