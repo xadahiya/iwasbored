@@ -51,7 +51,7 @@ const ERC20_ABI = [
   }
 ];
 
-const PYUSD_CONTRACT_ADDRESS = '0xCaC524BcA292aaade2DF8A05cC58F0a65B1B3bB9'; // Sepolia PYUSD address
+const PYUSD_CONTRACT_ADDRESS = '0xEfeFbB5e484b384A6a31f07F862bDA4D21267De3'; // Sepolia PYUSD address
 
 export const usePYUSDToken = () => {
   const { chainId } = useAccount(); // Get chainId from connected wallet
