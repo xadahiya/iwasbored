@@ -94,7 +94,7 @@ const Swipe = () => {
   const [needsApproval, setNeedsApproval] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
 
-  const ORACLE_CONTRACT_ADDRESS = '0x29471e7732F79E9A5f9e1ca09Cc653f53928742F'; // Oracle contract address
+  const ORACLE_CONTRACT_ADDRESS = '0xEfeFbB5e484b384A6a31f07F862bDA4D21267De3'; // Oracle contract address
 
   // Use the Oracle contract hook to get read configs and write functions
   const { getOwnerConfig, getActiveMarketIdsConfig, buyPosition, isWriteLoading, writeError, writeData } = useOracleContract();

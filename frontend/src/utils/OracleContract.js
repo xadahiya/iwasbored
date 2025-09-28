@@ -1,4 +1,4 @@
-import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { useReadContract, useWriteContract } from 'wagmi';
 import { sepolia } from 'viem/chains';
 import abi from './abi.json'; // Import the ABI
 import { useCallback } from 'react'; // Import useCallback
@@ -50,11 +50,10 @@ export const useContract = (contractAddress, contractAbi, chainId) => {
  * Provides pre-configured access to the Oracle contract's functions.
  */
 export const useOracleContract = () => {
-  const { chainId } = useAccount(); // Get chainId from connected wallet
   const { getReadConfig, write, writeData, isWriteLoading, isWriteSuccess, writeError } = useContract(
     ORACLE_CONTRACT_ADDRESS,
     abi,
-    chainId || sepolia.id // Use connected chainId or fallback to sepolia
+    sepolia.id
   );
 
   // Expose specific read functions for convenience, now returning config for useReadContract
