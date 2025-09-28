@@ -9,7 +9,6 @@
 ## 🚀 Live Demo & Links
 
 *   **Live Frontend:** [https://gleeful-semolina-46d5ac.netlify.app/]
-*   **Video Demo:** [https://www.youtube.com/watch?v=iim-9cGtlBo]
 *   **Deployed Contracts:**
     *   **Prediction Market (Sepolia):** `0xEfeFbB5e484b384A6a31f07F862bDA4D21267De3`
     *   **Age Verification (Celo):** `0x5e5b05e86b98ea1133cadde46b67dcbbb9f13dee`

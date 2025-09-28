@@ -55,6 +55,10 @@
   width: 100%;
 }
 
+.bets-list .prediction-card {
+  position: relative;
+}
+
 @media (max-width: 768px) {
   .bets-list {
     grid-template-columns: 1fr;
