@@ -1,13 +1,13 @@
 import { createConfig, http } from 'wagmi'
-import { sepolia } from 'wagmi/chains'
+import { mainnet } from 'wagmi/chains'
 import { injected } from 'wagmi/connectors'
 
 export const config = createConfig({
-  chains: [sepolia],
+  chains: [mainnet], // Force mainnet for all operations
   connectors: [
     injected(),
   ],
   transports: {
-    [sepolia.id]: http(), // Correctly assign the http() function to the chain ID
+    [mainnet.id]: http('https://eth-mainnet.public.blastapi.io'), // Use free Blast API
   },
 })

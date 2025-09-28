@@ -4,6 +4,7 @@ import Onboarding from './pages/Onboarding';
 import AgeVerification from './pages/AgeVerification';
 import Swipe from './pages/Swipe';
 import MyBets from './pages/MyBets';
+import Leaderboard from './pages/Leaderboard';
 import { WalletProvider } from './wagmiProvider';
 import { useChainDetection } from './useChainDetection';
 import { useAccount, useSwitchChain } from 'wagmi'; // Import useSwitchChain
@@ -46,6 +47,7 @@ const AppContent = () => {
           <Route path="/" element={<Onboarding />} />
           <Route path="/verify-age" element={<AgeVerification />} />
           <Route path="/swipe" element={<Swipe />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/my-bets" element={<MyBets />} />
         </Routes>
       </div>
