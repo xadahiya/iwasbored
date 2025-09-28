@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # Constants
-CHECK_INTERVAL = 60  # Check every minute
+CHECK_INTERVAL = 300  # Check every minute
 RESOLVE_DELAY = 0 
 AUTH_TOKEN = "iwasbored"
 
