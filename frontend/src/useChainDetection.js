@@ -15,10 +15,11 @@ export const useChainDetection = () => {
 
     if (isConnected) {
       if (chain) {
+        const isWrong = chain.name !== 'Sepolia';
         setCurrentChain(chain.name);
-        setIsWrongChain(false);
+        setIsWrongChain(isWrong);
         console.log('Current chain:', chain.name);
-        console.log('isWrongChain:', false);
+        console.log('isWrongChain:', isWrong);
       } else {
         setCurrentChain(null);
         setIsWrongChain(true);
