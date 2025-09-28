@@ -44,10 +44,10 @@
         "ProofOfHuman"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/libraries/SelfUtils.sol": {
-      "lastModificationDate": 1758966366779,
-      "contentHash": "03e585dad9b5f8c383856148eea3b99b",
-      "sourceName": "@selfxyz/contracts/contracts/libraries/SelfUtils.sol",
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/libraries/SelfStructs.sol": {
+      "lastModificationDate": 1758966366748,
+      "contentHash": "a3b58161e1bc28219ed09ac5f6891ae7",
+      "sourceName": "@selfxyz/contracts/contracts/libraries/SelfStructs.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
@@ -73,14 +73,49 @@
           }
         }
       },
-      "imports": [
-        "./SelfStructs.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "0.8.28"
       ],
       "artifacts": [
-        "SelfUtils"
+        "SelfStructs"
+      ]
+    },
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol": {
+      "lastModificationDate": 1758966366591,
+      "contentHash": "29a0c9ef03e4325949ae756b0f78a592",
+      "sourceName": "@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "ISelfVerificationRoot"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/abstract/SelfVerificationRoot.sol": {
@@ -128,43 +163,6 @@
         "SelfVerificationRoot"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol": {
-      "lastModificationDate": 1758966366591,
-      "contentHash": "29a0c9ef03e4325949ae756b0f78a592",
-      "sourceName": "@selfxyz/contracts/contracts/interfaces/ISelfVerificationRoot.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "ISelfVerificationRoot"
-      ]
-    },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/interfaces/IIdentityVerificationHubV2.sol": {
       "lastModificationDate": 1758966366506,
       "contentHash": "5d5d2b7ffd212f22bb33b0754757f696",
@@ -206,10 +204,10 @@
         "IIdentityVerificationHubV2"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/libraries/SelfStructs.sol": {
-      "lastModificationDate": 1758966366748,
-      "contentHash": "a3b58161e1bc28219ed09ac5f6891ae7",
-      "sourceName": "@selfxyz/contracts/contracts/libraries/SelfStructs.sol",
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/libraries/SelfUtils.sol": {
+      "lastModificationDate": 1758966366779,
+      "contentHash": "03e585dad9b5f8c383856148eea3b99b",
+      "sourceName": "@selfxyz/contracts/contracts/libraries/SelfUtils.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
@@ -235,12 +233,14 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "./SelfStructs.sol"
+      ],
       "versionPragmas": [
         "0.8.28"
       ],
       "artifacts": [
-        "SelfStructs"
+        "SelfUtils"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/interfaces/IPoseidonT3.sol": {
@@ -280,6 +280,43 @@
         "IPoseidonT3"
       ]
     },
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/constants/AttestationId.sol": {
+      "lastModificationDate": 1758966366378,
+      "contentHash": "2cabeb5125bbeb088babc98c73351cd8",
+      "sourceName": "@selfxyz/contracts/contracts/constants/AttestationId.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "AttestationId"
+      ]
+    },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/constants/CircuitConstantsV2.sol": {
       "lastModificationDate": 1758966366395,
       "contentHash": "d5d6bfe0a6b8622066003e68540537ea",
@@ -317,43 +354,6 @@
       ],
       "artifacts": [
         "CircuitConstantsV2"
-      ]
-    },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/constants/AttestationId.sol": {
-      "lastModificationDate": 1758966366378,
-      "contentHash": "2cabeb5125bbeb088babc98c73351cd8",
-      "sourceName": "@selfxyz/contracts/contracts/constants/AttestationId.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "AttestationId"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@selfxyz/contracts/contracts/libraries/Formatter.sol": {
@@ -629,43 +629,6 @@
         "FixedProductMarketMaker"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/contracts/SafeMath.sol": {
-      "lastModificationDate": 1758966675723,
-      "contentHash": "12e5bf35e9f6dd4aa08e70557a0c828c",
-      "sourceName": "contracts/SafeMath.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "SafeMath"
-      ]
-    },
     "/Users/xadahiya/workspace/iwasbored/contracts/contracts/ConditionalTokens.sol": {
       "lastModificationDate": 1758966675723,
       "contentHash": "2a799340ddc25c3ef80a9aa8009483a3",
@@ -707,6 +670,43 @@
       ],
       "artifacts": [
         "ConditionalTokens"
+      ]
+    },
+    "/Users/xadahiya/workspace/iwasbored/contracts/contracts/SafeMath.sol": {
+      "lastModificationDate": 1758966675723,
+      "contentHash": "12e5bf35e9f6dd4aa08e70557a0c828c",
+      "sourceName": "contracts/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "SafeMath"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/contracts/interfaces/IPredictionsOracle.sol": {
@@ -1183,45 +1183,6 @@
         "Panic"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1758966368964,
-      "contentHash": "0906d06dca25210d4696dcef6dad2909",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC165.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC165"
-      ]
-    },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/Arrays.sol": {
       "lastModificationDate": 1758966368786,
       "contentHash": "e19f50397668e814730982e8f2aa6e56",
@@ -1303,6 +1264,45 @@
         "IERC721Errors"
       ]
     },
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+      "lastModificationDate": 1758966368964,
+      "contentHash": "0906d06dca25210d4696dcef6dad2909",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC165"
+      ]
+    },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
       "lastModificationDate": 1758966369243,
       "contentHash": "33e0e83862852391c28e4dd1b8bd9cf2",
@@ -1340,45 +1340,6 @@
       ],
       "artifacts": [
         "IERC1155"
-      ]
-    },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol": {
-      "lastModificationDate": 1758966369246,
-      "contentHash": "954b62833ba591c2f2ad3354a5048f2a",
-      "sourceName": "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC1155.sol"
-      ],
-      "versionPragmas": [
-        ">=0.6.2"
-      ],
-      "artifacts": [
-        "IERC1155MetadataURI"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/utils/ERC1155Utils.sol": {
@@ -1421,10 +1382,10 @@
         "ERC1155Utils"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1758966369526,
-      "contentHash": "7074c93b1ea0a122063f26ddd1db1032",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol": {
+      "lastModificationDate": 1758966369246,
+      "contentHash": "954b62833ba591c2f2ad3354a5048f2a",
+      "sourceName": "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
@@ -1450,12 +1411,14 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "../IERC1155.sol"
+      ],
       "versionPragmas": [
-        ">=0.4.16"
+        ">=0.6.2"
       ],
       "artifacts": [
-        "IERC165"
+        "IERC1155MetadataURI"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/Comparators.sol": {
@@ -1495,6 +1458,43 @@
         "Comparators"
       ]
     },
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/StorageSlot.sol": {
+      "lastModificationDate": 1758966369648,
+      "contentHash": "e656d64c4ce918f3d13030b91c935134",
+      "sourceName": "@openzeppelin/contracts/utils/StorageSlot.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "StorageSlot"
+      ]
+    },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/SlotDerivation.sol": {
       "lastModificationDate": 1758966369647,
       "contentHash": "43950136ee6a1761d2cbed39d16bb1e0",
@@ -1532,10 +1532,10 @@
         "SlotDerivation"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/StorageSlot.sol": {
-      "lastModificationDate": 1758966369648,
-      "contentHash": "e656d64c4ce918f3d13030b91c935134",
-      "sourceName": "@openzeppelin/contracts/utils/StorageSlot.sol",
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1758966369526,
+      "contentHash": "7074c93b1ea0a122063f26ddd1db1032",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
@@ -1563,10 +1563,10 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.20"
+        ">=0.4.16"
       ],
       "artifacts": [
-        "StorageSlot"
+        "IERC165"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol": {
@@ -1688,50 +1688,9 @@
         "IFactory"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/contracts/interfaces/IFixedProductMarketMaker.sol": {
-      "lastModificationDate": 1758966675723,
-      "contentHash": "f178ee0762351d79af3085ff9036a6f2",
-      "sourceName": "contracts/interfaces/IFixedProductMarketMaker.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "contracts/ConditionalTokens.sol",
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
-      ],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "IFixedProductMarketMaker"
-      ]
-    },
     "/Users/xadahiya/workspace/iwasbored/contracts/contracts/SimplePredictionsOracle.sol": {
-      "lastModificationDate": 1759012729888,
-      "contentHash": "e107197c1f7f68d52941732fbb0eda7e",
+      "lastModificationDate": 1759018145491,
+      "contentHash": "74dda358f1e6f764c02c14ed24882fa9",
       "sourceName": "contracts/SimplePredictionsOracle.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -1816,43 +1775,6 @@
         "Token"
       ]
     },
-    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@pythnetwork/pyth-sdk-solidity/PythStructs.sol": {
-      "lastModificationDate": 1758966368007,
-      "contentHash": "f43da46300095c422885907eb6f25052",
-      "sourceName": "@pythnetwork/pyth-sdk-solidity/PythStructs.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 10000
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata",
-                "storageLayout"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "PythStructs"
-      ]
-    },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@pythnetwork/pyth-sdk-solidity/IPyth.sol": {
       "lastModificationDate": 1758966367928,
       "contentHash": "b67bec86dd798e27596d8deffa2f3086",
@@ -1891,6 +1813,43 @@
       ],
       "artifacts": [
         "IPyth"
+      ]
+    },
+    "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@pythnetwork/pyth-sdk-solidity/PythStructs.sol": {
+      "lastModificationDate": 1758966368007,
+      "contentHash": "f43da46300095c422885907eb6f25052",
+      "sourceName": "@pythnetwork/pyth-sdk-solidity/PythStructs.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "PythStructs"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
@@ -2005,6 +1964,47 @@
       ],
       "artifacts": [
         "IPythEvents"
+      ]
+    },
+    "/Users/xadahiya/workspace/iwasbored/contracts/contracts/interfaces/IFixedProductMarketMaker.sol": {
+      "lastModificationDate": 1758966675723,
+      "contentHash": "f178ee0762351d79af3085ff9036a6f2",
+      "sourceName": "contracts/interfaces/IFixedProductMarketMaker.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 10000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "contracts/ConditionalTokens.sol",
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "IFixedProductMarketMaker"
       ]
     },
     "/Users/xadahiya/workspace/iwasbored/contracts/contracts/Factory.sol": {

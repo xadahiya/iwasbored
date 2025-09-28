@@ -1,70 +1,184 @@
-# Getting Started with Create React App
+# I Was Bored - Prediction Markets Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A swipe-based prediction market app where users can bet on cryptocurrency price movements. Built with React, TypeScript, and Web3 integration.
 
-## Available Scripts
+## 🎯 Overview
 
-In the project directory, you can run:
+I Was Bored is a gamified prediction market platform that allows users to:
 
-### `npm start`
+- **Swipe to Bet**: Intuitive Tinder-style interface for making predictions
+- **Crypto Prediction Markets**: Bet on whether cryptocurrencies will go up or down
+- **Real-time Oracle Data**: Integrated with Pyth Network for accurate price feeds
+- **Smart Contract Integration**: Built on blockchain technology with secure transactions
+- **User Portfolio Tracking**: Monitor bets, earnings, and redemption status
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🏗️ Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Core Technologies
+- **React 18.3.1** - UI framework
+- **TypeScript** - Type safety
+- **CRACO** - Create React App Configuration Override for custom webpack config
 
-### `npm test`
+### Web3 Integration
+- **Wagmi** - React hooks for Ethereum interaction
+- **Viem** - TypeScript interface for Ethereum
+- **Ethers.js** - Ethereum wallet interaction
+- **Web3Modal** - Wallet connection interface
+- **ConnectKit** - Web3 connection UI
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### UI & Animation
+- **Framer Motion** - Animation library
+- **React Spring** - Physics-based animations
+- **React Use Gesture** - Gesture handling for swipe interactions
 
-### `npm run build`
+### Data & Charts
+- **TanStack Query** - Server state management
+- **Recharts** - Data visualization charts
+- **React Icons** - Icon library
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Other Libraries
+- **React Router DOM** - Navigation
+- **QRCode** - QR code generation
+- **@selfxyz/common** - Common utilities
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Core Pages
+- **Onboarding**: Initial setup and wallet connection
+- **Age Verification**: Compliance verification flow
+- **Swipe**: Main betting interface with card-based predictions
+- **My Bets**: User's betting history and portfolio
+- **Leaderboard**: Competitive rankings
 
-### `npm run eject`
+### Key Functionality
+- **Smart Contract Integration**: Oracle contract at `0x29471e7732F79E9A5f9e1ca09Cc653f53928742F`
+- **PYUSD Token Support**: US Dollar coin for betting
+- **Chain Detection**: Automatic network switching to Sepolia
+- **Real-time Data**: Pyth Network price feeds for ETH, BTC, USDC, SOL
+- **Portfolio Management**: Track spending, earnings, and positions
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📱 Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
+- Node.js 18+
+- MetaMask or Web3 wallet
+- Sepolia network access
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd frontend
+   ```
 
-## Learn More
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env.local
+   # Add your environment variables
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. **Run the development server**
+   ```bash
+   npm start
+   ```
 
-### Code Splitting
+5. **Open in browser**
+   Navigate to [http://localhost:3003](http://localhost:3003)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🛠️ Development Scripts
 
-### Analyzing the Bundle Size
+| Script | Description |
+|--------|-------------|
+| `npm start` | Start development server on port 3003 |
+| `npm run build` | Build for production |
+| `npm test` | Run tests in watch mode |
+| `npm run eject` | Eject from Create React App |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📁 Project Structure
 
-### Making a Progressive Web App
+```
+src/
+├── components/          # Reusable UI components
+│   ├── BetCard.js
+│   ├── PredictionCard.js
+│   ├── Header.js
+│   └── ...
+├── pages/              # Page components
+│   ├── Swipe.js
+│   ├── MyBets.js
+│   ├── Leaderboard.js
+│   └── ...
+├── utils/              # Utility functions and contracts
+│   ├── OracleContract.js
+│   ├── pyth.js
+│   └── ...
+├── hooks/              # Custom React hooks
+│   ├── useENS.js
+│   └── ...
+├── contexts/           # React contexts
+│   └── WalletContext.js
+└── wagmiConfig.js      # Web3 configuration
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🔗 Smart Contracts
 
-### Advanced Configuration
+### Oracle Contract
+- **Address**: `0x29471e7732F79E9A5f9e1ca09Cc653f53928742F`
+- **Functions**: Market creation, position buying, redemption
+- **Chain**: Sepolia Testnet
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Supported Tokens
+- **PYUSD**: Primary betting token
+- **Price Feeds**: ETH, BTC, USDC, SOL via Pyth Network
 
-### Deployment
+## 🎨 User Flow
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. **Onboarding**: Connect wallet and verify age
+2. **Navigation**: Access prediction markets
+3. **Betting**: Swipe left (No) or right (Yes) on predictions
+4. **Portfolio**: Track positions and earnings
+5. **Redemption**: Claim winnings after market resolution
 
-### `npm run build` fails to minify
+## 🚀 Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Netlify Configuration
+- Build command: `npm run build`
+- Publish directory: `build/`
+- Environment variables configured for production
+
+### Production Build
+```bash
+npm run build
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+Create `.env.local` file:
+```env
+REACT_APP_NETWORK_ID=11155111  # Sepolia chain ID
+REACT_APP_ORACLE_ADDRESS=0x29471e7732F79E9A5f9e1ca09Cc653f53928742F
+```
+
+### Custom Configuration
+- Custom webpack config via CRACO
+- Custom port configuration (3003)
+- ESLint rules updated
+
+## 📊 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
